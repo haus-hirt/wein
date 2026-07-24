@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#222222">
+<title>Entnahme — Haus Hirt</title>
+<style>
+:root{--ink:#222;--grey:#666;--light:#999;--line:#DDD;--bg:#FFF;--soft:#F5F5F5;
+  --gold:#8A6D3B;--warn:#B4471F;--ok:#3E7A3E;--foot:150px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);
+  font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+button,input{font:inherit;color:inherit}
+
+header{background:var(--ink);color:#fff;padding:10px 14px 0;position:sticky;top:0;z-index:40}
+.hd{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.hd h1{margin:0;font-size:17px;font-weight:600}
+.hd .sub{font-size:12px;color:#aaa}
+#dSel{background:#333;border:1px solid #555;color:#fff;padding:6px 8px;border-radius:4px;font-size:14px}
+.steps{display:flex;margin-top:10px;gap:2px;overflow-x:auto}
+.st{flex:1 0 auto;background:#333;border:0;color:#aaa;padding:10px 9px;font-size:13px;cursor:pointer;
+  border-radius:4px 4px 0 0;font-weight:500;white-space:nowrap}
+.st[aria-selected="true"]{background:#fff;color:var(--ink);font-weight:700}
+.st.done{color:#8FBF8F}
+
+.howto{background:var(--soft);border-bottom:1px solid var(--line);padding:12px 14px}
+.howto b{display:block;font-size:15px;margin-bottom:3px}
+.howto p{margin:0;font-size:14px;color:var(--grey);line-height:1.45}
+.howto .tip{margin-top:7px;font-size:13px;color:var(--gold)}
+
+.tools{padding:9px 14px;position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
+#q{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:4px;font-size:16px;background:var(--bg)}
+#q:focus{outline:2px solid var(--ink);outline-offset:-1px}
+
+main{padding:0 14px calc(var(--foot) + 20px)}
+
+.hd1{font-size:14px;font-weight:700;margin:24px 0 0;padding:9px 0 7px;border-bottom:3px solid var(--ink)}
+.hd1 small{display:block;font-size:12px;font-weight:400;color:var(--grey);margin-top:2px}
+.farbe{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  margin:18px 0 0;padding:6px 0 5px;border-bottom:2px solid var(--ink)}
+.reb{font-size:12px;color:var(--grey);margin:13px 0 0;font-weight:600}
+.note{font-size:13px;color:var(--grey);margin:5px 0 0;font-style:italic}
+
+.w{width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);
+  padding:12px 0;display:flex;align-items:center;gap:11px;cursor:pointer}
+.w:active{background:var(--soft)}
+.w .tx{flex:1;min-width:0}
+.nm{font-size:16px;font-weight:600;line-height:1.25}
+.mt{font-size:13px;color:var(--grey);margin-top:1px}
+.w.done{opacity:.5}
+.w.miss{background:#FDF3EF}
+.w.miss .nm{color:var(--warn)}
+.w.tick{opacity:.45}
+.w.tick .nm{text-decoration:line-through}
+
+.cnt{min-width:44px;height:44px;border:2px solid var(--line);border-radius:4px;
+  display:grid;place-items:center;font-size:19px;font-weight:700;color:var(--light);flex-shrink:0}
+.cnt.on{border-color:var(--ink);color:var(--ink);background:var(--soft)}
+
+.dots{display:flex;gap:5px;align-items:center;flex-shrink:0;padding:6px 2px}
+.dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--ink);background:var(--ink)}
+.dot.off{background:#fff;border-color:var(--line)}
+.miss-n{font-size:13px;font-weight:700;color:var(--warn);margin-left:2px;min-width:26px;text-align:right}
+.ok-n{font-size:13px;color:var(--ok);margin-left:2px;min-width:26px;text-align:right;font-weight:600}
+.pos{width:22px;font-size:13px;color:var(--light);font-weight:700;flex-shrink:0;text-align:right}
+
+.box2{width:30px;height:30px;border:2px solid var(--ink);border-radius:4px;flex-shrink:0;
+  display:grid;place-items:center;font-size:18px;font-weight:700;color:#fff;background:#fff}
+.box2.on{background:var(--ink)}
+.qty{font-size:20px;font-weight:700;min-width:34px;text-align:right;flex-shrink:0}
+
+.empty{padding:36px 0;text-align:center;color:var(--light)}
+
+.foot{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--ink);color:#fff;
+  padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -3px 12px rgba(0,0,0,.2)}
+.fh{display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer}
+.fh .big{font-size:24px;font-weight:700;line-height:1;min-width:2ch}
+.fh .lb{flex:1;font-size:13px;color:#bbb;line-height:1.3}
+.fh .lb b{color:#fff;display:block;font-size:14px}
+.fh .car{color:#bbb;font-size:12px;transition:transform .18s}
+.foot.open .car{transform:rotate(180deg)}
+.flist{max-height:0;overflow-y:auto;transition:max-height .2s}
+.foot.open .flist{max-height:44vh;border-top:1px solid #444}
+.fi{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid #383838}
+.fi .t{flex:1;min-width:0;font-size:14px}
+.fi .t small{display:block;color:#999;font-size:12px}
+.fi .v{font-size:16px;font-weight:700;min-width:2ch;text-align:right}
+.fi .x{background:none;border:1px solid #555;color:#bbb;width:30px;height:30px;border-radius:4px;
+  font-size:15px;cursor:pointer;flex-shrink:0}
+.fempty{padding:16px 14px;color:#999;font-size:14px}
+.fb{display:flex;gap:8px;padding:9px 14px 11px}
+.b{flex:1;background:none;border:1px solid #777;color:#fff;padding:13px 8px;border-radius:4px;
+  font-size:14px;font-weight:600;cursor:pointer}
+.b.go{background:#fff;color:var(--ink);border-color:#fff}
+.b.sm{flex:0 0 auto;padding:13px 15px;color:#bbb}
+
+.rev{padding:14px 0}
+.rev h2{font-size:14px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:11px;color:var(--grey);border-bottom:1px solid var(--ink);padding:5px 3px;font-weight:700}
+th.r,td.r{text-align:right}
+td{padding:8px 3px;border-bottom:1px solid var(--line);vertical-align:top}
+tr.flag{background:#FDF3EF}
+.sum{display:flex;gap:22px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:2px solid var(--ink)}
+.sum div span{display:block;font-size:11px;color:var(--grey);font-weight:600}
+.sum div b{font-size:24px}
+.box{border:1px solid var(--line);border-left:4px solid var(--warn);background:#FDF3EF;
+  padding:11px 12px;margin-top:13px;font-size:14px}
+.box.good{border-left-color:var(--ok);background:#F2F8F2}
+label.f{display:block;margin-top:13px}
+label.f span{font-size:12px;color:var(--grey);font-weight:600;display:block;margin-bottom:4px}
+label.f input{width:100%;padding:11px;border:1px solid var(--line);border-radius:4px;font-size:16px}
+.arow{display:flex;gap:8px;margin-top:14px}
+.arow button{flex:1;padding:12px;border:1px solid var(--ink);background:var(--bg);border-radius:4px;
+  font-size:14px;font-weight:600;cursor:pointer}
+.arow .del{border-color:var(--warn);color:var(--warn)}
+
+.toast{position:fixed;bottom:calc(var(--foot) + 12px);left:50%;transform:translateX(-50%);
+  background:var(--ink);color:#fff;padding:11px 18px;border-radius:4px;font-size:14px;z-index:90;
+  opacity:0;transition:opacity .2s;pointer-events:none;max-width:88vw;text-align:center}
+.toast.on{opacity:1}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:80;padding:16px;
+  align-items:center;justify-content:center}
+.ov.on{display:flex}
+.card{background:#fff;max-width:420px;width:100%;padding:20px;border-radius:6px}
+.card h3{margin:0 0 6px;font-size:16px}
+.card p{margin:0 0 14px;font-size:15px;color:var(--grey)}
+@media(min-width:720px){header,.howto,.tools,main{max-width:760px;margin-left:auto;margin-right:auto}
+  .foot>*{max-width:760px;margin:0 auto}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{header,.tools,.foot,.howto{display:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd">
+    <div><h1>Entnahme</h1><div class="sub">Haus Hirt · Weinkeller</div></div>
+    <input type="date" id="dSel">
+  </div>
+  <nav class="steps" role="tablist">
+    <button class="st" role="tab" data-s="0" aria-selected="true">1 · Konsum</button>
+    <button class="st" role="tab" data-s="1">2 · Restaurant</button>
+    <button class="st" role="tab" data-s="2">3 · Bar</button>
+    <button class="st" role="tab" data-s="3">4 · Keller</button>
+    <button class="st" role="tab" data-s="4">5 · Fertig</button>
+  </nav>
+</header>
+
+<div class="howto" id="howto"></div>
+<div class="tools" id="tools"><input id="q" type="search" placeholder="Wein suchen …" autocomplete="off"></div>
+<main id="main"></main>
+
+<div class="foot" id="foot">
+  <div class="fh" id="fh">
+    <span class="big" id="fBig">0</span>
+    <span class="lb" id="fLb"></span>
+    <span class="car">▲</span>
+  </div>
+  <div class="flist" id="fList"></div>
+  <div class="fb">
+    <button class="b sm" id="bBack">Zurück</button>
+    <button class="b go" id="bNext">Weiter</button>
+  </div>
+</div>
+
+<div class="ov" id="ov"><div class="card">
+  <h3 id="ovT"></h3><p id="ovP"></p>
+  <div class="arow"><button id="ovNo">Abbrechen</button><button id="ovOk" style="background:var(--ink);color:#fff">Ja</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const WINES = [
+ {
+  "id": "w001",
+  "f": "WEISS",
+  "r": "Grüner Veltliner",
+  "winzer": "Leindl",
+  "wein": "Langenlois",
+  "jg": "2024",
+  "region": "Kamptal DAC",
+  "reb": "Grüner Veltliner"
+ },
+ {
+  "id": "w003",
+  "f": "WEISS",
+  "r": "Grüner Veltliner",
+  "winzer": "Ott",
+  "wein": "Fass 4",
+  "jg": "2025",
+  "region": "Wagram, Feuersbrunn",
+  "reb": "Grüner Veltliner"
+ },
+ {
+  "id": "w002",
+  "f": "WEISS",
+  "r": "Grüner Veltliner",
+  "winzer": "Simon Gattinger",
+  "wein": "Loiben Federspiel",
+  "jg": "2024",
+  "region": "Wachau DAC",
+  "reb": "Grüner Veltliner"
+ },
+ {
+  "id": "w004",
+  "f": "WEISS",
+  "r": "Grüner Veltliner",
+  "winzer": "Weinberghof Fritsch",
+  "wein": "Ried Schlossberg 1ÖTW",
+  "jg": "2022",
+  "region": "Wagram DAC, Oberstockstall",
+  "reb": "Grüner Veltliner"
+ },
+ {
+  "id": "w007",
+  "f": "WEISS",
+  "r": "Riesling",
+  "winzer": "Emrich-Schönleber",
+  "wein": "Mineral",
+  "jg": "2023",
+  "region": "Monzingen (DE)",
+  "reb": "Riesling"
+ },
+ {
+  "id": "w005",
+  "f": "WEISS",
+  "r": "Riesling",
+  "winzer": "Hirsch",
+  "wein": "Zöbing",
+  "jg": "2024",
+  "region": "Kamptal",
+  "reb": "Riesling"
+ },
+ {
+  "id": "w006",
+  "f": "WEISS",
+  "r": "Riesling",
+  "winzer": "Pichler-Krutzler",
+  "wein": "Loiben",
+  "jg": "2024",
+  "region": "Wachau DAC",
+  "reb": "Riesling"
+ },
+ {
+  "id": "w008",
+  "f": "WEISS",
+  "r": "Sauvignon Blanc",
+  "winzer": "Hannes Sabathi",
+  "wein": "Sauvignon Blanc",
+  "jg": "2024",
+  "region": "Südsteiermark DAC, Gamlitz",
+  "reb": "Sauvignon Blanc"
+ },
+ {
+  "id": "w009",
+  "f": "WEISS",
+  "r": "Sauvignon Blanc",
+  "winzer": "Verus",
+  "wein": "Sauvignon Blanc",
+  "jg": "?",
+  "region": "Slowenien, Ormož",
+  "reb": "Sauvignon Blanc"
+ },
+ {
+  "id": "w010",
+  "f": "WEISS",
+  "r": "Weißburgunder",
+  "winzer": "Hannes Sabathi",
+  "wein": "Weißburgunder",
+  "jg": "2024",
+  "region": "Südsteiermark DAC, Gamlitz",
+  "reb": "Weißburgunder"
+ },
+ {
+  "id": "w011",
+  "f": "WEISS",
+  "r": "Chardonnay",
+  "winzer": "Gesellmann",
+  "wein": "Chardonnay",
+  "jg": "2022",
+  "region": "Mittelburgenland, Deutschkreutz",
+  "reb": "Chardonnay"
+ },
+ {
+  "id": "w013",
+  "f": "WEISS",
+  "r": "Chardonnay",
+  "winzer": "Domaine Borgeot",
+  "wein": "Bourgogne Blanc Côte d'Or",
+  "jg": "2022",
+  "region": "Burgund (FR)",
+  "reb": "Chardonnay"
+ },
+ {
+  "id": "w014",
+  "f": "WEISS",
+  "r": "Chardonnay",
+  "winzer": "Domaine Pillot",
+  "wein": "Bourgogne Blanc",
+  "jg": "2023",
+  "region": "Burgund (FR)",
+  "reb": "Chardonnay"
+ },
+ {
+  "id": "w016",
+  "f": "WEISS",
+  "r": "Grauburgunder",
+  "winzer": "Andreas Gsellmann",
+  "wein": "Grauburgunder",
+  "jg": "2025",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Grauburgunder"
+ },
+ {
+  "id": "w015",
+  "f": "WEISS",
+  "r": "Grauburgunder",
+  "winzer": "Dürnberg",
+  "wein": "Grauburgunder",
+  "jg": "2021",
+  "region": "Weinviertel",
+  "reb": "Grauburgunder"
+ },
+ {
+  "id": "w017",
+  "f": "WEISS",
+  "r": "Roter Veltliner",
+  "winzer": "Josef Fritz",
+  "wein": "Wagram Terrassen",
+  "jg": "2024",
+  "region": "Wagram DAC, Zaussenberg",
+  "reb": "Roter Veltliner"
+ },
+ {
+  "id": "w018",
+  "f": "WEISS",
+  "r": "Gelber Muskateller",
+  "winzer": "Muster",
+  "wein": "Gelber Muskateller Styria",
+  "jg": "2025",
+  "region": "Südsteiermark",
+  "reb": "Gelber Muskateller"
+ },
+ {
+  "id": "w060",
+  "f": "WEISS",
+  "r": "Muskateller-Cuvée",
+  "winzer": "Muster (U&K)",
+  "wein": "Fräulein Klein",
+  "jg": "2021",
+  "region": "Südsteiermark, Gamlitz",
+  "reb": "Muskateller-Cuvée"
+ },
+ {
+  "id": "w019",
+  "f": "WEISS",
+  "r": "Gemischter Satz",
+  "winzer": "Ingrid Groiss",
+  "wein": "Anna's 17",
+  "jg": "2025",
+  "region": "Weinviertel, Breitenwaida",
+  "reb": "Gemischter Satz"
+ },
+ {
+  "id": "w020",
+  "f": "WEISS",
+  "r": "Gemischter Satz",
+  "winzer": "Mayer am Pfarrplatz",
+  "wein": "Wiener Gemischter Satz",
+  "jg": "2025",
+  "region": "Wien",
+  "reb": "Gemischter Satz"
+ },
+ {
+  "id": "w062",
+  "f": "WEISS",
+  "r": "Roter Gemischter Satz",
+  "winzer": "Jutta Ambrositsch",
+  "wein": "Rakete",
+  "jg": "2023",
+  "region": "Wien",
+  "reb": "Roter Gemischter Satz"
+ },
+ {
+  "id": "w063",
+  "f": "WEISS",
+  "r": "Orange Wine",
+  "winzer": "Domaine de Courbissac",
+  "wein": "L'Orange",
+  "jg": "2024",
+  "region": "Minervois (FR)",
+  "reb": "Orange Wine"
+ },
+ {
+  "id": "w023",
+  "f": "WEISS",
+  "r": "Cuvée",
+  "winzer": "Bründlmayer",
+  "wein": "Spiegel",
+  "jg": "2022",
+  "region": "Kamptal, Langenlois",
+  "reb": "Grauburgunder / Weißburgunder"
+ },
+ {
+  "id": "w061",
+  "f": "WEISS",
+  "r": "Cuvée",
+  "winzer": "Dürnberg",
+  "wein": "Falko",
+  "jg": "2021",
+  "region": "Weinviertel, Falkenstein",
+  "reb": "Muskateller / Welschr. / SB"
+ },
+ {
+  "id": "w022",
+  "f": "WEISS",
+  "r": "Cuvée",
+  "winzer": "Heinrich (f. U&K)",
+  "wein": "Tulpe",
+  "jg": "2019",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Weißburgunder / Chardonnay"
+ },
+ {
+  "id": "w021",
+  "f": "WEISS",
+  "r": "Cuvée",
+  "winzer": "Wolfgang Seher",
+  "wein": "Wilde Reben",
+  "jg": "2024",
+  "region": "Niederösterreich",
+  "reb": "GV / Riesling / Muskateller"
+ },
+ {
+  "id": "w044",
+  "f": "ROSÉ",
+  "r": "Zweigelt",
+  "winzer": "Bründlmayer",
+  "wein": "Zweigelt Rosé",
+  "jg": "2024",
+  "region": "Kamptal, Langenlois",
+  "reb": "Zweigelt"
+ },
+ {
+  "id": "w045",
+  "f": "ROSÉ",
+  "r": "Zweigelt",
+  "winzer": "Dürnberg",
+  "wein": "Blanc de Noir",
+  "jg": "2024",
+  "region": "Weinviertel",
+  "reb": "Zweigelt"
+ },
+ {
+  "id": "w043",
+  "f": "ROSÉ",
+  "r": "Zweigelt",
+  "winzer": "Fritsch (Karl)",
+  "wein": "Wagram Rosé",
+  "jg": "?",
+  "region": "Wagram, Oberstockstall",
+  "reb": "Zweigelt"
+ },
+ {
+  "id": "w046",
+  "f": "ROSÉ",
+  "r": "Cuvée",
+  "winzer": "Ultimate Provence",
+  "wein": "UP Rosé",
+  "jg": "2025",
+  "region": "Côtes de Provence (FR)",
+  "reb": "Cinsault / Grenache / Syrah / Rolle"
+ },
+ {
+  "id": "w026",
+  "f": "ROT",
+  "r": "Zweigelt",
+  "winzer": "Glatzer",
+  "wein": "Rubin Carnuntum",
+  "jg": "2023",
+  "region": "Carnuntum, Göttlesbrunn",
+  "reb": "Zweigelt"
+ },
+ {
+  "id": "w059",
+  "f": "ROT",
+  "r": "Zweigelt",
+  "winzer": "Heinrich (U&K)",
+  "wein": "Roter Affe",
+  "jg": "2017",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Zweigelt"
+ },
+ {
+  "id": "w025",
+  "f": "ROT",
+  "r": "Zweigelt",
+  "winzer": "Kollwentz",
+  "wein": "Leithakalk",
+  "jg": "2022",
+  "region": "Leithaberg, Großhöflein",
+  "reb": "Zweigelt"
+ },
+ {
+  "id": "w024",
+  "f": "ROT",
+  "r": "Zweigelt",
+  "winzer": "Werner Achs",
+  "wein": "Goldberg",
+  "jg": "2024",
+  "region": "Neusiedlersee DAC, Gols",
+  "reb": "Zweigelt"
+ },
+ {
+  "id": "w027",
+  "f": "ROT",
+  "r": "Zweigelt Reserve",
+  "winzer": "Glatzer",
+  "wein": "Dornenvogel",
+  "jg": "2022",
+  "region": "Carnuntum DAC, Göttlesbrunn",
+  "reb": "Zweigelt Reserve"
+ },
+ {
+  "id": "w029",
+  "f": "ROT",
+  "r": "Blaufränkisch",
+  "winzer": "Andreas Gsellmann",
+  "wein": "Blaufränkisch Gols",
+  "jg": "2021",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Blaufränkisch"
+ },
+ {
+  "id": "w031",
+  "f": "ROT",
+  "r": "Blaufränkisch",
+  "winzer": "Moric",
+  "wein": "Reserve",
+  "jg": "2023",
+  "region": "Burgenland",
+  "reb": "Blaufränkisch"
+ },
+ {
+  "id": "w030",
+  "f": "ROT",
+  "r": "Blaufränkisch",
+  "winzer": "Muhr",
+  "wein": "Samt & Seide",
+  "jg": "2022",
+  "region": "Carnuntum, Prellenkirchen",
+  "reb": "Blaufränkisch"
+ },
+ {
+  "id": "w028",
+  "f": "ROT",
+  "r": "Blaufränkisch",
+  "winzer": "Nittnaus",
+  "wein": "Kalk & Schiefer",
+  "jg": "2019",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Blaufränkisch"
+ },
+ {
+  "id": "w033",
+  "f": "ROT",
+  "r": "Pinot Noir",
+  "winzer": "Domaine Confuron-Gindre",
+  "wein": "Bourgogne",
+  "jg": "2022",
+  "region": "Burgund (FR)",
+  "reb": "Pinot Noir"
+ },
+ {
+  "id": "w034",
+  "f": "ROT",
+  "r": "Pinot Noir",
+  "winzer": "Domaine Ecard",
+  "wein": "Savigny-les-Beaune",
+  "jg": "2020",
+  "region": "Burgund (FR)",
+  "reb": "Pinot Noir"
+ },
+ {
+  "id": "w032",
+  "f": "ROT",
+  "r": "Pinot Noir",
+  "winzer": "Gebeshuber",
+  "wein": "Gumpoldskirchen",
+  "jg": "2022",
+  "region": "Thermenregion",
+  "reb": "Pinot Noir"
+ },
+ {
+  "id": "w035",
+  "f": "ROT",
+  "r": "Pinot Noir",
+  "winzer": "Schiefer",
+  "wein": "Pinot Noir",
+  "jg": "2021",
+  "region": "Eisenberg, Königsberg",
+  "reb": "Pinot Noir"
+ },
+ {
+  "id": "w036",
+  "f": "ROT",
+  "r": "Merlot",
+  "winzer": "Dürnberg",
+  "wein": "Elementum",
+  "jg": "2022",
+  "region": "Niederösterreich, Rosenberg",
+  "reb": "Merlot"
+ },
+ {
+  "id": "w041",
+  "f": "ROT",
+  "r": "Sangiovese",
+  "winzer": "Lamole di Lamole",
+  "wein": "Chianti Classico Duelame",
+  "jg": "2024",
+  "region": "Toscana (IT)",
+  "reb": "Sangiovese"
+ },
+ {
+  "id": "w042",
+  "f": "ROT",
+  "r": "Barbera",
+  "winzer": "Ceste",
+  "wein": "Barbera d'Alba Sposabella",
+  "jg": "?",
+  "region": "Piemont (IT)",
+  "reb": "Barbera"
+ },
+ {
+  "id": "w038",
+  "f": "ROT",
+  "r": "Cuvée",
+  "winzer": "Claus Preisinger",
+  "wein": "Heideboden",
+  "jg": "2023",
+  "region": "Gols, Leithagebirge",
+  "reb": "Zw / BF / Merlot"
+ },
+ {
+  "id": "w039",
+  "f": "ROT",
+  "r": "Cuvée",
+  "winzer": "Heinrich",
+  "wein": "Pannobile",
+  "jg": "2020",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Zweigelt / Blaufränkisch"
+ },
+ {
+  "id": "w037",
+  "f": "ROT",
+  "r": "Cuvée",
+  "winzer": "Heinrich (f. U&K)",
+  "wein": "Nelke",
+  "jg": "2017",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Zweigelt / Blaufränkisch"
+ },
+ {
+  "id": "w040",
+  "f": "ROT",
+  "r": "Cuvée",
+  "winzer": "Werner Achs",
+  "wein": "Xur",
+  "jg": "2022",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Zw / BF / St. Laurent"
+ },
+ {
+  "id": "w056",
+  "f": "BUBBLES",
+  "r": "Schaumwein",
+  "winzer": "De Saint Gall",
+  "wein": "Champagne 1er Cru Blanc de Blancs",
+  "jg": "n.v.",
+  "region": "Champagne (FR)",
+  "reb": "Chardonnay"
+ },
+ {
+  "id": "w057",
+  "f": "BUBBLES",
+  "r": "Schaumwein",
+  "winzer": "La Farra",
+  "wein": "Prosecco Rosé Brut",
+  "jg": "n.v.",
+  "region": "Veneto (IT)",
+  "reb": "Glera / Pinot Nero"
+ },
+ {
+  "id": "w058",
+  "f": "BUBBLES",
+  "r": "Schaumwein",
+  "winzer": "Noblier",
+  "wein": "Sparkling alkoholfrei",
+  "jg": "n.v.",
+  "region": "—",
+  "reb": "—"
+ },
+ {
+  "id": "w055",
+  "f": "BUBBLES",
+  "r": "Schaumwein",
+  "winzer": "Seher",
+  "wein": "La Petite Frizzante Rosé",
+  "jg": "?",
+  "region": "Niederösterreich",
+  "reb": "Pinot Noir"
+ },
+ {
+  "id": "w048",
+  "f": "NATURAL",
+  "r": "Traminer",
+  "winzer": "Andreas Gsellmann",
+  "wein": "Traminer",
+  "jg": "2021",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Traminer"
+ },
+ {
+  "id": "w050",
+  "f": "NATURAL",
+  "r": "Roter Traminer",
+  "winzer": "Heinrich",
+  "wein": "Roter Traminer Freyheit",
+  "jg": "2021",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Roter Traminer"
+ },
+ {
+  "id": "w049",
+  "f": "NATURAL",
+  "r": "Muskateller",
+  "winzer": "Heinrich",
+  "wein": "Muskat Freyheit",
+  "jg": "2022",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Muskateller"
+ },
+ {
+  "id": "w052",
+  "f": "NATURAL",
+  "r": "Pinot Noir",
+  "winzer": "Heinrich",
+  "wein": "Pinot Freyheit",
+  "jg": "2022",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Pinot Noir"
+ },
+ {
+  "id": "w054",
+  "f": "NATURAL",
+  "r": "Blaufränkisch",
+  "winzer": "Heinrich",
+  "wein": "Out of the Dark",
+  "jg": "2022",
+  "region": "Leithaberg",
+  "reb": "Blaufränkisch"
+ },
+ {
+  "id": "w047",
+  "f": "NATURAL",
+  "r": "Cuvée",
+  "winzer": "Claus Preisinger",
+  "wein": "Kalk und Kiesel",
+  "jg": "2022",
+  "region": "Gols, Leithagebirge",
+  "reb": "WB / GV / Welschriesling"
+ },
+ {
+  "id": "w051",
+  "f": "NATURAL",
+  "r": "Cuvée",
+  "winzer": "Heinrich",
+  "wein": "Naked White",
+  "jg": "2023",
+  "region": "Neusiedlersee, Gols",
+  "reb": "WB / Chardonnay / GV"
+ },
+ {
+  "id": "w053",
+  "f": "NATURAL",
+  "r": "Cuvée",
+  "winzer": "Heinrich",
+  "wein": "Naked Red",
+  "jg": "n.v.",
+  "region": "Burgenland",
+  "reb": "Zw / BF / St. Laurent"
+ },
+ {
+  "id": "serena",
+  "f": "BUBBLES",
+  "r": "Schaumwein",
+  "winzer": "Serena",
+  "wein": "Piu Frizzante",
+  "jg": "n.v.",
+  "region": "Veneto (IT)",
+  "reb": "Glera"
+ }
+];
+const PLAN  = {"soll": {"w001": 3, "w003": 3, "w002": 3, "w004": 3, "w007": 2, "w005": 2, "w006": 2, "w008": 3, "w009": 3, "w010": 3, "w011": 3, "w013": 3, "w014": 3, "w016": 3, "w015": 3, "w017": 3, "w018": 3, "w060": 2, "w019": 3, "w020": 3, "w062": 3, "w063": 3, "w023": 2, "w061": 2, "w022": 2, "w021": 2, "w044": 2, "w045": 2, "w043": 2, "w046": 2, "w026": 3, "w059": 3, "w025": 3, "w024": 3, "w027": 3, "w029": 3, "w031": 3, "w030": 3, "w028": 3, "w033": 3, "w034": 3, "w032": 3, "w035": 3, "w036": 3, "w041": 3, "w042": 3, "w038": 3, "w039": 3, "w037": 3, "w040": 3, "w048": 2, "w050": 2, "w049": 2, "w052": 3, "w054": 3, "w047": 2, "w051": 3, "w053": 3}, "schrank": {"w001": 3, "w003": 3, "w002": 3, "w004": 3, "w007": 3, "w005": 3, "w006": 3, "w008": 3, "w009": 3, "w010": 3, "w011": 3, "w013": 3, "w014": 3, "w016": 4, "w015": 4, "w017": 4, "w018": 4, "w060": 4, "w019": 4, "w020": 4, "w062": 4, "w063": 4, "w023": 4, "w061": 4, "w022": 4, "w021": 4, "w044": 4, "w045": 4, "w043": 4, "w046": 4, "w026": 1, "w059": 1, "w025": 1, "w024": 1, "w027": 1, "w029": 1, "w031": 1, "w030": 1, "w028": 1, "w033": 2, "w034": 2, "w032": 2, "w035": 2, "w036": 1, "w041": 2, "w042": 2, "w038": 2, "w039": 2, "w037": 2, "w040": 2, "w048": 4, "w050": 4, "w049": 4, "w052": 2, "w054": 2, "w047": 4, "w051": 4, "w053": 2}, "barrot": [{"id": "w026", "soll": 3}, {"id": "w029", "soll": 3}, {"id": "w037", "soll": 3}], "bar": [{"id": "w001", "soll": 3}, {"id": "w008", "soll": 3}, {"id": "w011", "soll": 3}, {"id": "w005", "soll": 3}, {"id": "w043", "soll": 3}, {"id": "serena", "soll": 4}, {"id": "w055", "soll": 2}, {"id": "w056", "soll": 1}], "backup": [{"id": "serena", "soll": 2}, {"id": "w055", "soll": 2}, {"id": "w056", "soll": 2}]};
+const KEY="hh_entnahme_v5";
+const byId=id=>WINES.find(w=>w.id===id);
+const $=s=>document.querySelector(s);
+const SCHRANK={1:{t:"Schrank 1 — Rotwein kräftig",s:"Zweigelt · Blaufränkisch · Merlot"},
+               2:{t:"Schrank 2 — Rotwein fein & Cuvées",s:"Pinot Noir · Italien · Cuvées · Natur-Rot"},
+               3:{t:"Schrank 3 — Weisswein klassisch",s:"Grüner Veltliner · Riesling · Sauvignon Blanc · Weissburgunder · Chardonnay"},
+               4:{t:"Schrank 4 — Weisswein übrige, Rosé, Natur",s:"Grauburgunder · Roter Veltliner · Muskateller · Gemischter Satz · Cuvées · Rosé · Natur-Weiss"}};
+
+const HOWTO=[
+ {t:"Konsumliste vom Vortag eintragen",
+  p:"Die Liste aus der Kassa durchgehen. Für jede verkaufte Flasche den Wein einmal antippen — zwei Flaschen, zweimal antippen.",
+  tip:"Zu oft getippt? Unten aufklappen und dort korrigieren."},
+ {t:"Restaurantkühlschränke prüfen",
+  p:"Vier Schränke der Reihe nach durchgehen. Von jedem Wein sollen 3 Flaschen stehen — je 2 bei Riesling, Rosé, Cuvée Weiss und Natur-Weiss.",
+  tip:"Die Punkte zeigen das Soll. Alles da: nichts tun. Pro fehlender Flasche einmal antippen."},
+ {t:"Bar prüfen",
+  p:"Zuerst die Rotweine — die stehen nicht im Kühlschrank. Danach der Barkühlschrank in der angegebenen Reihenfolge, zuletzt das Backup dahinter.",
+  tip:"Wie beim Restaurant: alles da, nichts tun. Pro fehlender Flasche einmal antippen."},
+ {t:"Aus dem Keller holen",
+  p:"Diese Flaschen fehlen. Nach Kellerbereich sortiert. Was geholt ist, abhaken.",
+  tip:"Danach auffüllen: erst Restaurant, dann Bar."},
+ {t:"Protokoll abschicken",
+  p:"Konsum und Restaurant-Nachfüllung im Vergleich. Namen eintragen, dann exportieren und Casimir schicken.",
+  tip:"Markierte Zeilen sind kein Fehler, nur ein Hinweis."}
+];
+
+let S=load(), step=0, footOpen=false;
+
+function yest(){const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().slice(0,10);}
+function fresh(){return{tag:yest(),konsum:{},rest:{},barrot:{},bar:{},backup:{},holt:{},name:"",notiz:"",ver:5};}
+function load(){try{const r=localStorage.getItem(KEY);if(r){const s=JSON.parse(r);
+  return Object.assign(fresh(),s,{konsum:s.konsum||{},rest:s.rest||{},barrot:s.barrot||{},
+    bar:s.bar||{},backup:s.backup||{},holt:s.holt||{}});}}catch(e){}return fresh();}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){toast("Speicher voll");}}
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");
+  clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("on"),1900);}
+function deTag(iso){const d=new Date(iso+"T12:00");
+  return d.toLocaleDateString("de-AT",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"});}
+const g=(o,id)=>+(o[id]||0);
+const sum=o=>Object.values(o).reduce((a,b)=>a+b,0);
+const kTot=()=>sum(S.konsum);
+const barTot=()=>sum(S.barrot)+sum(S.bar)+sum(S.backup);
+const nTot=()=>sum(S.rest)+barTot();
+
+/* Protokoll: nur Konsum ↔ Restaurant */
+function proto(){
+  return WINES.map(w=>{const k=g(S.konsum,w.id),r=g(S.rest,w.id);return{w,k,r,d:r-k};})
+    .filter(x=>x.k||x.r);
+}
+/* Holliste: alles Fehlende, nach Keller sortiert */
+function hol(){
+  const acc={};
+  const addUp=(o,tag)=>Object.keys(o).forEach(id=>{
+    if(!acc[id])acc[id]={w:byId(id),n:0,q:[]};
+    acc[id].n+=o[id];acc[id].q.push(`${o[id]} ${tag}`);});
+  addUp(S.rest,"Restaurant");addUp(S.barrot,"Bar");
+  addUp(S.bar,"Bar");addUp(S.backup,"Backup");
+  const arr=Object.values(acc).filter(x=>x.w);
+  const ord=["WEISS","ROSÉ","ROT","BUBBLES","NATURAL"];
+  arr.sort((a,b)=>ord.indexOf(a.w.f)-ord.indexOf(b.w.f)||a.w.r.localeCompare(b.w.r)||a.w.winzer.localeCompare(b.w.winzer));
+  return arr;
+}
+function tapUp(id){S.konsum[id]=g(S.konsum,id)+1;save();render();}
+function tapDot(bucket,id,soll){const c=g(S[bucket],id),n=c+1>soll?0:c+1;
+  if(n)S[bucket][id]=n;else delete S[bucket][id];save();render();}
+
+/* ── Render ── */
+function render(){
+  $("#dSel").value=S.tag;
+  const h=HOWTO[step];
+  $("#howto").innerHTML=`<b>${h.t}</b><p>${h.p}</p><p class="tip">${h.tip}</p>`;
+  document.querySelectorAll(".st").forEach(b=>{const i=+b.dataset.s;
+    b.setAttribute("aria-selected",i===step);b.classList.toggle("done",i<step);});
+  $("#tools").style.display=(step===0||step===1)?"block":"none";
+  $("#bBack").style.display=step===0?"none":"";
+  $("#bNext").textContent=step===4?"CSV exportieren":(step===3?"Aufgefüllt — weiter":"Weiter");
+  const m=$("#main");m.innerHTML="";
+  [renderKonsum,renderRest,renderBar,renderKeller,renderFertig][step](m);
+  renderFoot();
+}
+function add(m,cls,txt,sub){const d=document.createElement("div");d.className=cls;
+  d.innerHTML=txt+(sub?`<small>${sub}</small>`:"");m.appendChild(d);}
+
+function renderKonsum(m){
+  const q=$("#q").value.trim().toLowerCase();
+  const list=WINES.filter(w=>!q||(w.winzer+" "+w.wein+" "+w.reb+" "+w.region+" "+w.jg).toLowerCase().includes(q));
+  if(!list.length)return m.innerHTML='<p class="empty">Kein Wein gefunden.</p>';
+  let lf=null,lr=null;
+  list.forEach(w=>{
+    if(w.f!==lf){lf=w.f;lr=null;add(m,"farbe",w.f);}
+    if(w.r!==lr){lr=w.r;add(m,"reb",w.r);}
+    const v=g(S.konsum,w.id);
+    const b=document.createElement("button");b.className="w";
+    b.innerHTML=`<span class="tx"><span class="nm">${w.winzer} · ${w.wein}</span>
+      <span class="mt">${w.jg} · ${w.region}</span></span><span class="cnt${v?" on":""}">${v||"0"}</span>`;
+    b.setAttribute("aria-label",`${w.wein}, ${v} erfasst, antippen für eine weitere`);
+    b.onclick=()=>tapUp(w.id);m.appendChild(b);
+  });
+}
+function renderRest(m){
+  const q=$("#q").value.trim().toLowerCase();
+  const all=WINES.filter(w=>PLAN.soll[w.id]!=null)
+    .filter(w=>!q||(w.winzer+" "+w.wein+" "+w.reb+" "+w.region+" "+w.jg).toLowerCase().includes(q));
+  if(!all.length)return m.innerHTML='<p class="empty">Kein Wein gefunden.</p>';
+  [1,2,3,4].forEach(n=>{
+    const list=all.filter(w=>PLAN.schrank[w.id]===n);
+    if(!list.length)return;
+    add(m,"hd1",SCHRANK[n].t,SCHRANK[n].s);
+    let lr=null;
+    list.forEach(w=>{
+      if(w.r!==lr){lr=w.r;add(m,"reb",w.r);}
+      m.appendChild(dotRow(w,"rest",PLAN.soll[w.id]));
+    });
+  });
+}
+function renderBar(m){
+  add(m,"hd1","Bar — Rotweine","Nicht im Kühlschrank");
+  PLAN.barrot.forEach((p,i)=>m.appendChild(dotRow(byId(p.id),"barrot",p.soll,i+1)));
+  add(m,"hd1","Barkühlschrank","In dieser Reihenfolge");
+  PLAN.bar.forEach((p,i)=>m.appendChild(dotRow(byId(p.id),"bar",p.soll,i+1)));
+  add(m,"hd1","Backup","Reserve dahinter");
+  PLAN.backup.forEach(p=>m.appendChild(dotRow(byId(p.id),"backup",p.soll)));
+}
+function dotRow(w,bucket,soll,pos){
+  const fehlt=g(S[bucket],w.id);
+  const b=document.createElement("button");b.className="w"+(fehlt?" miss":" done");
+  let dots="";for(let i=0;i<soll;i++)dots+=`<span class="dot${i<fehlt?" off":""}"></span>`;
+  const info=fehlt?`<span class="miss-n">−${fehlt}</span>`:`<span class="ok-n">voll</span>`;
+  b.innerHTML=`${pos?`<span class="pos">${pos}</span>`:""}
+    <span class="tx"><span class="nm">${w.winzer} · ${w.wein}</span>
+    <span class="mt">Soll ${soll} · ${w.jg}</span></span>
+    <span class="dots">${dots}${info}</span>`;
+  b.setAttribute("aria-label",`${w.wein}, Soll ${soll}, ${fehlt} fehlen`);
+  b.onclick=()=>tapDot(bucket,w.id,soll);return b;
+}
+function renderKeller(m){
+  const items=hol();
+  if(!items.length)return m.innerHTML='<p class="empty">Nichts zu holen — alle Kühlschränke sind voll.</p>';
+  let lf=null;
+  items.forEach(it=>{
+    if(it.w.f!==lf){lf=it.w.f;add(m,"farbe",it.w.f);}
+    const on=!!S.holt[it.w.id];
+    const b=document.createElement("button");b.className="w"+(on?" tick":"");
+    b.innerHTML=`<span class="box2${on?" on":""}">${on?"✓":""}</span>
+      <span class="tx"><span class="nm">${it.w.winzer} · ${it.w.wein}</span>
+      <span class="mt">${it.q.join(" · ")} · ${it.w.jg}</span></span>
+      <span class="qty">${it.n}</span>`;
+    b.setAttribute("aria-label",`${it.n} × ${it.w.wein}${on?", geholt":""}`);
+    b.onclick=()=>{if(on)delete S.holt[it.w.id];else S.holt[it.w.id]=1;save();render();};
+    m.appendChild(b);
+  });
+}
+function renderFoot(){
+  const f=$("#foot");let big,lb,items=[];
+  if(step===0){
+    big=kTot();
+    items=Object.keys(S.konsum).map(id=>({id,v:S.konsum[id],t:`${S.konsum[id]} verkauft`,b:"konsum"}));
+    lb=`<b>Flaschen verkauft</b>${items.length} Weine · antippen zum Korrigieren`;
+  }else if(step===1){
+    big=sum(S.rest);
+    items=Object.keys(S.rest).map(id=>({id,v:S.rest[id],t:`${S.rest[id]} nachfüllen`,b:"rest"}));
+    lb=`<b>Flaschen nachfüllen</b>Restaurant · ${Object.keys(PLAN.soll).length} Positionen`;
+  }else if(step===2){
+    big=barTot();
+    ["barrot","bar","backup"].forEach(bk=>Object.keys(S[bk]).forEach(id=>
+      items.push({id,v:S[bk][id],t:`${S[bk][id]} nachfüllen${bk==="backup"?" · Backup":""}`,b:bk})));
+    lb=`<b>Flaschen nachfüllen</b>Bar · ${sum(S.barrot)} Rotwein, ${sum(S.bar)} Kühlschrank, ${sum(S.backup)} Backup`;
+  }else if(step===3){
+    const it=hol(),done=it.filter(x=>S.holt[x.w.id]).length;
+    big=it.reduce((a,x)=>a+x.n,0);
+    lb=`<b>Flaschen aus dem Keller</b>${done} von ${it.length} Positionen geholt`;
+    f.classList.remove("open");footOpen=false;$("#fList").innerHTML="";
+    $("#fBig").textContent=big;$("#fLb").innerHTML=lb;return;
+  }else{
+    const fl=proto().filter(x=>x.d!==0).length;
+    big=nTot();
+    lb=`<b>Flaschen aus dem Keller</b>${fl?`${fl} Abweichung${fl>1?"en":""} im Protokoll`:"Protokoll ohne Abweichung"}`;
+    f.classList.remove("open");footOpen=false;$("#fList").innerHTML="";
+    $("#fBig").textContent=big;$("#fLb").innerHTML=lb;return;
+  }
+  $("#fBig").textContent=big;$("#fLb").innerHTML=lb;
+  const L=$("#fList");
+  if(!items.length){L.innerHTML='<div class="fempty">Noch nichts erfasst.</div>';return;}
+  L.innerHTML="";
+  items.forEach(it=>{const w=byId(it.id);
+    const d=document.createElement("div");d.className="fi";
+    d.innerHTML=`<span class="t">${w.winzer} · ${w.wein}<small>${it.t}</small></span><span class="v">${it.v}</span>`;
+    const x=document.createElement("button");x.className="x";x.textContent="×";
+    x.setAttribute("aria-label",`${w.wein} zurücksetzen`);
+    x.onclick=()=>{delete S[it.b][it.id];save();render();};
+    d.append(x);L.appendChild(d);});
+}
+function renderFertig(m){
+  const rows=proto(),flag=rows.filter(x=>x.d!==0);
+  const box=document.createElement("div");box.className="rev";
+  if(!rows.length){box.innerHTML='<h2>Protokoll</h2><p class="empty">Noch nichts erfasst.</p>';
+    m.appendChild(box);return;}
+  let h=`<h2>Protokoll · ${deTag(S.tag)}</h2>
+    <table><thead><tr><th>Wein</th><th class="r">Konsum</th><th class="r">Nachgefüllt</th><th class="r">Diff</th></tr></thead><tbody>`;
+  rows.forEach(x=>{h+=`<tr class="${x.d!==0?"flag":""}">
+    <td><b>${x.w.winzer}</b><br>${x.w.wein}</td>
+    <td class="r">${x.k||"–"}</td><td class="r">${x.r||"–"}</td>
+    <td class="r">${x.d===0?"–":`<b style="color:var(--warn)">${x.d>0?"+":""}${x.d}</b>`}</td></tr>`;});
+  h+=`</tbody></table><div class="sum">
+    <div><span>Konsum</span><b>${kTot()}</b></div>
+    <div><span>Restaurant</span><b>${sum(S.rest)}</b></div>
+    <div><span>Bar</span><b>${barTot()}</b></div>
+    <div><span>Keller gesamt</span><b>${nTot()}</b></div></div>`;
+  h+= flag.length
+    ? `<div class="box"><b>${flag.length} Position${flag.length>1?"en weichen":" weicht"} ab.</b><br>
+       Konsum und Restaurant-Nachfüllung stimmen dort nicht überein.</div>`
+    : `<div class="box good"><b>Alles stimmig.</b><br>Konsum und Nachfüllung passen zusammen.</div>`;
+  h+=`<label class="f"><span>Wer hat erfasst</span><input id="fName" value="${(S.name||"").replace(/"/g,"&quot;")}" placeholder="Name"></label>
+      <label class="f"><span>Notiz (optional)</span><input id="fNotiz" value="${(S.notiz||"").replace(/"/g,"&quot;")}" placeholder="z. B. Bruch, Verkostung"></label>
+      <div class="arow"><button id="bTxt">Text kopieren</button><button class="del" id="bReset">Neuer Tag</button></div>`;
+  box.innerHTML=h;m.appendChild(box);
+  $("#fName").oninput=e=>{S.name=e.target.value;save();};
+  $("#fNotiz").oninput=e=>{S.notiz=e.target.value;save();};
+  $("#bTxt").onclick=expTxt;
+  $("#bReset").onclick=()=>ask("Neuer Tag","Das Protokoll wird gelöscht. Schon exportiert?",
+    ()=>{S=fresh();save();step=0;render();window.scrollTo(0,0);toast("Neu gestartet");});
+}
+
+/* ── Export ── */
+function expCsv(){
+  const rows=proto();if(!rows.length)return toast("Nichts zu exportieren");
+  const e=s=>'"'+String(s??"").replace(/"/g,'""')+'"';
+  let L=[["Entnahmeprotokoll Haus Hirt"].map(e).join(";")];
+  L.push(["Datum",S.tag,"Erfasst von",S.name||"—","Notiz",S.notiz||"—"].map(e).join(";"),"");
+  L.push(["Farbe","Rebsorte","Winzer","Wein","Jahrgang","Konsum","Nachgefüllt Restaurant","Differenz","Status"].map(e).join(";"));
+  rows.forEach(x=>L.push([x.w.f,x.w.r,x.w.winzer,x.w.wein,x.w.jg,x.k,x.r,x.d,x.d===0?"ok":"ABWEICHUNG"].map(e).join(";")));
+  L.push("",["SUMME","","","","",kTot(),sum(S.rest),sum(S.rest)-kTot(),""].map(e).join(";"));
+  L.push("",["Aus dem Keller geholt"].map(e).join(";"));
+  L.push(["Farbe","Winzer","Wein","Jahrgang","Anzahl","Wohin"].map(e).join(";"));
+  hol().forEach(x=>L.push([x.w.f,x.w.winzer,x.w.wein,x.w.jg,x.n,x.q.join(" / ")].map(e).join(";")));
+  L.push(["SUMME","","","",nTot(),""].map(e).join(";"));
+  dl(`Entnahme_${S.tag}.csv`,"\ufeff"+L.join("\r\n"),"text/csv");
+  toast("CSV heruntergeladen — an Casimir schicken");
+}
+function txt(){
+  const rows=proto();
+  let o=`ENTNAHMEPROTOKOLL HAUS HIRT\n${deTag(S.tag)}\nErfasst von: ${S.name||"—"}\n`;
+  if(S.notiz)o+=`Notiz: ${S.notiz}\n`;
+  o+=`\nKonsum ${kTot()} · Restaurant ${sum(S.rest)} · Bar ${barTot()} · Keller ${nTot()}\n\nABGLEICH KONSUM / RESTAURANT\n`;
+  rows.forEach(x=>o+=`${x.d!==0?"! ":"  "}${x.w.winzer} ${x.w.wein} | Kons ${x.k} · Nachgef ${x.r}${x.d!==0?` [${x.d>0?"+":""}${x.d}]`:""}\n`);
+  o+=`\nAUS DEM KELLER\n`;
+  let lf=null;
+  hol().forEach(x=>{if(x.w.f!==lf){lf=x.w.f;o+=`\n— ${x.w.f} —\n`;}
+    o+=`  ${x.n} × ${x.w.winzer} ${x.w.wein}  (${x.q.join(", ")})\n`;});
+  return o;
+}
+async function expTxt(){const t=txt();
+  try{await navigator.clipboard.writeText(t);toast("Kopiert");}
+  catch(e){dl(`Entnahme_${S.tag}.txt`,t,"text/plain");toast("Als Datei geladen");}}
+function dl(n,t,ty){const b=new Blob([t],{type:ty+";charset=utf-8"});const a=document.createElement("a");
+  a.href=URL.createObjectURL(b);a.download=n;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+function ask(t,p,fn){$("#ovT").textContent=t;$("#ovP").textContent=p;$("#ov").classList.add("on");
+  $("#ovOk").onclick=()=>{$("#ov").classList.remove("on");fn();};}
+$("#ovNo").onclick=()=>$("#ov").classList.remove("on");
+
+function go(s){step=s;render();window.scrollTo(0,0);}
+document.querySelectorAll(".st").forEach(b=>b.onclick=()=>go(+b.dataset.s));
+$("#bBack").onclick=()=>{if(step>0)go(step-1);};
+$("#bNext").onclick=()=>{
+  if(step<4)return go(step+1);
+  if(!proto().length)return toast("Noch nichts erfasst");
+  if(!S.name.trim()){toast("Bitte Namen eintragen");$("#fName")?.focus();return;}
+  expCsv();
+};
+$("#fh").onclick=()=>{footOpen=!footOpen;$("#foot").classList.toggle("open",footOpen);};
+$("#q").oninput=render;
+$("#dSel").onchange=e=>{S.tag=e.target.value||yest();save();render();};
+render();
+</script>
+</body>
+</html>
