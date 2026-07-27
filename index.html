@@ -4,175 +4,309 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#222222">
-<title>Entnahme — Haus Hirt</title>
+<meta name="theme-color" content="#1C1C1E">
+<title>Weinkeller — Haus Hirt</title>
 <style>
-:root{--ink:#222;--grey:#666;--light:#999;--line:#DDD;--bg:#FFF;--soft:#F5F5F5;
-  --gold:#8A6D3B;--warn:#B4471F;--ok:#3E7A3E;--foot:150px}
+:root{
+  --ink:#1C1C1E;--grey:#6A6A70;--light:#9C9CA2;--line:#E6E4DE;--line2:#D8D5CD;
+  --bg:#FBFAF7;--card:#FFF;--soft:#F3F1EB;--soft2:#ECE9E1;
+  --gold:#9A7B44;--warn:#B4471F;--warnbg:#FBEDE6;--ok:#3E7A3E;--okbg:#EFF5EE;
+  --blue:#3A5266;--bluebg:#EDF2F6;
+  --r:10px;--foot:132px;--rail:34px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);
-  font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-button,input{font:inherit;color:inherit}
+  font:16px/1.42 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+button,input,select{font:inherit;color:inherit}
+h1,h2{font-weight:600}
 
-header{background:var(--ink);color:#fff;padding:10px 14px 0;position:sticky;top:0;z-index:40}
+/* Menü */
+.menu{padding:24px 18px 44px;max-width:620px;margin:0 auto}
+.menu h1{font-size:24px;margin:0 0 2px;letter-spacing:-.01em}
+.menu .sub{color:var(--grey);font-size:14px;margin:0 0 24px}
+.mgrp{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--light);
+  margin:26px 0 12px;display:flex;align-items:center;gap:10px}
+.mgrp:first-of-type{margin-top:4px}
+.mgrp::after{content:"";flex:1;height:1px;background:var(--line)}
+.mi{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);
+  border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px;cursor:pointer;
+  transition:transform .06s}
+.mi:active{transform:scale(.99);background:var(--soft)}
+.mi .ic{width:44px;height:44px;border-radius:11px;background:var(--soft);flex-shrink:0;
+  display:grid;place-items:center;font-size:22px;color:var(--ink)}
+.mi .txt{flex:1;min-width:0}
+.mi b{display:block;font-size:17px;margin-bottom:2px;font-weight:600}
+.mi span{display:block;font-size:13.5px;color:var(--grey);line-height:1.35}
+.mi .when{display:inline-flex;align-items:center;gap:5px;margin-top:7px;font-size:12px;color:var(--warn);font-weight:600}
+.mi.run{border-color:#EAD5C8;background:#FDF9F6}
+.mi.run .ic{background:var(--warnbg);color:var(--warn)}
+.mi .go{color:var(--light);font-size:22px;flex-shrink:0}
+
+/* Kopf */
+header{background:var(--ink);color:#fff;padding:11px 16px 0;position:sticky;top:0;z-index:40}
 .hd{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.hd h1{margin:0;font-size:17px;font-weight:600}
-.hd .sub{font-size:12px;color:#aaa}
-#dSel{background:#333;border:1px solid #555;color:#fff;padding:6px 8px;border-radius:4px;font-size:14px}
-.steps{display:flex;margin-top:10px;gap:2px;overflow-x:auto}
-.st{flex:1 0 auto;background:#333;border:0;color:#aaa;padding:10px 9px;font-size:13px;cursor:pointer;
-  border-radius:4px 4px 0 0;font-weight:500;white-space:nowrap}
-.st[aria-selected="true"]{background:#fff;color:var(--ink);font-weight:700}
+.hd h1{margin:0;font-size:16px;font-weight:600}
+.hd .subh{font-size:11.5px;color:#9A9AA0;margin-top:1px}
+.hdr-r{display:flex;gap:7px;align-items:center}
+.home{background:rgba(255,255,255,.12);border:0;color:#fff;padding:8px 12px;border-radius:8px;font-size:13px;cursor:pointer}
+#dSel{background:rgba(255,255,255,.12);border:0;color:#fff;padding:7px 9px;border-radius:8px;font-size:13px}
+.steps{display:flex;margin-top:11px;gap:3px;overflow-x:auto;scrollbar-width:none;padding-bottom:0}
+.steps::-webkit-scrollbar{display:none}
+.st{flex:1 0 auto;background:rgba(255,255,255,.08);border:0;color:#9A9AA0;padding:10px 13px;font-size:13px;
+  cursor:pointer;border-radius:8px 8px 0 0;font-weight:500;white-space:nowrap}
+.st[aria-selected="true"]{background:var(--bg);color:var(--ink);font-weight:600}
 .st.done{color:#8FBF8F}
 
-.howto{background:var(--soft);border-bottom:1px solid var(--line);padding:12px 14px}
-.howto b{display:block;font-size:15px;margin-bottom:3px}
+/* Anleitung */
+.howto{background:var(--soft);border-bottom:1px solid var(--line);padding:13px 16px}
+.howto b{display:block;font-size:15.5px;margin-bottom:3px;font-weight:600}
 .howto p{margin:0;font-size:14px;color:var(--grey);line-height:1.45}
 .howto .tip{margin-top:7px;font-size:13px;color:var(--gold)}
 
-.tools{padding:9px 14px;position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
-#q{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:4px;font-size:16px;background:var(--bg)}
+.tools{padding:10px 16px;position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
+#q{width:100%;padding:12px 13px;border:1px solid var(--line2);border-radius:9px;font-size:16px;background:var(--card)}
 #q:focus{outline:2px solid var(--ink);outline-offset:-1px}
 
-main{padding:0 14px calc(var(--foot) + 20px)}
+/* großer Anleitungsbanner (Konsum) */
+.leadbig{background:var(--bluebg);border:1px solid #D3E0EA;border-radius:var(--r);
+  padding:14px 15px;margin:14px 16px 4px}
+.leadbig b{display:block;font-size:16px;color:#1F3A52;margin-bottom:2px;font-weight:600}
+.leadbig span{font-size:13.5px;color:#42566A}
 
-.hd1{font-size:14px;font-weight:700;margin:24px 0 0;padding:9px 0 7px;border-bottom:3px solid var(--ink)}
-.hd1 small{display:block;font-size:12px;font-weight:400;color:var(--grey);margin-top:2px}
-.farbe{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  margin:18px 0 0;padding:6px 0 5px;border-bottom:2px solid var(--ink)}
-.reb{font-size:12px;color:var(--grey);margin:13px 0 0;font-weight:600}
-.note{font-size:13px;color:var(--grey);margin:5px 0 0;font-style:italic}
+main{padding:0 16px calc(var(--foot) + 20px);position:relative}
+main.hasrail{padding-right:calc(var(--rail) + 20px)}
 
+/* Sprungleiste rechts */
+.rail{position:fixed;right:6px;top:50%;transform:translateY(-50%);z-index:35;
+  display:flex;flex-direction:column;gap:5px}
+.rail button{width:var(--rail);height:var(--rail);border-radius:8px;border:1px solid var(--line2);
+  background:var(--card);color:var(--grey);font-size:11px;font-weight:700;cursor:pointer;
+  box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.rail button:active{background:var(--ink);color:#fff}
+.rail button.on{border-color:var(--ink);color:var(--ink)}
+
+/* Segment-/Rebüberschriften */
+.hd1w{margin:26px 0 0}
+.hd1{font-size:13.5px;font-weight:700;padding:0 0 8px;border-bottom:2px solid var(--ink);
+  display:flex;justify-content:space-between;align-items:baseline;gap:10px;letter-spacing:.02em}
+.hd1 .cnt2{font-size:12px;font-weight:600;color:var(--grey)}
+.hd1 .cnt2.full{color:var(--ok)}
+.hd1sub{font-size:12px;color:var(--grey);margin:3px 0 8px}
+.prog{height:5px;background:var(--line);border-radius:3px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--ink);transition:width .2s}
+.prog i.full{background:var(--ok)}
+.fullbtn{width:100%;margin-top:9px;padding:11px;border:1px solid var(--line2);background:var(--card);
+  border-radius:9px;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer}
+.fullbtn:active{background:var(--soft)}
+.fullbtn.done{border-color:var(--ok);color:var(--ok);background:var(--okbg)}
+.reb{font-size:12px;color:var(--grey);margin:15px 0 2px;font-weight:600;letter-spacing:.02em}
+.grpanchor{scroll-margin-top:120px}
+
+/* Zeile */
 .w{width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);
-  padding:12px 0;display:flex;align-items:center;gap:11px;cursor:pointer}
+  padding:12px 2px;display:flex;align-items:center;gap:11px;cursor:pointer}
 .w:active{background:var(--soft)}
 .w .tx{flex:1;min-width:0}
-.nm{font-size:16px;font-weight:600;line-height:1.25}
-.mt{font-size:13px;color:var(--grey);margin-top:1px}
-.w.done{opacity:.5}
-.w.miss{background:#FDF3EF}
+.nm{font-size:16px;line-height:1.25}
+.nm b{font-weight:600}
+.mt{font-size:12.5px;color:var(--grey);margin-top:1px}
+.w.miss{background:var(--warnbg);border-radius:8px;border-bottom-color:transparent;padding-left:9px;padding-right:9px;margin:0 -7px}
 .w.miss .nm{color:var(--warn)}
-.w.tick{opacity:.45}
+.w.seen{opacity:.5}
+.w.tick{opacity:.5}
 .w.tick .nm{text-decoration:line-through}
+.w.zebra{background:var(--soft)}
 
-.cnt{min-width:44px;height:44px;border:2px solid var(--line);border-radius:4px;
-  display:grid;place-items:center;font-size:19px;font-weight:700;color:var(--light);flex-shrink:0}
+/* Konsum-Zähler mit Minus */
+.knum{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.kminus{width:34px;height:40px;border:1px solid var(--line2);border-radius:8px;background:var(--card);
+  font-size:20px;color:var(--grey);cursor:pointer;line-height:1}
+.kminus:active{background:var(--ink);color:#fff}
+.kminus.hide{visibility:hidden}
+.cnt{min-width:46px;height:44px;border:2px solid var(--line2);border-radius:9px;
+  display:grid;place-items:center;font-size:19px;font-weight:700;color:var(--light)}
 .cnt.on{border-color:var(--ink);color:var(--ink);background:var(--soft)}
 
-.dots{display:flex;gap:5px;align-items:center;flex-shrink:0;padding:6px 2px}
-.dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--ink);background:var(--ink)}
-.dot.off{background:#fff;border-color:var(--line)}
-.miss-n{font-size:13px;font-weight:700;color:var(--warn);margin-left:2px;min-width:26px;text-align:right}
-.ok-n{font-size:13px;color:var(--ok);margin-left:2px;min-width:26px;text-align:right;font-weight:600}
-.pos{width:22px;font-size:13px;color:var(--light);font-weight:700;flex-shrink:0;text-align:right}
-
-.box2{width:30px;height:30px;border:2px solid var(--ink);border-radius:4px;flex-shrink:0;
-  display:grid;place-items:center;font-size:18px;font-weight:700;color:#fff;background:#fff}
+/* Punkte + Häkchen */
+.dots{display:flex;gap:5px;align-items:center;flex-shrink:0}
+.dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--ink);background:var(--ink)}
+.dot.off{background:var(--card);border-color:var(--line2)}
+.miss-n{font-size:13px;font-weight:700;color:var(--warn);margin-left:3px;min-width:22px;text-align:right}
+.chkbox{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0}
+.chk{width:38px;height:38px;border:2px solid var(--line2);border-radius:9px;
+  display:grid;place-items:center;font-size:19px;font-weight:700;color:#fff;background:var(--card);cursor:pointer}
+.chk.on{background:var(--ok);border-color:var(--ok)}
+.chk.warn{background:var(--warn);border-color:var(--warn)}
+.chk-lbl{font-size:10px;font-weight:600;color:var(--light);letter-spacing:.03em}
+.chk.on ~ .chk-lbl,.chkbox .chk.on+.chk-lbl{color:var(--ok)}
+.pos{width:20px;font-size:13px;color:var(--light);font-weight:700;flex-shrink:0;text-align:right}
+.box2{width:34px;height:34px;border:2px solid var(--ink);border-radius:8px;flex-shrink:0;
+  display:grid;place-items:center;font-size:17px;font-weight:700;color:#fff;background:var(--card)}
 .box2.on{background:var(--ink)}
-.qty{font-size:20px;font-weight:700;min-width:34px;text-align:right;flex-shrink:0}
+.qty{font-size:20px;font-weight:700;min-width:32px;text-align:right;flex-shrink:0}
 
-.empty{padding:36px 0;text-align:center;color:var(--light)}
+/* Zählfelder */
+.zrow{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.zf{width:48px;height:44px;text-align:center;border:2px solid var(--line2);border-radius:9px;
+  font-size:17px;font-weight:700;background:var(--card)}
+.zf:focus{outline:2px solid var(--ink);outline-offset:-2px;border-color:var(--ink)}
+.zf.on{border-color:var(--ink);background:var(--soft)}
+.zl{font-size:10px;color:var(--light);font-weight:600}
+.zsum{font-size:17px;font-weight:700;min-width:30px;text-align:right}
+.zsum.on{color:var(--ok)}
+.z5{width:36px;height:44px;border:2px solid var(--line2);border-radius:9px;background:var(--card);
+  font-size:15px;font-weight:700;color:var(--grey);cursor:pointer}
+.z5:active{background:var(--ink);color:#fff}
 
-.foot{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--ink);color:#fff;
-  padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -3px 12px rgba(0,0,0,.2)}
-.fh{display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer}
-.fh .big{font-size:24px;font-weight:700;line-height:1;min-width:2ch}
-.fh .lb{flex:1;font-size:13px;color:#bbb;line-height:1.3}
-.fh .lb b{color:#fff;display:block;font-size:14px}
-.fh .car{color:#bbb;font-size:12px;transition:transform .18s}
-.foot.open .car{transform:rotate(180deg)}
-.flist{max-height:0;overflow-y:auto;transition:max-height .2s}
-.foot.open .flist{max-height:44vh;border-top:1px solid #444}
-.fi{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid #383838}
-.fi .t{flex:1;min-width:0;font-size:14px}
-.fi .t small{display:block;color:#999;font-size:12px}
-.fi .v{font-size:16px;font-weight:700;min-width:2ch;text-align:right}
-.fi .x{background:none;border:1px solid #555;color:#bbb;width:30px;height:30px;border-radius:4px;
-  font-size:15px;cursor:pointer;flex-shrink:0}
-.fempty{padding:16px 14px;color:#999;font-size:14px}
-.fb{display:flex;gap:8px;padding:9px 14px 11px}
-.b{flex:1;background:none;border:1px solid #777;color:#fff;padding:13px 8px;border-radius:4px;
-  font-size:14px;font-weight:600;cursor:pointer}
-.b.go{background:#fff;color:var(--ink);border-color:#fff}
-.b.sm{flex:0 0 auto;padding:13px 15px;color:#bbb}
+.empty{padding:40px 0;text-align:center;color:var(--light)}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:20px;
+  background:var(--soft);color:var(--grey);margin-left:6px}
+.pill.new{background:var(--okbg);color:var(--ok)}
+.pill.chg{background:var(--warnbg);color:var(--warn)}
 
-.rev{padding:14px 0}
-.rev h2{font-size:14px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
+/* Lieferung */
+.addbtn{width:100%;padding:14px;border:2px dashed var(--line2);background:var(--card);border-radius:var(--r);
+  font-size:15px;font-weight:600;color:var(--grey);cursor:pointer;margin-top:14px}
+.li{border:1px solid var(--line);border-radius:var(--r);padding:13px;margin-top:11px;background:var(--card)}
+.li .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.li .top b{font-size:16px}
+.li .top .x{background:none;border:1px solid var(--line2);color:var(--grey);width:32px;height:32px;
+  border-radius:8px;cursor:pointer;flex-shrink:0}
+.li .g{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:flex-end}
+.fld{flex:1;min-width:90px}
+.fld span{display:block;font-size:11px;color:var(--grey);font-weight:600;margin-bottom:3px}
+.fld input,.fld select{width:100%;padding:10px;border:1px solid var(--line2);border-radius:8px;font-size:15px;background:var(--card)}
+.li .info{margin-top:10px;font-size:13px;padding:9px 11px;border-radius:8px;background:var(--soft);color:var(--grey)}
+.li .info.chg{background:var(--warnbg);color:#7A3A12}
+.li .info b{color:inherit}
+
+/* Abschluss-Vorschritt */
+.done-cta{padding:30px 0 10px;text-align:center}
+.done-cta .big{font-size:44px;font-weight:700;line-height:1}
+.done-cta .lb{font-size:14px;color:var(--grey);margin-top:6px}
+.finishbtn{width:100%;margin-top:24px;padding:16px;border:0;background:var(--ink);color:#fff;
+  border-radius:var(--r);font-size:16px;font-weight:600;cursor:pointer}
+.finishbtn:active{opacity:.85}
+.recheck{width:100%;margin-top:10px;padding:13px;border:1px solid var(--line2);background:var(--card);
+  border-radius:var(--r);font-size:14px;color:var(--grey);cursor:pointer}
+
+/* Protokoll */
+.doc{padding:14px 0}
+.dh{border:1px solid var(--line2);border-radius:var(--r);padding:14px;margin-bottom:16px;background:var(--card)}
+.dh .t{font-size:18px;font-weight:600}
+.dh .m{display:flex;flex-wrap:wrap;gap:4px 20px;margin-top:8px;font-size:13px;color:var(--grey)}
+.dh .m b{color:var(--ink);font-weight:600}
+.sec{margin-top:22px}
+.sec>h3{font-size:13px;margin:0 0 2px;padding-bottom:6px;border-bottom:2px solid var(--ink);
+  text-transform:uppercase;letter-spacing:.05em;font-weight:700}
 table{width:100%;border-collapse:collapse;font-size:14px}
-th{text-align:left;font-size:11px;color:var(--grey);border-bottom:1px solid var(--ink);padding:5px 3px;font-weight:700}
+th{text-align:left;font-size:11px;color:var(--grey);border-bottom:1px solid var(--ink);padding:6px 3px;font-weight:700}
 th.r,td.r{text-align:right}
 td{padding:8px 3px;border-bottom:1px solid var(--line);vertical-align:top}
-tr.flag{background:#FDF3EF}
-.sum{display:flex;gap:22px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:2px solid var(--ink)}
-.sum div span{display:block;font-size:11px;color:var(--grey);font-weight:600}
-.sum div b{font-size:24px}
-.box{border:1px solid var(--line);border-left:4px solid var(--warn);background:#FDF3EF;
-  padding:11px 12px;margin-top:13px;font-size:14px}
-.box.good{border-left-color:var(--ok);background:#F2F8F2}
-label.f{display:block;margin-top:13px}
-label.f span{font-size:12px;color:var(--grey);font-weight:600;display:block;margin-bottom:4px}
-label.f input{width:100%;padding:11px;border:1px solid var(--line);border-radius:4px;font-size:16px}
-.arow{display:flex;gap:8px;margin-top:14px}
-.arow button{flex:1;padding:12px;border:1px solid var(--ink);background:var(--bg);border-radius:4px;
+td.grp{background:var(--soft);font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--grey);padding:6px 5px}
+tr.flag{background:var(--warnbg)}
+tr.tot td{border-top:2px solid var(--ink);border-bottom:0;font-weight:700;background:var(--soft)}
+.kpi{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+.kpi div{flex:1;min-width:72px;border:1px solid var(--line);border-radius:9px;padding:10px;background:var(--card)}
+.kpi span{display:block;font-size:11px;color:var(--grey);font-weight:600}
+.kpi b{font-size:22px}
+.kpi div.w2{border-color:#E7C3B2;background:var(--warnbg)}
+.kpi div.w2 b{color:var(--warn)}
+.box{border:1px solid var(--line);border-left:4px solid var(--warn);background:var(--warnbg);
+  border-radius:0 8px 8px 0;padding:12px;margin-top:14px;font-size:14px}
+.box.good{border-left-color:var(--ok);background:var(--okbg)}
+
+/* Name-Auswahl */
+.namebox{margin-top:6px}
+.namebox .nl{font-size:12px;color:var(--grey);font-weight:600;margin-bottom:7px}
+.namechips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.namechip{padding:11px 15px;border:1px solid var(--line2);background:var(--card);border-radius:22px;
   font-size:14px;font-weight:600;cursor:pointer}
-.arow .del{border-color:var(--warn);color:var(--warn)}
+.namechip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+label.f{display:block;margin-top:12px}
+label.f span{font-size:12px;color:var(--grey);font-weight:600;display:block;margin-bottom:4px}
+label.f input{width:100%;padding:12px;border:1px solid var(--line2);border-radius:9px;font-size:16px;background:var(--card)}
+
+.exprow{display:flex;gap:9px;margin-top:18px}
+.exprow .primary{flex:1;padding:15px;border:0;background:var(--ink);color:#fff;border-radius:var(--r);
+  font-size:15px;font-weight:600;cursor:pointer}
+.exprow .primary:active{opacity:.85}
+.explesser{display:flex;gap:16px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.explesser button{background:none;border:0;color:var(--grey);font-size:13px;text-decoration:underline;cursor:pointer}
+.explesser button.del{color:var(--warn)}
+
+/* Fußleiste */
+.foot{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--ink);color:#fff;
+  padding-bottom:env(safe-area-inset-bottom)}
+.fh{display:flex;align-items:center;gap:12px;padding:11px 16px;cursor:pointer}
+.fh .big{font-size:23px;font-weight:700;line-height:1;min-width:2ch}
+.fh .lb{flex:1;font-size:13px;color:#B4B4BA;line-height:1.3}
+.fh .lb b{color:#fff;display:block;font-size:14px}
+.fh .car{color:#B4B4BA;font-size:12px;transition:transform .18s}
+.foot.open .car{transform:rotate(180deg)}
+.flist{max-height:0;overflow-y:auto;transition:max-height .2s}
+.foot.open .flist{max-height:44vh;border-top:1px solid rgba(255,255,255,.12)}
+.fi{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+.fi .t{flex:1;min-width:0;font-size:14px}
+.fi .t small{display:block;color:#9A9AA0;font-size:12px}
+.fi .v{font-size:16px;font-weight:700;min-width:2ch;text-align:right}
+.fi .x{background:none;border:1px solid rgba(255,255,255,.22);color:#B4B4BA;width:30px;height:30px;
+  border-radius:7px;font-size:15px;cursor:pointer;flex-shrink:0}
+.fempty{padding:16px;color:#9A9AA0;font-size:14px}
+.fb{display:flex;gap:8px;padding:10px 16px 12px}
+.b{flex:1;background:rgba(255,255,255,.1);border:0;color:#fff;padding:14px 8px;border-radius:9px;
+  font-size:14px;font-weight:600;cursor:pointer}
+.b.go{background:#fff;color:var(--ink)}
+.b.sm{flex:0 0 auto;padding:14px 16px;color:#B4B4BA;background:rgba(255,255,255,.06)}
 
 .toast{position:fixed;bottom:calc(var(--foot) + 12px);left:50%;transform:translateX(-50%);
-  background:var(--ink);color:#fff;padding:11px 18px;border-radius:4px;font-size:14px;z-index:90;
-  opacity:0;transition:opacity .2s;pointer-events:none;max-width:88vw;text-align:center}
+  background:var(--ink);color:#fff;padding:12px 18px;border-radius:9px;font-size:14px;z-index:90;
+  opacity:0;transition:opacity .2s;pointer-events:none;max-width:88vw;text-align:center;
+  box-shadow:0 4px 16px rgba(0,0,0,.25)}
 .toast.on{opacity:1}
-.ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:80;padding:16px;
+.ov{position:fixed;inset:0;background:rgba(20,20,22,.6);display:none;z-index:80;padding:16px;
   align-items:center;justify-content:center}
 .ov.on{display:flex}
-.card{background:#fff;max-width:420px;width:100%;padding:20px;border-radius:6px}
-.card h3{margin:0 0 6px;font-size:16px}
-.card p{margin:0 0 14px;font-size:15px;color:var(--grey)}
-@media(min-width:720px){header,.howto,.tools,main{max-width:760px;margin-left:auto;margin-right:auto}
-  .foot>*{max-width:760px;margin:0 auto}}
+.card2{background:var(--card);max-width:440px;width:100%;padding:22px;border-radius:14px;max-height:88vh;overflow:auto}
+.card2 h3{margin:0 0 6px;font-size:17px}
+.card2 p{margin:0 0 16px;font-size:15px;color:var(--grey)}
+.card2 .row{display:flex;gap:9px}
+.card2 .row button{flex:1;padding:13px;border-radius:9px;font-size:15px;font-weight:600;cursor:pointer;border:1px solid var(--line2);background:var(--card)}
+.card2 .row .ok{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+@media(min-width:720px){header,.howto,.tools,main,.leadbig{max-width:760px;margin-left:auto;margin-right:auto}
+  .foot>*{max-width:760px;margin:0 auto}.rail{right:calc(50% - 380px + 6px)}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
-@media print{header,.tools,.foot,.howto{display:none!important}}
+@media print{header,.tools,.foot,.howto,.rail,.exprow,.explesser,.leadbig{display:none!important}
+  body{background:#fff}.doc{padding:0}}
 </style>
 </head>
 <body>
-
+<div id="menu" class="menu"></div>
+<div id="app" style="display:none">
 <header>
   <div class="hd">
-    <div><h1>Entnahme</h1><div class="sub">Haus Hirt · Weinkeller</div></div>
-    <input type="date" id="dSel">
+    <div><h1 id="mTitle">—</h1><div class="subh">Haus Hirt · Weinkeller</div></div>
+    <div class="hdr-r"><input type="date" id="dSel"><button class="home" id="bHome">Menü</button></div>
   </div>
-  <nav class="steps" role="tablist">
-    <button class="st" role="tab" data-s="0" aria-selected="true">1 · Konsum</button>
-    <button class="st" role="tab" data-s="1">2 · Restaurant</button>
-    <button class="st" role="tab" data-s="2">3 · Bar</button>
-    <button class="st" role="tab" data-s="3">4 · Keller</button>
-    <button class="st" role="tab" data-s="4">5 · Fertig</button>
-  </nav>
+  <nav class="steps" id="steps" role="tablist"></nav>
 </header>
-
 <div class="howto" id="howto"></div>
 <div class="tools" id="tools"><input id="q" type="search" placeholder="Wein suchen …" autocomplete="off"></div>
+<div class="rail" id="rail"></div>
 <main id="main"></main>
-
 <div class="foot" id="foot">
-  <div class="fh" id="fh">
-    <span class="big" id="fBig">0</span>
-    <span class="lb" id="fLb"></span>
-    <span class="car">▲</span>
-  </div>
+  <div class="fh" id="fh"><span class="big" id="fBig">0</span><span class="lb" id="fLb"></span><span class="car">\u25b2</span></div>
   <div class="flist" id="fList"></div>
-  <div class="fb">
-    <button class="b sm" id="bBack">Zurück</button>
-    <button class="b go" id="bNext">Weiter</button>
-  </div>
+  <div class="fb"><button class="b sm" id="bBack">Zurück</button><button class="b go" id="bNext">Weiter</button></div>
 </div>
-
-<div class="ov" id="ov"><div class="card">
-  <h3 id="ovT"></h3><p id="ovP"></p>
-  <div class="arow"><button id="ovNo">Abbrechen</button><button id="ovOk" style="background:var(--ink);color:#fff">Ja</button></div>
+</div>
+<div class="ov" id="ov"><div class="card2">
+  <h3 id="ovT"></h3><div id="ovBody"></div>
+  <div class="row"><button id="ovNo">Abbrechen</button><button class="ok" id="ovOk">Ja</button></div>
 </div></div>
 <div class="toast" id="toast"></div>
-
 <script>
 const WINES = [
  {
@@ -183,7 +317,9 @@ const WINES = [
   "wein": "Langenlois",
   "jg": "2024",
   "region": "Kamptal DAC",
-  "reb": "Grüner Veltliner"
+  "reb": "Grüner Veltliner",
+  "at": 1,
+  "grp": "Grüner Veltliner"
  },
  {
   "id": "w003",
@@ -193,7 +329,9 @@ const WINES = [
   "wein": "Fass 4",
   "jg": "2025",
   "region": "Wagram, Feuersbrunn",
-  "reb": "Grüner Veltliner"
+  "reb": "Grüner Veltliner",
+  "at": 1,
+  "grp": "Grüner Veltliner"
  },
  {
   "id": "w002",
@@ -203,7 +341,9 @@ const WINES = [
   "wein": "Loiben Federspiel",
   "jg": "2024",
   "region": "Wachau DAC",
-  "reb": "Grüner Veltliner"
+  "reb": "Grüner Veltliner",
+  "at": 1,
+  "grp": "Grüner Veltliner"
  },
  {
   "id": "w004",
@@ -213,17 +353,9 @@ const WINES = [
   "wein": "Ried Schlossberg 1ÖTW",
   "jg": "2022",
   "region": "Wagram DAC, Oberstockstall",
-  "reb": "Grüner Veltliner"
- },
- {
-  "id": "w007",
-  "f": "WEISS",
-  "r": "Riesling",
-  "winzer": "Emrich-Schönleber",
-  "wein": "Mineral",
-  "jg": "2023",
-  "region": "Monzingen (DE)",
-  "reb": "Riesling"
+  "reb": "Grüner Veltliner",
+  "at": 1,
+  "grp": "Grüner Veltliner"
  },
  {
   "id": "w005",
@@ -233,7 +365,9 @@ const WINES = [
   "wein": "Zöbing",
   "jg": "2024",
   "region": "Kamptal",
-  "reb": "Riesling"
+  "reb": "Riesling",
+  "at": 1,
+  "grp": "Riesling"
  },
  {
   "id": "w006",
@@ -243,7 +377,21 @@ const WINES = [
   "wein": "Loiben",
   "jg": "2024",
   "region": "Wachau DAC",
-  "reb": "Riesling"
+  "reb": "Riesling",
+  "at": 1,
+  "grp": "Riesling"
+ },
+ {
+  "id": "w007",
+  "f": "WEISS",
+  "r": "Riesling",
+  "winzer": "Emrich-Schönleber",
+  "wein": "Mineral",
+  "jg": "2023",
+  "region": "Monzingen (DE)",
+  "reb": "Riesling",
+  "at": 0,
+  "grp": "Riesling"
  },
  {
   "id": "w008",
@@ -253,7 +401,9 @@ const WINES = [
   "wein": "Sauvignon Blanc",
   "jg": "2024",
   "region": "Südsteiermark DAC, Gamlitz",
-  "reb": "Sauvignon Blanc"
+  "reb": "Sauvignon Blanc",
+  "at": 1,
+  "grp": "Sauvignon Blanc"
  },
  {
   "id": "w009",
@@ -263,7 +413,9 @@ const WINES = [
   "wein": "Sauvignon Blanc",
   "jg": "?",
   "region": "Slowenien, Ormož",
-  "reb": "Sauvignon Blanc"
+  "reb": "Sauvignon Blanc",
+  "at": 0,
+  "grp": "Sauvignon Blanc"
  },
  {
   "id": "w010",
@@ -273,7 +425,9 @@ const WINES = [
   "wein": "Weißburgunder",
   "jg": "2024",
   "region": "Südsteiermark DAC, Gamlitz",
-  "reb": "Weißburgunder"
+  "reb": "Weißburgunder",
+  "at": 1,
+  "grp": "Weißburgunder"
  },
  {
   "id": "w011",
@@ -283,7 +437,9 @@ const WINES = [
   "wein": "Chardonnay",
   "jg": "2022",
   "region": "Mittelburgenland, Deutschkreutz",
-  "reb": "Chardonnay"
+  "reb": "Chardonnay",
+  "at": 1,
+  "grp": "Chardonnay"
  },
  {
   "id": "w013",
@@ -293,7 +449,9 @@ const WINES = [
   "wein": "Bourgogne Blanc Côte d'Or",
   "jg": "2022",
   "region": "Burgund (FR)",
-  "reb": "Chardonnay"
+  "reb": "Chardonnay",
+  "at": 0,
+  "grp": "Chardonnay"
  },
  {
   "id": "w014",
@@ -303,7 +461,9 @@ const WINES = [
   "wein": "Bourgogne Blanc",
   "jg": "2023",
   "region": "Burgund (FR)",
-  "reb": "Chardonnay"
+  "reb": "Chardonnay",
+  "at": 0,
+  "grp": "Chardonnay"
  },
  {
   "id": "w016",
@@ -313,7 +473,9 @@ const WINES = [
   "wein": "Grauburgunder",
   "jg": "2025",
   "region": "Neusiedlersee, Gols",
-  "reb": "Grauburgunder"
+  "reb": "Grauburgunder",
+  "at": 1,
+  "grp": "Grauburgunder"
  },
  {
   "id": "w015",
@@ -323,7 +485,9 @@ const WINES = [
   "wein": "Grauburgunder",
   "jg": "2021",
   "region": "Weinviertel",
-  "reb": "Grauburgunder"
+  "reb": "Grauburgunder",
+  "at": 1,
+  "grp": "Grauburgunder"
  },
  {
   "id": "w017",
@@ -333,27 +497,21 @@ const WINES = [
   "wein": "Wagram Terrassen",
   "jg": "2024",
   "region": "Wagram DAC, Zaussenberg",
-  "reb": "Roter Veltliner"
+  "reb": "Roter Veltliner",
+  "at": 1,
+  "grp": "Roter Veltliner"
  },
  {
   "id": "w018",
   "f": "WEISS",
-  "r": "Gelber Muskateller",
+  "r": "Muskateller",
   "winzer": "Muster",
   "wein": "Gelber Muskateller Styria",
   "jg": "2025",
   "region": "Südsteiermark",
-  "reb": "Gelber Muskateller"
- },
- {
-  "id": "w060",
-  "f": "WEISS",
-  "r": "Muskateller-Cuvée",
-  "winzer": "Muster (U&K)",
-  "wein": "Fräulein Klein",
-  "jg": "2021",
-  "region": "Südsteiermark, Gamlitz",
-  "reb": "Muskateller-Cuvée"
+  "reb": "Gelber Muskateller",
+  "at": 1,
+  "grp": "Muskateller"
  },
  {
   "id": "w019",
@@ -363,7 +521,9 @@ const WINES = [
   "wein": "Anna's 17",
   "jg": "2025",
   "region": "Weinviertel, Breitenwaida",
-  "reb": "Gemischter Satz"
+  "reb": "Gemischter Satz",
+  "at": 1,
+  "grp": "Gemischter Satz"
  },
  {
   "id": "w020",
@@ -373,27 +533,9 @@ const WINES = [
   "wein": "Wiener Gemischter Satz",
   "jg": "2025",
   "region": "Wien",
-  "reb": "Gemischter Satz"
- },
- {
-  "id": "w062",
-  "f": "WEISS",
-  "r": "Roter Gemischter Satz",
-  "winzer": "Jutta Ambrositsch",
-  "wein": "Rakete",
-  "jg": "2023",
-  "region": "Wien",
-  "reb": "Roter Gemischter Satz"
- },
- {
-  "id": "w063",
-  "f": "WEISS",
-  "r": "Orange Wine",
-  "winzer": "Domaine de Courbissac",
-  "wein": "L'Orange",
-  "jg": "2024",
-  "region": "Minervois (FR)",
-  "reb": "Orange Wine"
+  "reb": "Gemischter Satz",
+  "at": 1,
+  "grp": "Gemischter Satz"
  },
  {
   "id": "w023",
@@ -403,7 +545,9 @@ const WINES = [
   "wein": "Spiegel",
   "jg": "2022",
   "region": "Kamptal, Langenlois",
-  "reb": "Grauburgunder / Weißburgunder"
+  "reb": "Grauburgunder / Weißburgunder",
+  "at": 1,
+  "grp": "Cuvée"
  },
  {
   "id": "w061",
@@ -413,7 +557,9 @@ const WINES = [
   "wein": "Falko",
   "jg": "2021",
   "region": "Weinviertel, Falkenstein",
-  "reb": "Muskateller / Welschr. / SB"
+  "reb": "Muskateller / Welschr. / SB",
+  "at": 1,
+  "grp": "Cuvée"
  },
  {
   "id": "w022",
@@ -423,7 +569,21 @@ const WINES = [
   "wein": "Tulpe",
   "jg": "2019",
   "region": "Neusiedlersee, Gols",
-  "reb": "Weißburgunder / Chardonnay"
+  "reb": "Weißburgunder / Chardonnay",
+  "at": 1,
+  "grp": "Cuvée"
+ },
+ {
+  "id": "w060",
+  "f": "WEISS",
+  "r": "Cuvée",
+  "winzer": "Muster (U&K)",
+  "wein": "Fräulein Klein",
+  "jg": "2021",
+  "region": "Südsteiermark, Gamlitz",
+  "reb": "Muskateller-Cuvée",
+  "at": 1,
+  "grp": "Cuvée"
  },
  {
   "id": "w021",
@@ -433,17 +593,9 @@ const WINES = [
   "wein": "Wilde Reben",
   "jg": "2024",
   "region": "Niederösterreich",
-  "reb": "GV / Riesling / Muskateller"
- },
- {
-  "id": "w044",
-  "f": "ROSÉ",
-  "r": "Zweigelt",
-  "winzer": "Bründlmayer",
-  "wein": "Zweigelt Rosé",
-  "jg": "2024",
-  "region": "Kamptal, Langenlois",
-  "reb": "Zweigelt"
+  "reb": "GV / Riesling / Muskateller",
+  "at": 1,
+  "grp": "Cuvée"
  },
  {
   "id": "w045",
@@ -453,7 +605,9 @@ const WINES = [
   "wein": "Blanc de Noir",
   "jg": "2024",
   "region": "Weinviertel",
-  "reb": "Zweigelt"
+  "reb": "Zweigelt",
+  "at": 1,
+  "grp": "Rosé"
  },
  {
   "id": "w043",
@@ -463,7 +617,9 @@ const WINES = [
   "wein": "Wagram Rosé",
   "jg": "?",
   "region": "Wagram, Oberstockstall",
-  "reb": "Zweigelt"
+  "reb": "Zweigelt",
+  "at": 1,
+  "grp": "Rosé"
  },
  {
   "id": "w046",
@@ -473,7 +629,9 @@ const WINES = [
   "wein": "UP Rosé",
   "jg": "2025",
   "region": "Côtes de Provence (FR)",
-  "reb": "Cinsault / Grenache / Syrah / Rolle"
+  "reb": "Cinsault / Grenache / Syrah / Rolle",
+  "at": 0,
+  "grp": "Rosé"
  },
  {
   "id": "w026",
@@ -483,17 +641,21 @@ const WINES = [
   "wein": "Rubin Carnuntum",
   "jg": "2023",
   "region": "Carnuntum, Göttlesbrunn",
-  "reb": "Zweigelt"
+  "reb": "Zweigelt",
+  "at": 1,
+  "grp": "Zweigelt"
  },
  {
-  "id": "w059",
+  "id": "w027",
   "f": "ROT",
   "r": "Zweigelt",
-  "winzer": "Heinrich (U&K)",
-  "wein": "Roter Affe",
-  "jg": "2017",
-  "region": "Neusiedlersee, Gols",
-  "reb": "Zweigelt"
+  "winzer": "Glatzer",
+  "wein": "Dornenvogel",
+  "jg": "2022",
+  "region": "Carnuntum DAC, Göttlesbrunn",
+  "reb": "Zweigelt Reserve",
+  "at": 1,
+  "grp": "Zweigelt"
  },
  {
   "id": "w025",
@@ -503,7 +665,9 @@ const WINES = [
   "wein": "Leithakalk",
   "jg": "2022",
   "region": "Leithaberg, Großhöflein",
-  "reb": "Zweigelt"
+  "reb": "Zweigelt",
+  "at": 1,
+  "grp": "Zweigelt"
  },
  {
   "id": "w024",
@@ -513,17 +677,9 @@ const WINES = [
   "wein": "Goldberg",
   "jg": "2024",
   "region": "Neusiedlersee DAC, Gols",
-  "reb": "Zweigelt"
- },
- {
-  "id": "w027",
-  "f": "ROT",
-  "r": "Zweigelt Reserve",
-  "winzer": "Glatzer",
-  "wein": "Dornenvogel",
-  "jg": "2022",
-  "region": "Carnuntum DAC, Göttlesbrunn",
-  "reb": "Zweigelt Reserve"
+  "reb": "Zweigelt",
+  "at": 1,
+  "grp": "Zweigelt"
  },
  {
   "id": "w029",
@@ -533,7 +689,9 @@ const WINES = [
   "wein": "Blaufränkisch Gols",
   "jg": "2021",
   "region": "Neusiedlersee, Gols",
-  "reb": "Blaufränkisch"
+  "reb": "Blaufränkisch",
+  "at": 1,
+  "grp": "Blaufränkisch"
  },
  {
   "id": "w031",
@@ -543,7 +701,9 @@ const WINES = [
   "wein": "Reserve",
   "jg": "2023",
   "region": "Burgenland",
-  "reb": "Blaufränkisch"
+  "reb": "Blaufränkisch",
+  "at": 1,
+  "grp": "Blaufränkisch"
  },
  {
   "id": "w030",
@@ -553,7 +713,9 @@ const WINES = [
   "wein": "Samt & Seide",
   "jg": "2022",
   "region": "Carnuntum, Prellenkirchen",
-  "reb": "Blaufränkisch"
+  "reb": "Blaufränkisch",
+  "at": 1,
+  "grp": "Blaufränkisch"
  },
  {
   "id": "w028",
@@ -563,27 +725,9 @@ const WINES = [
   "wein": "Kalk & Schiefer",
   "jg": "2019",
   "region": "Neusiedlersee, Gols",
-  "reb": "Blaufränkisch"
- },
- {
-  "id": "w033",
-  "f": "ROT",
-  "r": "Pinot Noir",
-  "winzer": "Domaine Confuron-Gindre",
-  "wein": "Bourgogne",
-  "jg": "2022",
-  "region": "Burgund (FR)",
-  "reb": "Pinot Noir"
- },
- {
-  "id": "w034",
-  "f": "ROT",
-  "r": "Pinot Noir",
-  "winzer": "Domaine Ecard",
-  "wein": "Savigny-les-Beaune",
-  "jg": "2020",
-  "region": "Burgund (FR)",
-  "reb": "Pinot Noir"
+  "reb": "Blaufränkisch",
+  "at": 1,
+  "grp": "Blaufränkisch"
  },
  {
   "id": "w032",
@@ -593,7 +737,9 @@ const WINES = [
   "wein": "Gumpoldskirchen",
   "jg": "2022",
   "region": "Thermenregion",
-  "reb": "Pinot Noir"
+  "reb": "Pinot Noir",
+  "at": 1,
+  "grp": "Pinot Noir"
  },
  {
   "id": "w035",
@@ -603,7 +749,33 @@ const WINES = [
   "wein": "Pinot Noir",
   "jg": "2021",
   "region": "Eisenberg, Königsberg",
-  "reb": "Pinot Noir"
+  "reb": "Pinot Noir",
+  "at": 1,
+  "grp": "Pinot Noir"
+ },
+ {
+  "id": "w033",
+  "f": "ROT",
+  "r": "Pinot Noir",
+  "winzer": "Domaine Confuron-Gindre",
+  "wein": "Bourgogne",
+  "jg": "2022",
+  "region": "Burgund (FR)",
+  "reb": "Pinot Noir",
+  "at": 0,
+  "grp": "Pinot Noir"
+ },
+ {
+  "id": "w034",
+  "f": "ROT",
+  "r": "Pinot Noir",
+  "winzer": "Domaine Ecard",
+  "wein": "Savigny-les-Beaune",
+  "jg": "2020",
+  "region": "Burgund (FR)",
+  "reb": "Pinot Noir",
+  "at": 0,
+  "grp": "Pinot Noir"
  },
  {
   "id": "w036",
@@ -613,7 +785,9 @@ const WINES = [
   "wein": "Elementum",
   "jg": "2022",
   "region": "Niederösterreich, Rosenberg",
-  "reb": "Merlot"
+  "reb": "Merlot",
+  "at": 1,
+  "grp": "Merlot"
  },
  {
   "id": "w041",
@@ -623,7 +797,9 @@ const WINES = [
   "wein": "Chianti Classico Duelame",
   "jg": "2024",
   "region": "Toscana (IT)",
-  "reb": "Sangiovese"
+  "reb": "Sangiovese",
+  "at": 0,
+  "grp": "Sangiovese"
  },
  {
   "id": "w042",
@@ -633,7 +809,9 @@ const WINES = [
   "wein": "Barbera d'Alba Sposabella",
   "jg": "?",
   "region": "Piemont (IT)",
-  "reb": "Barbera"
+  "reb": "Barbera",
+  "at": 0,
+  "grp": "Barbera"
  },
  {
   "id": "w038",
@@ -643,7 +821,9 @@ const WINES = [
   "wein": "Heideboden",
   "jg": "2023",
   "region": "Gols, Leithagebirge",
-  "reb": "Zw / BF / Merlot"
+  "reb": "Zw / BF / Merlot",
+  "at": 1,
+  "grp": "Cuvée"
  },
  {
   "id": "w039",
@@ -653,7 +833,9 @@ const WINES = [
   "wein": "Pannobile",
   "jg": "2020",
   "region": "Neusiedlersee, Gols",
-  "reb": "Zweigelt / Blaufränkisch"
+  "reb": "Zweigelt / Blaufränkisch",
+  "at": 1,
+  "grp": "Cuvée"
  },
  {
   "id": "w037",
@@ -663,7 +845,9 @@ const WINES = [
   "wein": "Nelke",
   "jg": "2017",
   "region": "Neusiedlersee, Gols",
-  "reb": "Zweigelt / Blaufränkisch"
+  "reb": "Zweigelt / Blaufränkisch",
+  "at": 1,
+  "grp": "Cuvée"
  },
  {
   "id": "w040",
@@ -673,27 +857,9 @@ const WINES = [
   "wein": "Xur",
   "jg": "2022",
   "region": "Neusiedlersee, Gols",
-  "reb": "Zw / BF / St. Laurent"
- },
- {
-  "id": "w056",
-  "f": "BUBBLES",
-  "r": "Schaumwein",
-  "winzer": "De Saint Gall",
-  "wein": "Champagne 1er Cru Blanc de Blancs",
-  "jg": "n.v.",
-  "region": "Champagne (FR)",
-  "reb": "Chardonnay"
- },
- {
-  "id": "w057",
-  "f": "BUBBLES",
-  "r": "Schaumwein",
-  "winzer": "La Farra",
-  "wein": "Prosecco Rosé Brut",
-  "jg": "n.v.",
-  "region": "Veneto (IT)",
-  "reb": "Glera / Pinot Nero"
+  "reb": "Zw / BF / St. Laurent",
+  "at": 1,
+  "grp": "Cuvée"
  },
  {
   "id": "w058",
@@ -703,7 +869,9 @@ const WINES = [
   "wein": "Sparkling alkoholfrei",
   "jg": "n.v.",
   "region": "—",
-  "reb": "—"
+  "reb": "—",
+  "at": 1,
+  "grp": "Schaumwein"
  },
  {
   "id": "w055",
@@ -713,87 +881,33 @@ const WINES = [
   "wein": "La Petite Frizzante Rosé",
   "jg": "?",
   "region": "Niederösterreich",
-  "reb": "Pinot Noir"
+  "reb": "Pinot Noir",
+  "at": 1,
+  "grp": "Schaumwein"
  },
  {
-  "id": "w048",
-  "f": "NATURAL",
-  "r": "Traminer",
-  "winzer": "Andreas Gsellmann",
-  "wein": "Traminer",
-  "jg": "2021",
-  "region": "Neusiedlersee, Gols",
-  "reb": "Traminer"
- },
- {
-  "id": "w050",
-  "f": "NATURAL",
-  "r": "Roter Traminer",
-  "winzer": "Heinrich",
-  "wein": "Roter Traminer Freyheit",
-  "jg": "2021",
-  "region": "Neusiedlersee, Gols",
-  "reb": "Roter Traminer"
- },
- {
-  "id": "w049",
-  "f": "NATURAL",
-  "r": "Muskateller",
-  "winzer": "Heinrich",
-  "wein": "Muskat Freyheit",
-  "jg": "2022",
-  "region": "Neusiedlersee, Gols",
-  "reb": "Muskateller"
- },
- {
-  "id": "w052",
-  "f": "NATURAL",
-  "r": "Pinot Noir",
-  "winzer": "Heinrich",
-  "wein": "Pinot Freyheit",
-  "jg": "2022",
-  "region": "Neusiedlersee, Gols",
-  "reb": "Pinot Noir"
- },
- {
-  "id": "w054",
-  "f": "NATURAL",
-  "r": "Blaufränkisch",
-  "winzer": "Heinrich",
-  "wein": "Out of the Dark",
-  "jg": "2022",
-  "region": "Leithaberg",
-  "reb": "Blaufränkisch"
- },
- {
-  "id": "w047",
-  "f": "NATURAL",
-  "r": "Cuvée",
-  "winzer": "Claus Preisinger",
-  "wein": "Kalk und Kiesel",
-  "jg": "2022",
-  "region": "Gols, Leithagebirge",
-  "reb": "WB / GV / Welschriesling"
- },
- {
-  "id": "w051",
-  "f": "NATURAL",
-  "r": "Cuvée",
-  "winzer": "Heinrich",
-  "wein": "Naked White",
-  "jg": "2023",
-  "region": "Neusiedlersee, Gols",
-  "reb": "WB / Chardonnay / GV"
- },
- {
-  "id": "w053",
-  "f": "NATURAL",
-  "r": "Cuvée",
-  "winzer": "Heinrich",
-  "wein": "Naked Red",
+  "id": "w056",
+  "f": "BUBBLES",
+  "r": "Schaumwein",
+  "winzer": "De Saint Gall",
+  "wein": "Champagne 1er Cru Blanc de Blancs",
   "jg": "n.v.",
-  "region": "Burgenland",
-  "reb": "Zw / BF / St. Laurent"
+  "region": "Champagne (FR)",
+  "reb": "Chardonnay",
+  "at": 0,
+  "grp": "Schaumwein"
+ },
+ {
+  "id": "w057",
+  "f": "BUBBLES",
+  "r": "Schaumwein",
+  "winzer": "La Farra",
+  "wein": "Prosecco Rosé Brut",
+  "jg": "n.v.",
+  "region": "Veneto (IT)",
+  "reb": "Glera / Pinot Nero",
+  "at": 0,
+  "grp": "Schaumwein"
  },
  {
   "id": "serena",
@@ -803,284 +917,849 @@ const WINES = [
   "wein": "Piu Frizzante",
   "jg": "n.v.",
   "region": "Veneto (IT)",
-  "reb": "Glera"
+  "reb": "Glera",
+  "at": 0,
+  "grp": "Schaumwein"
+ },
+ {
+  "id": "w048",
+  "f": "NATURAL",
+  "r": "Traminer",
+  "winzer": "Andreas Gsellmann",
+  "wein": "Traminer",
+  "jg": "2021",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Traminer",
+  "at": 1,
+  "grp": "Naturwein weiss"
+ },
+ {
+  "id": "w050",
+  "f": "NATURAL",
+  "r": "Traminer",
+  "winzer": "Heinrich",
+  "wein": "Roter Traminer Freyheit",
+  "jg": "2021",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Roter Traminer",
+  "at": 1,
+  "grp": "Naturwein weiss"
+ },
+ {
+  "id": "w049",
+  "f": "NATURAL",
+  "r": "Muskateller",
+  "winzer": "Heinrich",
+  "wein": "Muskat Freyheit",
+  "jg": "2022",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Muskateller",
+  "at": 1,
+  "grp": "Naturwein weiss"
+ },
+ {
+  "id": "w052",
+  "f": "NATURAL",
+  "r": "Pinot Noir",
+  "winzer": "Heinrich",
+  "wein": "Pinot Freyheit",
+  "jg": "2022",
+  "region": "Neusiedlersee, Gols",
+  "reb": "Pinot Noir",
+  "at": 1,
+  "grp": "Naturwein rot"
+ },
+ {
+  "id": "w047",
+  "f": "NATURAL",
+  "r": "Cuvée",
+  "winzer": "Claus Preisinger",
+  "wein": "Kalk und Kiesel",
+  "jg": "2022",
+  "region": "Gols, Leithagebirge",
+  "reb": "WB / GV / Welschriesling",
+  "at": 1,
+  "grp": "Naturwein weiss"
+ },
+ {
+  "id": "w051",
+  "f": "NATURAL",
+  "r": "Cuvée",
+  "winzer": "Heinrich",
+  "wein": "Naked White",
+  "jg": "2023",
+  "region": "Neusiedlersee, Gols",
+  "reb": "WB / Chardonnay / GV",
+  "at": 1,
+  "grp": "Naturwein weiss"
+ },
+ {
+  "id": "w053",
+  "f": "NATURAL",
+  "r": "Cuvée",
+  "winzer": "Heinrich",
+  "wein": "Naked Red",
+  "jg": "n.v.",
+  "region": "Burgenland",
+  "reb": "Zw / BF / St. Laurent",
+  "at": 1,
+  "grp": "Naturwein rot"
  }
 ];
-const PLAN  = {"soll": {"w001": 3, "w003": 3, "w002": 3, "w004": 3, "w007": 2, "w005": 2, "w006": 2, "w008": 3, "w009": 3, "w010": 3, "w011": 3, "w013": 3, "w014": 3, "w016": 3, "w015": 3, "w017": 3, "w018": 3, "w060": 2, "w019": 3, "w020": 3, "w062": 3, "w063": 3, "w023": 2, "w061": 2, "w022": 2, "w021": 2, "w044": 2, "w045": 2, "w043": 2, "w046": 2, "w026": 3, "w059": 3, "w025": 3, "w024": 3, "w027": 3, "w029": 3, "w031": 3, "w030": 3, "w028": 3, "w033": 3, "w034": 3, "w032": 3, "w035": 3, "w036": 3, "w041": 3, "w042": 3, "w038": 3, "w039": 3, "w037": 3, "w040": 3, "w048": 2, "w050": 2, "w049": 2, "w052": 3, "w054": 3, "w047": 2, "w051": 3, "w053": 3}, "schrank": {"w001": 3, "w003": 3, "w002": 3, "w004": 3, "w007": 3, "w005": 3, "w006": 3, "w008": 3, "w009": 3, "w010": 3, "w011": 3, "w013": 3, "w014": 3, "w016": 4, "w015": 4, "w017": 4, "w018": 4, "w060": 4, "w019": 4, "w020": 4, "w062": 4, "w063": 4, "w023": 4, "w061": 4, "w022": 4, "w021": 4, "w044": 4, "w045": 4, "w043": 4, "w046": 4, "w026": 1, "w059": 1, "w025": 1, "w024": 1, "w027": 1, "w029": 1, "w031": 1, "w030": 1, "w028": 1, "w033": 2, "w034": 2, "w032": 2, "w035": 2, "w036": 1, "w041": 2, "w042": 2, "w038": 2, "w039": 2, "w037": 2, "w040": 2, "w048": 4, "w050": 4, "w049": 4, "w052": 2, "w054": 2, "w047": 4, "w051": 4, "w053": 2}, "barrot": [{"id": "w026", "soll": 3}, {"id": "w029", "soll": 3}, {"id": "w037", "soll": 3}], "bar": [{"id": "w001", "soll": 3}, {"id": "w008", "soll": 3}, {"id": "w011", "soll": 3}, {"id": "w005", "soll": 3}, {"id": "w043", "soll": 3}, {"id": "serena", "soll": 4}, {"id": "w055", "soll": 2}, {"id": "w056", "soll": 1}], "backup": [{"id": "serena", "soll": 2}, {"id": "w055", "soll": 2}, {"id": "w056", "soll": 2}]};
-const KEY="hh_entnahme_v5";
-const byId=id=>WINES.find(w=>w.id===id);
+const PLAN = {"soll": {"w001": 3, "w003": 3, "w002": 3, "w004": 3, "w005": 2, "w006": 2, "w007": 2, "w008": 3, "w009": 3, "w010": 3, "w011": 3, "w013": 3, "w014": 3, "w016": 3, "w015": 3, "w017": 3, "w018": 3, "w019": 3, "w020": 3, "w023": 2, "w061": 2, "w022": 2, "w060": 2, "w021": 2, "w045": 2, "w043": 2, "w046": 2, "w026": 3, "w027": 3, "w025": 3, "w024": 3, "w029": 3, "w031": 3, "w030": 3, "w028": 3, "w032": 3, "w035": 3, "w033": 3, "w034": 3, "w036": 3, "w041": 3, "w042": 3, "w038": 3, "w039": 3, "w037": 3, "w040": 3, "w048": 2, "w050": 2, "w049": 2, "w052": 3, "w047": 2, "w051": 3, "w053": 3}, "schrank": {"w001": 3, "w003": 3, "w002": 3, "w004": 3, "w005": 3, "w006": 3, "w007": 3, "w008": 3, "w009": 3, "w010": 3, "w011": 3, "w013": 3, "w014": 3, "w016": 4, "w015": 4, "w017": 4, "w018": 4, "w019": 4, "w020": 4, "w023": 4, "w061": 4, "w022": 4, "w060": 4, "w021": 4, "w045": 4, "w043": 4, "w046": 4, "w026": 1, "w027": 1, "w025": 1, "w024": 1, "w029": 1, "w031": 1, "w030": 1, "w028": 1, "w032": 2, "w035": 2, "w033": 2, "w034": 2, "w036": 1, "w041": 2, "w042": 2, "w038": 2, "w039": 2, "w037": 2, "w040": 2, "w048": 4, "w050": 4, "w049": 4, "w052": 2, "w047": 4, "w051": 4, "w053": 2}, "zone": {"w001": 3, "w003": 3, "w002": 3, "w004": 3, "w005": 3, "w006": 3, "w007": 3, "w008": 3, "w009": 3, "w010": 3, "w011": 3, "w013": 3, "w014": 3, "w016": 3, "w015": 3, "w017": 3, "w018": 3, "w019": 3, "w020": 3, "w023": 4, "w061": 4, "w022": 4, "w060": 4, "w021": 4, "w045": 2, "w043": 2, "w046": 2, "w026": 1, "w027": 1, "w025": 1, "w024": 1, "w029": 1, "w031": 1, "w030": 1, "w028": 1, "w032": 1, "w035": 1, "w033": 1, "w034": 1, "w036": 1, "w041": 1, "w042": 1, "w038": 1, "w039": 1, "w037": 1, "w040": 1, "w058": 6, "w055": 6, "w056": 6, "w057": 6, "serena": 6, "w048": 5, "w050": 5, "w049": 5, "w052": 5, "w047": 5, "w051": 5, "w053": 5}, "zonen": {"1": {"t": "Rot", "s": "Linker Raum · Hauptregal"}, "2": {"t": "Rosé", "s": "Eingang · Frontregal"}, "3": {"t": "Weiss", "s": "Rechter Raum · Hauptregal"}, "4": {"t": "Cuvée Weiss", "s": "Rechter Raum · Seitenregal links"}, "5": {"t": "Natural", "s": "Rechter Raum · Seitenregal rechts"}, "6": {"t": "Bubbles", "s": "Eingang · Frontregal"}, "7": {"t": "Einzelgänger", "s": "Oben auf dem Regal · Raritäten"}}, "kiste": {"w003": 12}, "barrot": [{"id": "w026", "soll": 3}, {"id": "w029", "soll": 3}, {"id": "w037", "soll": 3}], "bar": [{"id": "serena", "soll": 6}, {"id": "w055", "soll": 2}, {"id": "w056", "soll": 1}, {"id": "w001", "soll": 3}, {"id": "w008", "soll": 3}, {"id": "w011", "soll": 3}, {"id": "w005", "soll": 3}, {"id": "w043", "soll": 3}], "backup": [{"id": "serena", "soll": 4}, {"id": "w055", "soll": 2}, {"id": "w056", "soll": 2}]};
+const MAIL="casimir.ikrath@icloud.com";
+const NAMES=["Asad Karakiri","Casimir","Ian Lauchbein"];
+const KEY="hh_keller_v7";
 const $=s=>document.querySelector(s);
-const SCHRANK={1:{t:"Schrank 1 — Rotwein kräftig",s:"Zweigelt · Blaufränkisch · Merlot"},
-               2:{t:"Schrank 2 — Rotwein fein & Cuvées",s:"Pinot Noir · Italien · Cuvées · Natur-Rot"},
-               3:{t:"Schrank 3 — Weisswein klassisch",s:"Grüner Veltliner · Riesling · Sauvignon Blanc · Weissburgunder · Chardonnay"},
-               4:{t:"Schrank 4 — Weisswein übrige, Rosé, Natur",s:"Grauburgunder · Roter Veltliner · Muskateller · Gemischter Satz · Cuvées · Rosé · Natur-Weiss"}};
+const byId=id=>WINES.find(w=>w.id===id);
+const FARBEN=["WEISS","ROSÉ","ROT","BUBBLES","NATURAL"];
+const FARBKURZ={WEISS:"Weiss","ROSÉ":"Rosé",ROT:"Rot",BUBBLES:"Bubbles",NATURAL:"Natur"};
+const SCHRANK={1:{t:"Schrank 1 · Rotwein kräftig",s:"Zweigelt · Blaufränkisch · Merlot",kurz:"Schrank 1 — alles da"},
+ 2:{t:"Schrank 2 · Rotwein fein & Cuvées",s:"Pinot Noir · Italien · Cuvées · Naturwein rot",kurz:"Schrank 2 — alles da"},
+ 3:{t:"Schrank 3 · Weisswein klassisch",s:"Grüner Veltliner · Riesling · Sauvignon Blanc · Weissburgunder · Chardonnay",kurz:"Schrank 3 — alles da"},
+ 4:{t:"Schrank 4 · Weiss übrige, Rosé, Natur",s:"Grauburgunder · Roter Veltliner · Muskateller · Gem. Satz · Cuvées · Rosé · Naturwein weiss",kurz:"Schrank 4 — alles da"}};
 
-const HOWTO=[
- {t:"Konsumliste vom Vortag eintragen",
-  p:"Die Liste aus der Kassa durchgehen. Für jede verkaufte Flasche den Wein einmal antippen — zwei Flaschen, zweimal antippen.",
-  tip:"Zu oft getippt? Unten aufklappen und dort korrigieren."},
- {t:"Restaurantkühlschränke prüfen",
-  p:"Vier Schränke der Reihe nach durchgehen. Von jedem Wein sollen 3 Flaschen stehen — je 2 bei Riesling, Rosé, Cuvée Weiss und Natur-Weiss.",
-  tip:"Die Punkte zeigen das Soll. Alles da: nichts tun. Pro fehlender Flasche einmal antippen."},
- {t:"Bar prüfen",
-  p:"Zuerst die Rotweine — die stehen nicht im Kühlschrank. Danach der Barkühlschrank in der angegebenen Reihenfolge, zuletzt das Backup dahinter.",
-  tip:"Wie beim Restaurant: alles da, nichts tun. Pro fehlender Flasche einmal antippen."},
- {t:"Aus dem Keller holen",
-  p:"Diese Flaschen fehlen. Nach Kellerbereich sortiert. Was geholt ist, abhaken.",
-  tip:"Danach auffüllen: erst Restaurant, dann Bar."},
- {t:"Protokoll abschicken",
-  p:"Konsum und Restaurant-Nachfüllung im Vergleich. Namen eintragen, dann exportieren und Casimir schicken.",
-  tip:"Markierte Zeilen sind kein Fehler, nur ein Hinweis."}
-];
+const MODES={
+ tag:{t:"Tagesfassung",d:"Konsum vom Vortag, Kühlschränke prüfen, Keller holen.",ic:"\ud83d\udccb",
+      steps:["Konsum","Bar","Restaurant","Keller","Abschluss"]},
+ keller:{t:"Kellerzählung",d:"Alles im Keller zählen. Reihen und einzelne Flaschen.",ic:"\ud83d\udce6",
+      steps:["Zählen","Abschluss"]},
+ nach:{t:"Nachschub",d:"Zwischendurch etwas geholt? Kurz melden.",ic:"\u26a1",
+      steps:["Entnahme","Abschluss"]},
+ ware:{t:"Wareneingang",d:"Neue Lieferung aufnehmen, Jahrgänge prüfen, einräumen.",ic:"\ud83d\ude9a",
+      steps:["Kisten","Jahrgänge","Einräumen","Abschluss"]}};
 
-let S=load(), step=0, footOpen=false;
+const HOWTO={
+ tag:[
+  {t:"Fassungsliste von der Rezeption eintragen",p:"Die Liste durchgehen. Pro verkaufter Flasche den Wein einmal antippen. Zu oft getippt? Das Minus links neben der Zahl.",tip:"Rechts die Sprungleiste führt direkt zu Weiss, Rosé, Rot …"},
+  {t:"Barkühlschrank prüfen",p:"Zuerst die Rotweine (nicht gekühlt), dann der Kühlschrank in der Reihenfolge, zuletzt das Backup dahinter. Jede Position einzeln.",tip:"Alles da: Häkchen antippen. Fehlt etwas: auf die Punkte tippen, pro fehlender Flasche einmal."},
+  {t:"Restaurantkühlschränke prüfen",p:"Vier Schränke der Reihe nach. Soll: 3 Flaschen, je 2 bei Riesling, Rosé, Cuvée Weiss und Naturwein weiss.",tip:"Ist ein Schrank ganz voll, genügt der Knopf oben. Sonst jede Zeile einzeln."},
+  {t:"Holen und einräumen",p:"Diese Flaschen fehlen, sortiert nach Laufweg. Holen, einräumen, abhaken — die Zeile wandert nach unten zu Bar oder Restaurant.",tip:"Weg: Rot, Rosé, Weiss, Cuvée, Natural, Bubbles."},
+  {t:"Fertig",p:"",tip:""}],
+ keller:[
+  {t:"Keller zählen",p:"Im Laufweg: Rot, Rosé, Weiss, Cuvée, Natural, Bubbles, Einzelgänger. Pro Wein Reihen und einzelne Flaschen.",tip:"1 Reihe = 6 Flaschen. Der Knopf +5 springt in Fünferschritten."},
+  {t:"Fertig",p:"",tip:""}],
+ nach:[
+  {t:"Was wurde geholt",p:"Wein antippen, pro Flasche einmal. Minus links, falls zu viel. Nur was zwischendurch aus dem Keller geholt wurde.",tip:""},
+  {t:"Fertig",p:"",tip:""}],
+ ware:[
+  {t:"Kisten aufnehmen",p:"Pro Position: Wein wählen, Jahrgang, Kistenzahl. Neuer Wein: unten die Checkliste.",tip:"Ott 12er-Kisten, alle anderen 6er."},
+  {t:"Jahrgänge prüfen",p:"Vergleich mit dem letzten Stand. Stimmt, abhaken. Stimmt nicht, im Feld korrigieren.",tip:"Referenz ist Juli 2026, kein Live-Bestand."},
+  {t:"Einräumen",p:"Wohin die Kisten kommen. Nach Kellerbereich sortiert. Abhaken.",tip:""},
+  {t:"Fertig",p:"",tip:""}]};
+
+let S=load(), mode=null, step=0, footOpen=false;
 
 function yest(){const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().slice(0,10);}
-function fresh(){return{tag:yest(),konsum:{},rest:{},barrot:{},bar:{},backup:{},holt:{},name:"",notiz:"",ver:5};}
-function load(){try{const r=localStorage.getItem(KEY);if(r){const s=JSON.parse(r);
-  return Object.assign(fresh(),s,{konsum:s.konsum||{},rest:s.rest||{},barrot:s.barrot||{},
-    bar:s.bar||{},backup:s.backup||{},holt:s.holt||{}});}}catch(e){}return fresh();}
+function today(){return new Date().toISOString().slice(0,10);}
+function blank(m){
+  const b={mode:m,tag:m==="tag"?yest():today(),name:"",notiz:"",finished:false,ver:7};
+  if(m==="tag")Object.assign(b,{konsum:{},rest:{},barrot:{},bar:{},backup:{},seen:{},holt:{}});
+  if(m==="keller")Object.assign(b,{reihen:{},einzel:{},zdone:{}});
+  if(m==="nach")Object.assign(b,{ent:{}});
+  if(m==="ware")Object.assign(b,{pos:[],jok:{},jneu:{},ein:{}});
+  return b;
+}
+function load(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r);}catch(e){}return{};}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){toast("Speicher voll");}}
+function D(){return S[mode];}
 function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");
   clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("on"),1900);}
 function deTag(iso){const d=new Date(iso+"T12:00");
   return d.toLocaleDateString("de-AT",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"});}
-const g=(o,id)=>+(o[id]||0);
-const sum=o=>Object.values(o).reduce((a,b)=>a+b,0);
-const kTot=()=>sum(S.konsum);
-const barTot=()=>sum(S.barrot)+sum(S.bar)+sum(S.backup);
-const nTot=()=>sum(S.rest)+barTot();
+function kurzTag(iso){const d=new Date(iso+"T12:00");
+  return d.toLocaleDateString("de-AT",{day:"2-digit",month:"2-digit"});}
+const g=(o,id)=>+((o||{})[id]||0);
+const sum=o=>Object.values(o||{}).reduce((a,b)=>a+(+b||0),0);
+function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 
-/* Protokoll: nur Konsum ↔ Restaurant */
-function proto(){
-  return WINES.map(w=>{const k=g(S.konsum,w.id),r=g(S.rest,w.id);return{w,k,r,d:r-k};})
-    .filter(x=>x.k||x.r);
+/* ── Menü ── */
+function renderMenu(){
+  $("#app").style.display="none";$("#menu").style.display="";
+  const card=(k)=>{
+    const m=MODES[k],d=S[k],run=d&&hasData(k,d)&&!d.finished;
+    return `<button class="mi${run?" run":""}" data-m="${k}">
+      <span class="ic" aria-hidden="true">${m.ic}</span>
+      <span class="txt"><b>${m.t}</b><span>${m.d}</span>
+      ${run?`<span class="when">\u25cf Angefangen · ${deTag(d.tag)}</span>`:""}</span>
+      <span class="go" aria-hidden="true">\u203a</span></button>`;
+  };
+  $("#menu").innerHTML=`<h1>Weinkeller</h1><p class="sub">Haus Hirt · Bad Gastein</p>
+    <div class="mgrp">Regelmäßig</div>${card("tag")}${card("keller")}
+    <div class="mgrp">Bei Bedarf</div>${card("nach")}${card("ware")}`;
+  document.querySelectorAll(".mi").forEach(b=>b.onclick=()=>start(b.dataset.m));
 }
-/* Holliste: alles Fehlende, nach Keller sortiert */
-function hol(){
-  const acc={};
-  const addUp=(o,tag)=>Object.keys(o).forEach(id=>{
-    if(!acc[id])acc[id]={w:byId(id),n:0,q:[]};
-    acc[id].n+=o[id];acc[id].q.push(`${o[id]} ${tag}`);});
-  addUp(S.rest,"Restaurant");addUp(S.barrot,"Bar");
-  addUp(S.bar,"Bar");addUp(S.backup,"Backup");
-  const arr=Object.values(acc).filter(x=>x.w);
-  const ord=["WEISS","ROSÉ","ROT","BUBBLES","NATURAL"];
-  arr.sort((a,b)=>ord.indexOf(a.w.f)-ord.indexOf(b.w.f)||a.w.r.localeCompare(b.w.r)||a.w.winzer.localeCompare(b.w.winzer));
-  return arr;
+function hasData(k,d){
+  if(k==="tag")return sum(d.konsum)||sum(d.rest)||sum(d.barrot)||sum(d.bar)||sum(d.backup)||Object.keys(d.seen||{}).length;
+  if(k==="keller")return Object.keys(d.zdone||{}).length;
+  if(k==="nach")return sum(d.ent);
+  if(k==="ware")return (d.pos||[]).length;
 }
-function tapUp(id){S.konsum[id]=g(S.konsum,id)+1;save();render();}
-function tapDot(bucket,id,soll){const c=g(S[bucket],id),n=c+1>soll?0:c+1;
-  if(n)S[bucket][id]=n;else delete S[bucket][id];save();render();}
+function start(m){
+  mode=m;if(!S[m]||S[m].finished)S[m]=blank(m);step=0;save();
+  $("#menu").style.display="none";$("#app").style.display="";
+  $("#mTitle").textContent=MODES[m].t;
+  $("#steps").innerHTML=MODES[m].steps.map((t,i)=>
+    `<button class="st" role="tab" data-s="${i}"${i===0?' aria-selected="true"':""}>${i+1} · ${t}</button>`).join("");
+  document.querySelectorAll(".st").forEach(b=>b.onclick=()=>go(+b.dataset.s));
+  render();window.scrollTo(0,0);
+}
+function go(s){step=s;render();window.scrollTo(0,0);}
 
-/* ── Render ── */
+/* ── Dispatch ── */
 function render(){
-  $("#dSel").value=S.tag;
-  const h=HOWTO[step];
-  $("#howto").innerHTML=`<b>${h.t}</b><p>${h.p}</p><p class="tip">${h.tip}</p>`;
+  const d=D();$("#dSel").value=d.tag;
+  const h=HOWTO[mode][step];
+  $("#howto").innerHTML=`<b>${h.t}</b>${h.p?`<p>${h.p}</p>`:""}${h.tip?`<p class="tip">${h.tip}</p>`:""}`;
   document.querySelectorAll(".st").forEach(b=>{const i=+b.dataset.s;
     b.setAttribute("aria-selected",i===step);b.classList.toggle("done",i<step);});
-  $("#tools").style.display=(step===0||step===1)?"block":"none";
+  const last=MODES[mode].steps.length-1;
   $("#bBack").style.display=step===0?"none":"";
-  $("#bNext").textContent=step===4?"CSV exportieren":(step===3?"Aufgefüllt — weiter":"Weiter");
-  const m=$("#main");m.innerHTML="";
-  [renderKonsum,renderRest,renderBar,renderKeller,renderFertig][step](m);
+  $("#bNext").style.display=step===last?"none":"";
+  const m=$("#main");m.innerHTML="";m.className="";
+  const R={tag:[rKonsum,rBar,rRest,rHol,rDoc],keller:[rZaehl,rDoc],
+           nach:[rNach,rDoc],ware:[rKisten,rJahr,rEin,rDoc]};
+  const fn=R[mode][step];
+  $("#tools").style.display=(fn===rKonsum||fn===rRest||fn===rNach)?"block":"none";
+  $("#howto").style.display=h.p?"block":"none";
+  fn(m);
+  buildRail(fn===rKonsum||fn===rRest||fn===rZaehl);
   renderFoot();
 }
-function add(m,cls,txt,sub){const d=document.createElement("div");d.className=cls;
-  d.innerHTML=txt+(sub?`<small>${sub}</small>`:"");m.appendChild(d);}
+function add(m,cls,txt){const d=document.createElement("div");d.className=cls;d.innerHTML=txt;m.appendChild(d);return d;}
+function filt(){const q=$("#q").value.trim().toLowerCase();
+  return WINES.filter(w=>!q||(w.winzer+" "+w.wein+" "+w.reb).toLowerCase().includes(q));}
 
-function renderKonsum(m){
-  const q=$("#q").value.trim().toLowerCase();
-  const list=WINES.filter(w=>!q||(w.winzer+" "+w.wein+" "+w.reb+" "+w.region+" "+w.jg).toLowerCase().includes(q));
-  if(!list.length)return m.innerHTML='<p class="empty">Kein Wein gefunden.</p>';
-  let lf=null,lr=null;
+/* ── Sprungleiste ── */
+let railGroups=[];
+function buildRail(show){
+  const rail=$("#rail");
+  if(!show||!railGroups.length){rail.innerHTML="";$("#main").classList.remove("hasrail");return;}
+  $("#main").classList.add("hasrail");
+  rail.innerHTML=railGroups.map(g2=>`<button data-anchor="${g2.id}">${g2.kurz}</button>`).join("");
+  rail.querySelectorAll("button").forEach(b=>b.onclick=()=>{
+    const el=document.getElementById("anchor_"+b.dataset.anchor);
+    if(el)el.scrollIntoView({behavior:"smooth",block:"start"});});
+}
+
+/* ── Konsum ── */
+function konsumRow(w){
+  const v=g(D().konsum,w.id);
+  const row=document.createElement("div");row.className="w";
+  row.innerHTML=`<span class="tx"><span class="nm"><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</span></span>`;
+  const kn=document.createElement("div");kn.className="knum";
+  const minus=document.createElement("button");minus.className="kminus"+(v?"":" hide");minus.textContent="\u2212";
+  minus.setAttribute("aria-label",`Eine Flasche ${w.wein} weniger`);
+  minus.onclick=e=>{e.stopPropagation();if(v>1)D().konsum[w.id]=v-1;else delete D().konsum[w.id];save();render();};
+  const num=document.createElement("button");num.className="cnt"+(v?" on":"");num.textContent=v||"0";
+  num.setAttribute("aria-label",`${w.wein}, ${v} erfasst, antippen für eine weitere`);
+  num.onclick=()=>{D().konsum[w.id]=v+1;save();render();};
+  kn.append(minus,num);row.append(kn);return row;
+}
+function rKonsum(m){
+  const l=filt();
+  if(!l.length)return m.innerHTML='<p class="empty">Kein Wein gefunden.</p>';
+  groupedList(m,l,konsumRow,"konsum");
+}
+
+/* ── gemeinsame gruppierte Liste (Konsum/Nachschub) ── */
+function groupedList(m,list,rowFn,tag){
+  railGroups=[];let lf=null,lg=null;
   list.forEach(w=>{
-    if(w.f!==lf){lf=w.f;lr=null;add(m,"farbe",w.f);}
-    if(w.r!==lr){lr=w.r;add(m,"reb",w.r);}
-    const v=g(S.konsum,w.id);
-    const b=document.createElement("button");b.className="w";
-    b.innerHTML=`<span class="tx"><span class="nm">${w.winzer} · ${w.wein}</span>
-      <span class="mt">${w.jg} · ${w.region}</span></span><span class="cnt${v?" on":""}">${v||"0"}</span>`;
-    b.setAttribute("aria-label",`${w.wein}, ${v} erfasst, antippen für eine weitere`);
-    b.onclick=()=>tapUp(w.id);m.appendChild(b);
+    if(w.f!==lf){lf=w.f;lg=null;
+      const id=tag+"_"+w.f;railGroups.push({id,kurz:FARBKURZ[w.f]});
+      const h=add(m,"hd1w grpanchor","");h.id="anchor_"+id;
+      h.innerHTML=`<div class="hd1">${w.f}</div>`;}
+    if(w.grp!==lg){lg=w.grp;add(m,"reb",w.grp);}
+    m.appendChild(rowFn(w));
   });
-}
-function renderRest(m){
-  const q=$("#q").value.trim().toLowerCase();
-  const all=WINES.filter(w=>PLAN.soll[w.id]!=null)
-    .filter(w=>!q||(w.winzer+" "+w.wein+" "+w.reb+" "+w.region+" "+w.jg).toLowerCase().includes(q));
-  if(!all.length)return m.innerHTML='<p class="empty">Kein Wein gefunden.</p>';
-  [1,2,3,4].forEach(n=>{
-    const list=all.filter(w=>PLAN.schrank[w.id]===n);
-    if(!list.length)return;
-    add(m,"hd1",SCHRANK[n].t,SCHRANK[n].s);
-    let lr=null;
-    list.forEach(w=>{
-      if(w.r!==lr){lr=w.r;add(m,"reb",w.r);}
-      m.appendChild(dotRow(w,"rest",PLAN.soll[w.id]));
-    });
-  });
-}
-function renderBar(m){
-  add(m,"hd1","Bar — Rotweine","Nicht im Kühlschrank");
-  PLAN.barrot.forEach((p,i)=>m.appendChild(dotRow(byId(p.id),"barrot",p.soll,i+1)));
-  add(m,"hd1","Barkühlschrank","In dieser Reihenfolge");
-  PLAN.bar.forEach((p,i)=>m.appendChild(dotRow(byId(p.id),"bar",p.soll,i+1)));
-  add(m,"hd1","Backup","Reserve dahinter");
-  PLAN.backup.forEach(p=>m.appendChild(dotRow(byId(p.id),"backup",p.soll)));
-}
-function dotRow(w,bucket,soll,pos){
-  const fehlt=g(S[bucket],w.id);
-  const b=document.createElement("button");b.className="w"+(fehlt?" miss":" done");
-  let dots="";for(let i=0;i<soll;i++)dots+=`<span class="dot${i<fehlt?" off":""}"></span>`;
-  const info=fehlt?`<span class="miss-n">−${fehlt}</span>`:`<span class="ok-n">voll</span>`;
-  b.innerHTML=`${pos?`<span class="pos">${pos}</span>`:""}
-    <span class="tx"><span class="nm">${w.winzer} · ${w.wein}</span>
-    <span class="mt">Soll ${soll} · ${w.jg}</span></span>
-    <span class="dots">${dots}${info}</span>`;
-  b.setAttribute("aria-label",`${w.wein}, Soll ${soll}, ${fehlt} fehlen`);
-  b.onclick=()=>tapDot(bucket,w.id,soll);return b;
-}
-function renderKeller(m){
-  const items=hol();
-  if(!items.length)return m.innerHTML='<p class="empty">Nichts zu holen — alle Kühlschränke sind voll.</p>';
-  let lf=null;
-  items.forEach(it=>{
-    if(it.w.f!==lf){lf=it.w.f;add(m,"farbe",it.w.f);}
-    const on=!!S.holt[it.w.id];
-    const b=document.createElement("button");b.className="w"+(on?" tick":"");
-    b.innerHTML=`<span class="box2${on?" on":""}">${on?"✓":""}</span>
-      <span class="tx"><span class="nm">${it.w.winzer} · ${it.w.wein}</span>
-      <span class="mt">${it.q.join(" · ")} · ${it.w.jg}</span></span>
-      <span class="qty">${it.n}</span>`;
-    b.setAttribute("aria-label",`${it.n} × ${it.w.wein}${on?", geholt":""}`);
-    b.onclick=()=>{if(on)delete S.holt[it.w.id];else S.holt[it.w.id]=1;save();render();};
-    m.appendChild(b);
-  });
-}
-function renderFoot(){
-  const f=$("#foot");let big,lb,items=[];
-  if(step===0){
-    big=kTot();
-    items=Object.keys(S.konsum).map(id=>({id,v:S.konsum[id],t:`${S.konsum[id]} verkauft`,b:"konsum"}));
-    lb=`<b>Flaschen verkauft</b>${items.length} Weine · antippen zum Korrigieren`;
-  }else if(step===1){
-    big=sum(S.rest);
-    items=Object.keys(S.rest).map(id=>({id,v:S.rest[id],t:`${S.rest[id]} nachfüllen`,b:"rest"}));
-    lb=`<b>Flaschen nachfüllen</b>Restaurant · ${Object.keys(PLAN.soll).length} Positionen`;
-  }else if(step===2){
-    big=barTot();
-    ["barrot","bar","backup"].forEach(bk=>Object.keys(S[bk]).forEach(id=>
-      items.push({id,v:S[bk][id],t:`${S[bk][id]} nachfüllen${bk==="backup"?" · Backup":""}`,b:bk})));
-    lb=`<b>Flaschen nachfüllen</b>Bar · ${sum(S.barrot)} Rotwein, ${sum(S.bar)} Kühlschrank, ${sum(S.backup)} Backup`;
-  }else if(step===3){
-    const it=hol(),done=it.filter(x=>S.holt[x.w.id]).length;
-    big=it.reduce((a,x)=>a+x.n,0);
-    lb=`<b>Flaschen aus dem Keller</b>${done} von ${it.length} Positionen geholt`;
-    f.classList.remove("open");footOpen=false;$("#fList").innerHTML="";
-    $("#fBig").textContent=big;$("#fLb").innerHTML=lb;return;
-  }else{
-    const fl=proto().filter(x=>x.d!==0).length;
-    big=nTot();
-    lb=`<b>Flaschen aus dem Keller</b>${fl?`${fl} Abweichung${fl>1?"en":""} im Protokoll`:"Protokoll ohne Abweichung"}`;
-    f.classList.remove("open");footOpen=false;$("#fList").innerHTML="";
-    $("#fBig").textContent=big;$("#fLb").innerHTML=lb;return;
-  }
-  $("#fBig").textContent=big;$("#fLb").innerHTML=lb;
-  const L=$("#fList");
-  if(!items.length){L.innerHTML='<div class="fempty">Noch nichts erfasst.</div>';return;}
-  L.innerHTML="";
-  items.forEach(it=>{const w=byId(it.id);
-    const d=document.createElement("div");d.className="fi";
-    d.innerHTML=`<span class="t">${w.winzer} · ${w.wein}<small>${it.t}</small></span><span class="v">${it.v}</span>`;
-    const x=document.createElement("button");x.className="x";x.textContent="×";
-    x.setAttribute("aria-label",`${w.wein} zurücksetzen`);
-    x.onclick=()=>{delete S[it.b][it.id];save();render();};
-    d.append(x);L.appendChild(d);});
-}
-function renderFertig(m){
-  const rows=proto(),flag=rows.filter(x=>x.d!==0);
-  const box=document.createElement("div");box.className="rev";
-  if(!rows.length){box.innerHTML='<h2>Protokoll</h2><p class="empty">Noch nichts erfasst.</p>';
-    m.appendChild(box);return;}
-  let h=`<h2>Protokoll · ${deTag(S.tag)}</h2>
-    <table><thead><tr><th>Wein</th><th class="r">Konsum</th><th class="r">Nachgefüllt</th><th class="r">Diff</th></tr></thead><tbody>`;
-  rows.forEach(x=>{h+=`<tr class="${x.d!==0?"flag":""}">
-    <td><b>${x.w.winzer}</b><br>${x.w.wein}</td>
-    <td class="r">${x.k||"–"}</td><td class="r">${x.r||"–"}</td>
-    <td class="r">${x.d===0?"–":`<b style="color:var(--warn)">${x.d>0?"+":""}${x.d}</b>`}</td></tr>`;});
-  h+=`</tbody></table><div class="sum">
-    <div><span>Konsum</span><b>${kTot()}</b></div>
-    <div><span>Restaurant</span><b>${sum(S.rest)}</b></div>
-    <div><span>Bar</span><b>${barTot()}</b></div>
-    <div><span>Keller gesamt</span><b>${nTot()}</b></div></div>`;
-  h+= flag.length
-    ? `<div class="box"><b>${flag.length} Position${flag.length>1?"en weichen":" weicht"} ab.</b><br>
-       Konsum und Restaurant-Nachfüllung stimmen dort nicht überein.</div>`
-    : `<div class="box good"><b>Alles stimmig.</b><br>Konsum und Nachfüllung passen zusammen.</div>`;
-  h+=`<label class="f"><span>Wer hat erfasst</span><input id="fName" value="${(S.name||"").replace(/"/g,"&quot;")}" placeholder="Name"></label>
-      <label class="f"><span>Notiz (optional)</span><input id="fNotiz" value="${(S.notiz||"").replace(/"/g,"&quot;")}" placeholder="z. B. Bruch, Verkostung"></label>
-      <div class="arow"><button id="bTxt">Text kopieren</button><button class="del" id="bReset">Neuer Tag</button></div>`;
-  box.innerHTML=h;m.appendChild(box);
-  $("#fName").oninput=e=>{S.name=e.target.value;save();};
-  $("#fNotiz").oninput=e=>{S.notiz=e.target.value;save();};
-  $("#bTxt").onclick=expTxt;
-  $("#bReset").onclick=()=>ask("Neuer Tag","Das Protokoll wird gelöscht. Schon exportiert?",
-    ()=>{S=fresh();save();step=0;render();window.scrollTo(0,0);toast("Neu gestartet");});
 }
 
-/* ── Export ── */
-function expCsv(){
-  const rows=proto();if(!rows.length)return toast("Nichts zu exportieren");
-  const e=s=>'"'+String(s??"").replace(/"/g,'""')+'"';
-  let L=[["Entnahmeprotokoll Haus Hirt"].map(e).join(";")];
-  L.push(["Datum",S.tag,"Erfasst von",S.name||"—","Notiz",S.notiz||"—"].map(e).join(";"),"");
-  L.push(["Farbe","Rebsorte","Winzer","Wein","Jahrgang","Konsum","Nachgefüllt Restaurant","Differenz","Status"].map(e).join(";"));
-  rows.forEach(x=>L.push([x.w.f,x.w.r,x.w.winzer,x.w.wein,x.w.jg,x.k,x.r,x.d,x.d===0?"ok":"ABWEICHUNG"].map(e).join(";")));
-  L.push("",["SUMME","","","","",kTot(),sum(S.rest),sum(S.rest)-kTot(),""].map(e).join(";"));
-  L.push("",["Aus dem Keller geholt"].map(e).join(";"));
-  L.push(["Farbe","Winzer","Wein","Jahrgang","Anzahl","Wohin"].map(e).join(";"));
-  hol().forEach(x=>L.push([x.w.f,x.w.winzer,x.w.wein,x.w.jg,x.n,x.q.join(" / ")].map(e).join(";")));
-  L.push(["SUMME","","","",nTot(),""].map(e).join(";"));
-  dl(`Entnahme_${S.tag}.csv`,"\ufeff"+L.join("\r\n"),"text/csv");
-  toast("CSV heruntergeladen — an Casimir schicken");
+/* ── Bar (zuerst) ── */
+function rBar(m){
+  const d=D();railGroups=[];
+  const blk=(tit,sub,arr,bucket,showPos,voll)=>{
+    const chk=p=>d.seen[p.id+"_"+bucket]||g(d[bucket],p.id);
+    schrankHead(m,tit,sub,arr,chk,voll?()=>{
+      const allS=arr.every(p=>d.seen[p.id+"_"+bucket]||g(d[bucket],p.id));
+      arr.forEach(p=>{const k=p.id+"_"+bucket;if(!g(d[bucket],p.id)){if(allS)delete d.seen[k];else d.seen[k]=1;}});
+      save();render();}:null,voll?tit+" — alles da":null);
+    arr.forEach((p,i)=>m.appendChild(dotRow(byId(p.id),bucket,p.soll,showPos?i+1:null)));
+  };
+  blk("Bar — Rotweine","Nicht im Kühlschrank",PLAN.barrot,"barrot",false,false);
+  blk("Barkühlschrank","In dieser Reihenfolge",PLAN.bar,"bar",true,false);
+  blk("Backup","Reserve dahinter",PLAN.backup,"backup",false,false);
 }
-function txt(){
-  const rows=proto();
-  let o=`ENTNAHMEPROTOKOLL HAUS HIRT\n${deTag(S.tag)}\nErfasst von: ${S.name||"—"}\n`;
-  if(S.notiz)o+=`Notiz: ${S.notiz}\n`;
-  o+=`\nKonsum ${kTot()} · Restaurant ${sum(S.rest)} · Bar ${barTot()} · Keller ${nTot()}\n\nABGLEICH KONSUM / RESTAURANT\n`;
-  rows.forEach(x=>o+=`${x.d!==0?"! ":"  "}${x.w.winzer} ${x.w.wein} | Kons ${x.k} · Nachgef ${x.r}${x.d!==0?` [${x.d>0?"+":""}${x.d}]`:""}\n`);
-  o+=`\nAUS DEM KELLER\n`;
-  let lf=null;
-  hol().forEach(x=>{if(x.w.f!==lf){lf=x.w.f;o+=`\n— ${x.w.f} —\n`;}
-    o+=`  ${x.n} × ${x.w.winzer} ${x.w.wein}  (${x.q.join(", ")})\n`;});
+
+/* ── Restaurant ── */
+function rRest(m){
+  const all=filt().filter(w=>PLAN.soll[w.id]!=null);
+  if(!all.length)return m.innerHTML='<p class="empty">Kein Wein gefunden.</p>';
+  railGroups=[];
+  [1,2,3,4].forEach(n=>{
+    const list=all.filter(w=>PLAN.schrank[w.id]===n);if(!list.length)return;
+    railGroups.push({id:"rest_"+n,kurz:"S"+n});
+    const chk=w=>D().seen[w.id]||g(D().rest,w.id);
+    const head=schrankHead(m,SCHRANK[n].t,SCHRANK[n].s,list,chk,()=>{
+      const d=D(),allS=list.every(w=>d.seen[w.id]||g(d.rest,w.id));
+      list.forEach(w=>{if(!g(d.rest,w.id)){if(allS)delete d.seen[w.id];else d.seen[w.id]=1;}});
+      save();render();},SCHRANK[n].kurz);
+    head.id="anchor_rest_"+n;head.classList.add("grpanchor");
+    let lg=null;
+    list.forEach(w=>{if(w.grp!==lg){lg=w.grp;add(m,"reb",w.grp);}m.appendChild(dotRow(w,"rest",PLAN.soll[w.id]));});
+  });
+}
+
+function schrankHead(m,titel,sub,list,checkFn,fullFn,fullLabel){
+  const done=list.filter(checkFn).length,all=list.length,pct=Math.round(done/all*100);
+  const wrap=document.createElement("div");wrap.className="hd1w";
+  let html=`<div class="hd1">${titel}<span class="cnt2${done===all?" full":""}">${done}/${all}</span></div>
+    ${sub?`<div class="hd1sub">${sub}</div>`:""}
+    <div class="prog"><i class="${done===all?"full":""}" style="width:${pct}%"></i></div>`;
+  if(fullFn)html+=`<button class="fullbtn${done===all?" done":""}">${done===all?"\u2713 alles geprüft":esc(fullLabel)}</button>`;
+  wrap.innerHTML=html;
+  if(fullFn)wrap.querySelector(".fullbtn").onclick=fullFn;
+  m.appendChild(wrap);return wrap;
+}
+
+function dotRow(w,bucket,soll,pos){
+  const d=D(),fehlt=g(d[bucket],w.id);
+  const key=bucket==="rest"?w.id:w.id+"_"+bucket;
+  const seen=!!d.seen[key]||fehlt>0;
+  const b=document.createElement("div");b.className="w"+(fehlt?" miss":(seen?" seen":""));
+  const tx=document.createElement("button");
+  tx.style.cssText="border:0;background:none;padding:0;flex:1;min-width:0;text-align:left;display:flex;align-items:center;gap:11px;color:inherit;cursor:pointer";
+  let dots="";for(let i=0;i<soll;i++)dots+=`<span class="dot${i<fehlt?" off":""}"></span>`;
+  tx.innerHTML=`${pos?`<span class="pos">${pos}</span>`:""}
+    <span class="tx"><span class="nm"><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</span>
+    <span class="mt">Soll ${soll}</span></span>
+    <span class="dots">${dots}${fehlt?`<span class="miss-n">\u2212${fehlt}</span>`:""}</span>`;
+  tx.setAttribute("aria-label",`${w.wein}, Soll ${soll}, ${fehlt} fehlen. Antippen für eine fehlende mehr.`);
+  tx.onclick=()=>{const n=fehlt+1>soll?0:fehlt+1;
+    if(n){d[bucket][w.id]=n;d.seen[key]=1;}else{delete d[bucket][w.id];delete d.seen[key];}save();render();};
+  const cbox=document.createElement("div");cbox.className="chkbox";
+  const chk=document.createElement("button");
+  chk.className="chk"+(fehlt?" warn":(seen?" on":""));chk.textContent=fehlt?"!":(seen?"\u2713":"");
+  chk.setAttribute("aria-label",seen?`${w.wein} als voll bestätigt — antippen zum Lösen`:`${w.wein} als voll bestätigen`);
+  chk.onclick=e=>{e.stopPropagation();
+    if(fehlt){delete d[bucket][w.id];delete d.seen[key];}
+    else if(d.seen[key])delete d.seen[key];else d.seen[key]=1;save();render();};
+  const lbl=document.createElement("span");lbl.className="chk-lbl";lbl.textContent="voll";
+  if(seen&&!fehlt)lbl.style.color="var(--ok)";
+  cbox.append(chk,lbl);
+  b.append(tx,cbox);return b;
+}
+
+/* ── Keller holen ── */
+function holList(){
+  const d=D(),acc={};
+  const up=(o,tag)=>Object.keys(o||{}).forEach(id=>{
+    if(!acc[id])acc[id]={w:byId(id),n:0,q:[]};acc[id].n+=o[id];acc[id].q.push(`${o[id]} ${tag}`);});
+  up(d.barrot,"Bar");up(d.bar,"Bar");up(d.backup,"Backup");up(d.rest,"Restaurant");
+  return Object.values(acc).filter(x=>x.w).sort((a,b)=>PLAN.zone[a.w.id]-PLAN.zone[b.w.id]||a.w.winzer.localeCompare(b.w.winzer));
+}
+function rHol(m){
+  const d=D(),items=holList();
+  if(!items.length)return m.innerHTML='<div class="box good"><b>Nichts zu holen.</b><br>Alle Kühlschränke sind voll.</div>';
+  const offen=items.filter(it=>!d.holt[it.w.id]),fertig=items.filter(it=>d.holt[it.w.id]);
+  if(offen.length){
+    let lz=null;
+    offen.forEach(it=>{const z=PLAN.zone[it.w.id];
+      if(z!==lz){lz=z;const h=add(m,"hd1w","");h.innerHTML=`<div class="hd1">${PLAN.zonen[z].t}</div><div class="hd1sub">${PLAN.zonen[z].s}</div>`;}
+      m.appendChild(holRow(it));});
+  }else add(m,"box good","<b>Alles geholt und eingeräumt.</b>");
+  if(fertig.length){
+    const h=add(m,"hd1w","");h.innerHTML=`<div class="hd1">Erledigt<span class="cnt2 full">${fertig.length}/${items.length}</span></div>`;
+    const grp={Restaurant:[],Bar:[],Backup:[]};
+    fertig.forEach(it=>{const r=g(d.rest,it.w.id),bb=g(d.barrot,it.w.id)+g(d.bar,it.w.id),bk=g(d.backup,it.w.id);
+      if(r)grp.Restaurant.push(it);if(bb)grp.Bar.push(it);if(bk)grp.Backup.push(it);});
+    Object.entries(grp).forEach(([k,arr])=>{if(!arr.length)return;
+      add(m,"reb",k);arr.forEach(it=>m.appendChild(holRow(it)));});
+  }
+}
+function holRow(it){
+  const d=D(),on=!!d.holt[it.w.id];
+  const b=document.createElement("button");b.className="w"+(on?" tick":"");
+  b.innerHTML=`<span class="box2${on?" on":""}">${on?"\u2713":""}</span>
+    <span class="tx"><span class="nm"><b>${esc(it.w.winzer)}</b> · ${esc(it.w.wein)}</span>
+    <span class="mt">${it.q.join(" · ")}</span></span><span class="qty">${it.n}</span>`;
+  b.setAttribute("aria-label",`${it.n} × ${it.w.wein}${on?", eingeräumt":", zum Holen"}`);
+  b.onclick=()=>{if(on)delete d.holt[it.w.id];else d.holt[it.w.id]=1;save();render();};
+  return b;
+}
+
+/* ── Nachschub ── */
+function rNach(m){
+  const l=filt();if(!l.length)return m.innerHTML='<p class="empty">Kein Wein gefunden.</p>';
+  groupedList(m,l,w=>{
+    const v=g(D().ent,w.id);
+    const row=document.createElement("div");row.className="w";
+    row.innerHTML=`<span class="tx"><span class="nm"><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</span></span>`;
+    const kn=document.createElement("div");kn.className="knum";
+    const minus=document.createElement("button");minus.className="kminus"+(v?"":" hide");minus.textContent="\u2212";
+    minus.setAttribute("aria-label",`Eine ${w.wein} weniger`);
+    minus.onclick=e=>{e.stopPropagation();if(v>1)D().ent[w.id]=v-1;else delete D().ent[w.id];save();render();};
+    const num=document.createElement("button");num.className="cnt"+(v?" on":"");num.textContent=v||"0";
+    num.setAttribute("aria-label",`${w.wein}, ${v} geholt`);
+    num.onclick=()=>{D().ent[w.id]=v+1;save();render();};
+    kn.append(minus,num);row.append(kn);return row;
+  },"nach");
+}
+
+/* ── Kellerzählung ── */
+function rZaehl(m){
+  const d=D();railGroups=[];
+  const zones=[...new Set(WINES.map(w=>PLAN.zone[w.id]))].sort((a,b)=>a-b);
+  zones.forEach(z=>{
+    const list=WINES.filter(w=>PLAN.zone[w.id]===z);
+    const done=list.filter(w=>d.zdone[w.id]).length,pct=Math.round(done/list.length*100);
+    railGroups.push({id:"z_"+z,kurz:PLAN.zonen[z].t.slice(0,4)});
+    const wrap=add(m,"hd1w grpanchor","");wrap.id="anchor_z_"+z;
+    wrap.innerHTML=`<div class="hd1">${PLAN.zonen[z].t}<span class="cnt2${done===list.length?" full":""}">${done}/${list.length}</span></div>
+      <div class="hd1sub">${PLAN.zonen[z].s}</div>
+      <div class="prog"><i class="${done===list.length?"full":""}" style="width:${pct}%"></i></div>`;
+    let lg=null,zi=0;
+    list.forEach(w=>{if(w.grp!==lg){lg=w.grp;add(m,"reb",w.grp);}m.appendChild(zRow(w,zi++));});
+  });
+}
+function zRow(w,idx){
+  const d=D(),R=g(d.reihen,w.id),E=g(d.einzel,w.id),tot=R*6+E,on=!!d.zdone[w.id];
+  const row=document.createElement("div");row.className="w"+(on?" seen":"")+(idx%2?" zebra":"");
+  row.innerHTML=`<span class="tx"><span class="nm"><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</span>
+    <span class="mt">${esc(w.jg)} · ${esc(w.region)}</span></span>`;
+  const z=document.createElement("div");z.className="zrow";
+  const mkf=(bucket,val,lab)=>{
+    const box=document.createElement("div");box.style.textAlign="center";
+    const i=document.createElement("input");i.className="zf"+(val?" on":"");i.type="number";i.min="0";
+    i.inputMode="numeric";i.value=val||"";i.placeholder="0";i.setAttribute("aria-label",`${w.wein} ${lab}`);
+    i.onfocus=()=>i.select();
+    i.oninput=()=>{const v=Math.max(0,parseInt(i.value,10)||0);
+      if(v)d[bucket][w.id]=v;else delete d[bucket][w.id];d.zdone[w.id]=1;save();
+      const s=z.querySelector(".zsum");s.textContent=g(d.reihen,w.id)*6+g(d.einzel,w.id);s.classList.add("on");
+      row.classList.add("seen");i.classList.toggle("on",!!v);};
+    const l=document.createElement("div");l.className="zl";l.textContent=lab;
+    box.append(i,l);return box;};
+  const plus=document.createElement("button");plus.className="z5";plus.textContent="+5";
+  plus.setAttribute("aria-label",`${w.wein}: fünf Reihen dazu`);
+  plus.onclick=()=>{d.reihen[w.id]=g(d.reihen,w.id)+5;d.zdone[w.id]=1;save();render();};
+  const s=document.createElement("span");s.className="zsum"+(tot?" on":"");s.textContent=tot||"0";
+  z.append(mkf("reihen",R,"Reihen"),plus,mkf("einzel",E,"Einzeln"),s);
+  row.appendChild(z);return row;
+}
+
+/* ── Wareneingang ── */
+function rKisten(m){
+  const d=D();
+  if(!d.pos.length)add(m,"empty","Noch nichts aufgenommen.");
+  d.pos.forEach((p,i)=>m.appendChild(posCard(p,i)));
+  const b=document.createElement("button");b.className="addbtn";b.textContent="+ Position hinzufügen";
+  b.onclick=()=>{d.pos.push({id:"",jg:"",kisten:1,neu:null});save();render();window.scrollTo(0,document.body.scrollHeight);};
+  m.appendChild(b);
+}
+function posCard(p,i){
+  const d=D(),c=document.createElement("div");c.className="li";
+  const w=p.id&&p.id!=="__neu"?byId(p.id):null;
+  const opts=WINES.map(x=>`<option value="${x.id}"${x.id===p.id?" selected":""}>${esc(x.winzer)} · ${esc(x.wein)}</option>`).join("");
+  const kist=w?(PLAN.kiste[p.id]||6):6;
+  c.innerHTML=`<div class="top"><b>Position ${i+1}</b><button class="x" aria-label="entfernen">\u00d7</button></div>
+   <div class="g">
+     <label class="fld" style="flex:2 1 100%"><span>Wein</span>
+       <select class="selW"><option value="">— wählen —</option>${opts}<option value="__neu"${p.id==="__neu"?" selected":""}>+ Neuer Wein</option></select></label>
+     <label class="fld"><span>Jahrgang</span><input class="inJ" value="${esc(p.jg)}" placeholder="2025"></label>
+     <label class="fld"><span>Kisten</span><input class="inK" type="number" min="0" inputmode="numeric" value="${p.kisten}"></label>
+   </div>`;
+  if(p.id==="__neu"){const n=p.neu||{};
+    c.innerHTML+=`<div class="g" style="margin-top:4px">
+      <label class="fld"><span>Winzer</span><input class="n_winzer" value="${esc(n.winzer)}"></label>
+      <label class="fld"><span>Weinname</span><input class="n_wein" value="${esc(n.wein)}"></label>
+      <label class="fld"><span>Rebsorte</span><input class="n_reb" value="${esc(n.reb)}"></label>
+      <label class="fld"><span>Region</span><input class="n_region" value="${esc(n.region)}"></label>
+      <label class="fld"><span>Farbe</span><select class="n_f">${["","WEISS","ROSÉ","ROT","BUBBLES","NATURAL"].map(x=>`<option${x===n.f?" selected":""}>${x}</option>`).join("")}</select></label>
+    </div><div class="info">Neuer Wein — wird im Protokoll als Neuzugang geführt.</div>`;
+  }else if(w){const fl=(+p.kisten||0)*kist,chg=p.jg&&p.jg!==w.jg;
+    c.innerHTML+=`<div class="info${chg?" chg":""}">${fl} Flaschen · ${kist}er Kisten${
+      chg?`<br><b>Jahrgangswechsel:</b> bisher ${esc(w.jg)}, jetzt ${esc(p.jg)}`:
+      (p.jg?`<br>Jahrgang unverändert (${esc(w.jg)})`:`<br>Bisher im Keller: Jg. ${esc(w.jg)} (Stand Juli 2026)`)}</div>`;}
+  c.querySelector(".x").onclick=()=>{d.pos.splice(i,1);save();render();};
+  c.querySelector(".selW").onchange=e=>{p.id=e.target.value;if(p.id==="__neu"&&!p.neu)p.neu={};save();render();};
+  c.querySelector(".inJ").oninput=e=>{p.jg=e.target.value;save();};
+  c.querySelector(".inJ").onblur=()=>render();
+  c.querySelector(".inK").oninput=e=>{p.kisten=Math.max(0,parseInt(e.target.value,10)||0);save();};
+  c.querySelector(".inK").onblur=()=>render();
+  ["winzer","wein","reb","region","f"].forEach(k=>{const el=c.querySelector(".n_"+k);
+    if(el)el.oninput=e=>{p.neu=p.neu||{};p.neu[k]=e.target.value;save();};});
+  return c;
+}
+function rJahr(m){
+  const d=D(),items=d.pos.filter(p=>p.id&&p.id!=="__neu"),neu=d.pos.filter(p=>p.id==="__neu");
+  if(!items.length&&!neu.length)return m.innerHTML='<p class="empty">Noch keine Kisten aufgenommen.</p>';
+  if(items.length){
+    const h=add(m,"hd1w","");h.innerHTML='<div class="hd1">Jahrgänge prüfen</div><div class="hd1sub">Vergleich mit Stand Juli 2026</div>';
+    items.forEach(p=>{const w=byId(p.id);if(!w)return;
+      const chg=p.jg&&p.jg!==w.jg,ok=!!d.jok[p.id];
+      const row=document.createElement("div");row.className="w"+(ok?" seen":"");
+      const chk=document.createElement("button");chk.className="box2"+(ok?" on":"");chk.textContent=ok?"\u2713":"";
+      chk.setAttribute("aria-label",`${w.wein} Jahrgang bestätigen`);
+      chk.onclick=()=>{if(ok)delete d.jok[p.id];else d.jok[p.id]=1;save();render();};
+      row.appendChild(chk);
+      const tx=document.createElement("div");tx.className="tx";
+      tx.innerHTML=`<div class="nm"><b>${esc(w.winzer)}</b> · ${esc(w.wein)}${chg?'<span class="pill chg">geändert</span>':""}</div>
+        <div class="mt">Keller ${esc(w.jg)} \u2192 Lieferung ${esc(p.jg||"?")}</div>`;
+      row.appendChild(tx);
+      const inp=document.createElement("input");inp.className="zf";inp.style.width="64px";
+      inp.value=d.jneu[p.id]!=null?d.jneu[p.id]:(p.jg||"");inp.setAttribute("aria-label",`${w.wein} Jahrgang korrigieren`);
+      inp.oninput=e=>{d.jneu[p.id]=e.target.value;save();};
+      row.appendChild(inp);m.appendChild(row);});
+  }
+  if(neu.length){
+    const h=add(m,"hd1w","");h.innerHTML='<div class="hd1">Neue Weine</div><div class="hd1sub">Nicht im bisherigen Sortiment</div>';
+    neu.forEach(p=>{const n=p.neu||{};
+      const row=document.createElement("div");row.className="w";
+      row.innerHTML=`<span class="tx"><span class="nm"><b>${esc(n.winzer)||"—"}</b> · ${esc(n.wein)||"—"}<span class="pill new">neu</span></span>
+        <span class="mt">${esc(n.reb)||"?"} · ${esc(n.region)||"?"} · ${esc(n.f)||"?"} · Jg. ${esc(p.jg)||"?"}</span></span>
+        <span class="qty">${(+p.kisten||0)*6}</span>`;
+      m.appendChild(row);});
+  }
+}
+function rEin(m){
+  const d=D(),items=(d.pos||[]).filter(p=>p.id&&p.id!=="__neu"&&p.kisten>0);
+  if(!items.length)return m.innerHTML='<p class="empty">Keine Kisten zum Einräumen.</p>';
+  const srt=items.slice().sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id]);
+  let lz=null;
+  srt.forEach(p=>{const w=byId(p.id);if(!w)return;const z=PLAN.zone[p.id];
+    if(z!==lz){lz=z;const h=add(m,"hd1w","");h.innerHTML=`<div class="hd1">${PLAN.zonen[z].t}</div><div class="hd1sub">${PLAN.zonen[z].s}</div>`;}
+    const fl=p.kisten*(PLAN.kiste[p.id]||6),on=!!d.ein[p.id];
+    const b=document.createElement("button");b.className="w"+(on?" tick":"");
+    b.innerHTML=`<span class="box2${on?" on":""}">${on?"\u2713":""}</span>
+      <span class="tx"><span class="nm"><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</span>
+      <span class="mt">${p.kisten} Kisten · Jg. ${esc(p.jg||"?")}</span></span><span class="qty">${fl}</span>`;
+    b.onclick=()=>{if(on)delete d.ein[p.id];else d.ein[p.id]=1;save();render();};
+    m.appendChild(b);});
+}
+
+/* ── Abschluss ── */
+function protoTag(){const d=D();
+  return WINES.map(w=>({w,k:g(d.konsum,w.id),r:g(d.rest,w.id)})).filter(x=>x.k||x.r).map(x=>({...x,diff:x.r-x.k}));}
+function summaryBig(){
+  const d=D();
+  if(mode==="tag")return [sum(d.rest)+sum(d.barrot)+sum(d.bar)+sum(d.backup),"Flaschen aus dem Keller"];
+  if(mode==="keller")return [WINES.reduce((a,w)=>a+g(d.reihen,w.id)*6+g(d.einzel,w.id),0),"Flaschen gezählt"];
+  if(mode==="nach")return [sum(d.ent),"Flaschen geholt"];
+  const pos=d.pos.filter(p=>p.id&&p.kisten>0);
+  return [pos.reduce((a,p)=>a+p.kisten*(PLAN.kiste[p.id]||6),0),"Flaschen geliefert"];
+}
+function rDoc(m){
+  const d=D();
+  if(!d.finished){
+    const [big,lb]=summaryBig();
+    const cta=document.createElement("div");cta.className="done-cta";
+    cta.innerHTML=`<div class="big">${big}</div><div class="lb">${lb}</div>
+      <button class="finishbtn">Fertig — Protokoll erstellen</button>
+      <button class="recheck">Noch mal nachsehen</button>`;
+    cta.querySelector(".finishbtn").onclick=()=>{d.finished=true;save();render();window.scrollTo(0,0);};
+    cta.querySelector(".recheck").onclick=()=>go(step-1);
+    m.appendChild(cta);return;
+  }
+  const box=document.createElement("div");box.className="doc";
+  box.innerHTML=(mode==="tag"?docTag():mode==="keller"?docKeller():mode==="nach"?docNach():docWare());
+  // Name-Auswahl
+  const nb=document.createElement("div");nb.className="namebox";
+  nb.innerHTML=`<div class="nl">Wer hat die Fassung gemacht?</div>
+    <div class="namechips">${NAMES.map(n=>`<button class="namechip${d.name===n?" on":""}" data-n="${esc(n)}">${esc(n)}</button>`).join("")}</div>
+    <label class="f"><span>Oder anderer Name</span><input id="fName" value="${NAMES.includes(d.name)?"":esc(d.name)}" placeholder="Name eintragen"></label>
+    <label class="f"><span>Notiz (optional)</span><input id="fNotiz" value="${esc(d.notiz)}" placeholder="z. B. Bruch, Verkostung"></label>`;
+  box.appendChild(nb);
+  const ex=document.createElement("div");ex.className="exprow";
+  ex.innerHTML=`<button class="primary" id="bShare">Protokoll teilen</button>
+    <button class="primary" id="bMail" style="background:#3A5266">Per Mail an Casimir</button>`;
+  box.appendChild(ex);
+  const le=document.createElement("div");le.className="explesser";
+  le.innerHTML=`<button id="bView">Als Seite öffnen / drucken</button>
+    <button id="bCsv">Auch als CSV</button>
+    <button class="del" id="bReset">Zurücksetzen</button>`;
+  box.appendChild(le);
+  m.appendChild(box);
+
+  nb.querySelectorAll(".namechip").forEach(c=>c.onclick=()=>{d.name=c.dataset.n;save();
+    nb.querySelectorAll(".namechip").forEach(x=>x.classList.toggle("on",x===c));$("#fName").value="";});
+  $("#fName").oninput=e=>{d.name=e.target.value;save();
+    nb.querySelectorAll(".namechip").forEach(x=>x.classList.remove("on"));};
+  $("#fNotiz").oninput=e=>{d.notiz=e.target.value;save();};
+  $("#bShare").onclick=doShare;
+  $("#bMail").onclick=doMail;
+  $("#bView").onclick=openHtml;
+  $("#bCsv").onclick=expCsv;
+  $("#bReset").onclick=()=>ask("Zurücksetzen","<p>Dieser Vorgang wird gelöscht. Schon geteilt?</p>",
+    ()=>{S[mode]=blank(mode);save();step=0;render();window.scrollTo(0,0);toast("Zurückgesetzt");});
+}
+function needName(){if(!D().name.trim()){toast("Bitte Namen wählen");$("#fName")?.focus();return false;}return true;}
+
+/* ── Dokument-Bausteine (Tabellen) ── */
+function tbl(head,rows,tot){return `<table><thead><tr>${head}</tr></thead><tbody>${rows}${tot||""}</tbody></table>`;}
+function docHeadHtml(){const d=D();
+  return `<div class="dh"><div class="t">${MODES[mode].t}</div>
+    <div class="m"><span>Datum <b>${deTag(d.tag)}</b></span><span>Von <b>${esc(d.name)||"—"}</b></span>
+    ${d.notiz?`<span>Notiz <b>${esc(d.notiz)}</b></span>`:""}</div></div>`;}
+function docTag(){
+  const d=D(),rows=protoTag(),flag=rows.filter(x=>x.diff!==0);
+  const bar=sum(d.barrot)+sum(d.bar)+sum(d.backup),rest=sum(d.rest);
+  let h=docHeadHtml();
+  h+=`<div class="kpi"><div><span>Konsum</span><b>${sum(d.konsum)}</b></div>
+    <div><span>Restaurant</span><b>${rest}</b></div><div><span>Bar</span><b>${bar}</b></div>
+    <div><span>Keller</span><b>${rest+bar}</b></div>
+    <div class="${flag.length?"w2":""}"><span>Abweichung</span><b>${flag.length}</b></div></div>`;
+  if(rows.length){let tr="",lf=null;
+    rows.forEach(x=>{if(x.w.f!==lf){lf=x.w.f;tr+=`<tr><td class="grp" colspan="4">${lf}</td></tr>`;}
+      tr+=`<tr class="${x.diff!==0?"flag":""}"><td><b>${esc(x.w.winzer)}</b> · ${esc(x.w.wein)}</td>
+        <td class="r">${x.k||"–"}</td><td class="r">${x.r||"–"}</td>
+        <td class="r">${x.diff===0?"–":`<b style="color:#B4471F">${x.diff>0?"+":""}${x.diff}</b>`}</td></tr>`;});
+    h+=`<div class="sec"><h3>Konsum gegen Restaurant</h3>
+      ${tbl(`<th>Wein</th><th class="r">Konsum</th><th class="r">Nachgef.</th><th class="r">Diff</th>`,tr,
+        `<tr class="tot"><td>Summe</td><td class="r">${sum(d.konsum)}</td><td class="r">${rest}</td><td class="r">${rest-sum(d.konsum)>0?"+":""}${rest-sum(d.konsum)}</td></tr>`)}</div>`;}
+  const hl=holList();
+  if(hl.length){let t2="",lz=null;
+    hl.forEach(it=>{const z=PLAN.zone[it.w.id];if(z!==lz){lz=z;t2+=`<tr><td class="grp" colspan="3">${PLAN.zonen[z].t}</td></tr>`;}
+      t2+=`<tr><td><b>${esc(it.w.winzer)}</b> · ${esc(it.w.wein)}</td><td>${it.q.join(" · ")}</td><td class="r"><b>${it.n}</b></td></tr>`;});
+    h+=`<div class="sec"><h3>Aus dem Keller geholt</h3>
+      ${tbl(`<th>Wein</th><th>Wohin</th><th class="r">Fl.</th>`,t2,`<tr class="tot"><td colspan="2">Summe</td><td class="r">${rest+bar}</td></tr>`)}</div>`;}
+  h+=flag.length?`<div class="box"><b>${flag.length} Abweichung${flag.length>1?"en":""}.</b><br>Konsum und Restaurant-Nachfüllung stimmen dort nicht überein.</div>`
+    :`<div class="box good"><b>Alles stimmig.</b></div>`;
+  return h;
+}
+function docKeller(){
+  const d=D(),gez=WINES.filter(w=>d.zdone[w.id]),off=WINES.filter(w=>!d.zdone[w.id]);
+  const tot=gez.reduce((a,w)=>a+g(d.reihen,w.id)*6+g(d.einzel,w.id),0);
+  let h=docHeadHtml();
+  h+=`<div class="kpi"><div><span>Gezählt</span><b>${gez.length}</b></div>
+    <div><span>Offen</span><b>${off.length}</b></div><div><span>Flaschen</span><b>${tot}</b></div></div>`;
+  if(gez.length){let tr="",lz=null;
+    gez.sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id]).forEach(w=>{const z=PLAN.zone[w.id];
+      if(z!==lz){lz=z;tr+=`<tr><td class="grp" colspan="5">${PLAN.zonen[z].t}</td></tr>`;}
+      const R=g(d.reihen,w.id),E=g(d.einzel,w.id);
+      tr+=`<tr><td><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</td><td>${esc(w.jg)}</td>
+        <td class="r">${R||"–"}</td><td class="r">${E||"–"}</td><td class="r"><b>${R*6+E}</b></td></tr>`;});
+    h+=`<div class="sec"><h3>Gezählter Bestand</h3>
+      ${tbl(`<th>Wein</th><th>Jg.</th><th class="r">Reihen</th><th class="r">Einz.</th><th class="r">Fl.</th>`,tr,
+        `<tr class="tot"><td colspan="4">Summe</td><td class="r">${tot}</td></tr>`)}</div>`;}
+  if(off.length)h+=`<div class="sec"><h3>Nicht gezählt (${off.length})</h3>
+    <p style="font-size:14px;color:#6A6A70">${off.map(w=>esc(w.winzer)+" "+esc(w.wein)).join(" · ")}</p></div>`;
+  return h;
+}
+function docNach(){
+  const d=D(),rows=WINES.filter(w=>g(d.ent,w.id));
+  let h=docHeadHtml();
+  h+=`<div class="kpi"><div><span>Positionen</span><b>${rows.length}</b></div><div><span>Flaschen</span><b>${sum(d.ent)}</b></div></div>`;
+  if(rows.length){let tr="",lz=null;
+    rows.sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id]).forEach(w=>{const z=PLAN.zone[w.id];
+      if(z!==lz){lz=z;tr+=`<tr><td class="grp" colspan="2">${PLAN.zonen[z].t}</td></tr>`;}
+      tr+=`<tr><td><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</td><td class="r"><b>${g(d.ent,w.id)}</b></td></tr>`;});
+    h+=`<div class="sec"><h3>Aus dem Keller geholt</h3>
+      ${tbl(`<th>Wein</th><th class="r">Flaschen</th>`,tr,`<tr class="tot"><td>Summe</td><td class="r">${sum(d.ent)}</td></tr>`)}</div>`;}
+  return h;
+}
+function docWare(){
+  const d=D(),pos=d.pos.filter(p=>p.id&&p.kisten>0);
+  const best=pos.filter(p=>p.id!=="__neu"),neu=pos.filter(p=>p.id==="__neu");
+  const fl=pos.reduce((a,p)=>a+p.kisten*(PLAN.kiste[p.id]||6),0);
+  const chg=best.filter(p=>{const w=byId(p.id);const j=d.jneu[p.id]!=null?d.jneu[p.id]:p.jg;return w&&j&&j!==w.jg;});
+  let h=docHeadHtml();
+  h+=`<div class="kpi"><div><span>Positionen</span><b>${pos.length}</b></div>
+    <div><span>Kisten</span><b>${pos.reduce((a,p)=>a+ +p.kisten,0)}</b></div><div><span>Flaschen</span><b>${fl}</b></div>
+    <div class="${chg.length?"w2":""}"><span>Jg. neu</span><b>${chg.length}</b></div>
+    <div class="${neu.length?"w2":""}"><span>Neu</span><b>${neu.length}</b></div></div>`;
+  if(best.length){let tr="";
+    best.forEach(p=>{const w=byId(p.id);if(!w)return;const j=d.jneu[p.id]!=null?d.jneu[p.id]:p.jg,ch=j&&j!==w.jg;
+      tr+=`<tr class="${ch?"flag":""}"><td><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</td>
+        <td>${esc(w.jg)}</td><td>${esc(j)||"–"}</td><td class="r">${p.kisten}</td><td class="r"><b>${p.kisten*(PLAN.kiste[p.id]||6)}</b></td></tr>`;});
+    h+=`<div class="sec"><h3>Lieferung</h3>${tbl(`<th>Wein</th><th>Bisher</th><th>Neu</th><th class="r">Ki.</th><th class="r">Fl.</th>`,tr)}</div>`;}
+  if(neu.length){let tr="";
+    neu.forEach(p=>{const n=p.neu||{};
+      tr+=`<tr><td><b>${esc(n.winzer)||"—"}</b> · ${esc(n.wein)||"—"}</td><td>${esc(n.f)||"?"} · ${esc(n.reb)||"?"}</td>
+        <td>${esc(n.region)||"?"}</td><td>${esc(p.jg)||"?"}</td><td class="r"><b>${p.kisten*6}</b></td></tr>`;});
+    h+=`<div class="sec"><h3>Neue Weine</h3>${tbl(`<th>Wein</th><th>Farbe/Rebsorte</th><th>Region</th><th>Jg.</th><th class="r">Fl.</th>`,tr)}
+      <div class="box"><b>In den Master aufnehmen.</b></div></div>`;}
+  h+=chg.length?`<div class="box"><b>${chg.length} Jahrgangswechsel.</b><br>Weinkarte prüfen.</div>`:`<div class="box good"><b>Keine Jahrgangsänderung.</b></div>`;
+  return h;
+}
+
+/* ── Export: Titel, HTML-Seite, Teilen, Mail, CSV ── */
+function protoTitel(){const d=D();return `Fassungsprotokoll ${MODES[mode].t} — ${kurzTag(d.tag)} — ${d.name||"—"}`;}
+function fullHtml(){
+  const d=D(),inner=(mode==="tag"?docTag():mode==="keller"?docKeller():mode==="nach"?docNach():docWare());
+  return `<!DOCTYPE html><html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(protoTitel())}</title><style>
+body{font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#1C1C1E;
+  max-width:760px;margin:0 auto;padding:24px 18px 60px;background:#fff}
+.dh{border:1px solid #D8D5CD;border-radius:10px;padding:14px;margin-bottom:18px}
+.dh .t{font-size:19px;font-weight:600}.dh .m{display:flex;flex-wrap:wrap;gap:4px 20px;margin-top:8px;font-size:13px;color:#6A6A70}
+.dh .m b{color:#1C1C1E}.sec{margin-top:22px}
+.sec>h3{font-size:13px;margin:0 0 4px;padding-bottom:6px;border-bottom:2px solid #1C1C1E;text-transform:uppercase;letter-spacing:.05em}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:11px;color:#6A6A70;border-bottom:1px solid #1C1C1E;padding:6px 4px;font-weight:700}
+th.r,td.r{text-align:right}td{padding:8px 4px;border-bottom:1px solid #E6E4DE}
+td.grp{background:#F3F1EB;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#6A6A70}
+tr.flag{background:#FBEDE6}tr.tot td{border-top:2px solid #1C1C1E;font-weight:700;background:#F3F1EB}
+.kpi{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+.kpi div{flex:1;min-width:80px;border:1px solid #E6E4DE;border-radius:9px;padding:10px}
+.kpi span{display:block;font-size:11px;color:#6A6A70;font-weight:600}.kpi b{font-size:22px}
+.kpi div.w2{border-color:#E7C3B2;background:#FBEDE6}.kpi div.w2 b{color:#B4471F}
+.box{border:1px solid #E6E4DE;border-left:4px solid #B4471F;background:#FBEDE6;border-radius:0 8px 8px 0;padding:12px;margin-top:14px;font-size:14px}
+.box.good{border-left-color:#3E7A3E;background:#EFF5EE}
+.pr{margin:14px 0 22px}.pr button{padding:12px 20px;border:0;background:#1C1C1E;color:#fff;border-radius:9px;font-size:15px;font-weight:600;cursor:pointer}
+@media print{.pr{display:none}body{padding:0}}
+</style></head><body>
+<div class="pr"><button onclick="window.print()">Drucken / als PDF sichern</button></div>
+${inner}</body></html>`;
+}
+function plainTxt(){
+  const d=D();let o=`${protoTitel()}\n${deTag(d.tag)}\n`;
+  if(d.notiz)o+=`Notiz: ${d.notiz}\n`;o+="\n";
+  if(mode==="tag"){
+    o+=`Konsum ${sum(d.konsum)} · Restaurant ${sum(d.rest)} · Bar ${sum(d.barrot)+sum(d.bar)+sum(d.backup)}\n\nABGLEICH KONSUM/RESTAURANT\n`;
+    protoTag().forEach(x=>o+=`${x.diff!==0?"! ":"  "}${x.w.winzer} ${x.w.wein} | Kons ${x.k} · Nachgef ${x.r}${x.diff!==0?` [${x.diff>0?"+":""}${x.diff}]`:""}\n`);
+    o+="\nAUS DEM KELLER\n";let lz=null;
+    holList().forEach(x=>{const z=PLAN.zone[x.w.id];if(z!==lz){lz=z;o+=`\n— ${PLAN.zonen[z].t} —\n`;}
+      o+=`  ${x.n} × ${x.w.winzer} ${x.w.wein} (${x.q.join(", ")})\n`;});
+  }else if(mode==="keller"){let lz=null,t=0;
+    WINES.filter(w=>d.zdone[w.id]).sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id]).forEach(w=>{const z=PLAN.zone[w.id];
+      if(z!==lz){lz=z;o+=`\n— ${PLAN.zonen[z].t} —\n`;}const n=g(d.reihen,w.id)*6+g(d.einzel,w.id);t+=n;
+      o+=`  ${String(n).padStart(3)} × ${w.winzer} ${w.wein} ${w.jg}\n`;});
+    o+=`\nSumme ${t} Flaschen\n`;const off=WINES.filter(w=>!d.zdone[w.id]);
+    if(off.length)o+=`\nNICHT GEZÄHLT (${off.length})\n`+off.map(w=>"  "+w.winzer+" "+w.wein).join("\n")+"\n";
+  }else if(mode==="nach"){let lz=null;
+    WINES.filter(w=>g(d.ent,w.id)).sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id]).forEach(w=>{const z=PLAN.zone[w.id];
+      if(z!==lz){lz=z;o+=`\n— ${PLAN.zonen[z].t} —\n`;}o+=`  ${g(d.ent,w.id)} × ${w.winzer} ${w.wein}\n`;});
+    o+=`\nSumme ${sum(d.ent)} Flaschen\n`;
+  }else{o+="LIEFERUNG\n";
+    d.pos.filter(p=>p.id&&p.id!=="__neu"&&p.kisten>0).forEach(p=>{const w=byId(p.id);if(!w)return;
+      const j=d.jneu[p.id]!=null?d.jneu[p.id]:p.jg,ch=j&&j!==w.jg;
+      o+=`${ch?"! ":"  "}${p.kisten} Ki (${p.kisten*(PLAN.kiste[p.id]||6)} Fl) ${w.winzer} ${w.wein} ${j||"?"}${ch?` [bisher ${w.jg}]`:""}\n`;});
+    const neu=d.pos.filter(p=>p.id==="__neu"&&p.kisten>0);
+    if(neu.length){o+="\nNEUE WEINE\n";neu.forEach(p=>{const n=p.neu||{};
+      o+=`  ${p.kisten*6} Fl ${n.winzer||"?"} ${n.wein||"?"} ${p.jg||"?"} · ${n.f||"?"} · ${n.reb||"?"}\n`;});}
+  }
   return o;
 }
-async function expTxt(){const t=txt();
-  try{await navigator.clipboard.writeText(t);toast("Kopiert");}
-  catch(e){dl(`Entnahme_${S.tag}.txt`,t,"text/plain");toast("Als Datei geladen");}}
+function openHtml(){
+  if(!needName())return;
+  const w=window.open("","_blank");
+  if(!w){dl(protoTitel()+".html",fullHtml(),"text/html");toast("Als Datei gespeichert");return;}
+  w.document.write(fullHtml());w.document.close();
+}
+async function doShare(){
+  if(!needName())return;
+  const txt=plainTxt(),title=protoTitel();
+  if(navigator.share){
+    try{await navigator.share({title,text:txt});return;}catch(e){if(e.name==="AbortError")return;}
+  }
+  try{await navigator.clipboard.writeText(txt);toast("Kopiert — jetzt einfügen");}
+  catch(e){dl(title+".txt",txt,"text/plain");toast("Als Datei gespeichert");}
+}
+function doMail(){
+  if(!needName())return;
+  const txt=plainTxt(),sub=encodeURIComponent(protoTitel());
+  const enc=encodeURIComponent(txt);
+  if(enc.length>1800){
+    // Zu lang für zuverlässiges mailto — Text in Zwischenablage, leere Mail öffnen
+    const short=encodeURIComponent("Protokoll ist in der Zwischenablage — bitte hier einfügen.\n\n");
+    navigator.clipboard?.writeText(txt).then(()=>{
+      toast("Protokoll kopiert — in der Mail einfügen");
+      setTimeout(()=>{location.href=`mailto:${MAIL}?subject=${sub}&body=${short}`;},400);
+    }).catch(()=>{location.href=`mailto:${MAIL}?subject=${sub}&body=${enc}`;});
+    return;
+  }
+  location.href=`mailto:${MAIL}?subject=${sub}&body=${enc}`;
+}
+function expCsv(){
+  if(!needName())return;
+  const d=D(),e=s=>'"'+String(s??"").replace(/"/g,'""')+'"';
+  const L=[[protoTitel()].map(e).join(";"),["Datum",d.tag,"Von",d.name||"—","Notiz",d.notiz||"—"].map(e).join(";"),""];
+  if(mode==="tag"){
+    L.push(["Farbe","Rebsorte","Winzer","Wein","Konsum","Restaurant","Differenz","Status"].map(e).join(";"));
+    protoTag().forEach(x=>L.push([x.w.f,x.w.grp,x.w.winzer,x.w.wein,x.k,x.r,x.diff,x.diff===0?"ok":"ABWEICHUNG"].map(e).join(";")));
+    L.push("",["Aus dem Keller"].map(e).join(";"),["Bereich","Winzer","Wein","Anzahl","Wohin"].map(e).join(";"));
+    holList().forEach(x=>L.push([PLAN.zonen[PLAN.zone[x.w.id]].t,x.w.winzer,x.w.wein,x.n,x.q.join(" / ")].map(e).join(";")));
+  }else if(mode==="keller"){
+    L.push(["Bereich","Farbe","Winzer","Wein","Jahrgang","Reihen","Einzeln","Flaschen","Status"].map(e).join(";"));
+    WINES.slice().sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id]).forEach(w=>{const R=g(d.reihen,w.id),E=g(d.einzel,w.id);
+      L.push([PLAN.zonen[PLAN.zone[w.id]].t,w.f,w.winzer,w.wein,w.jg,R,E,R*6+E,d.zdone[w.id]?"gezählt":"NICHT GEZÄHLT"].map(e).join(";"));});
+  }else if(mode==="nach"){
+    L.push(["Bereich","Winzer","Wein","Flaschen"].map(e).join(";"));
+    WINES.filter(w=>g(d.ent,w.id)).sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id])
+      .forEach(w=>L.push([PLAN.zonen[PLAN.zone[w.id]].t,w.winzer,w.wein,g(d.ent,w.id)].map(e).join(";")));
+  }else{
+    L.push(["Winzer","Wein","Jg. bisher","Jg. neu","Kisten","Flaschen","Status"].map(e).join(";"));
+    d.pos.filter(p=>p.id&&p.id!=="__neu"&&p.kisten>0).forEach(p=>{const w=byId(p.id);if(!w)return;
+      const j=d.jneu[p.id]!=null?d.jneu[p.id]:p.jg;
+      L.push([w.winzer,w.wein,w.jg,j,p.kisten,p.kisten*(PLAN.kiste[p.id]||6),(j&&j!==w.jg)?"JG GEÄNDERT":"ok"].map(e).join(";"));});
+    const neu=d.pos.filter(p=>p.id==="__neu"&&p.kisten>0);
+    if(neu.length){L.push("",["Neue Weine"].map(e).join(";"),["Winzer","Wein","Rebsorte","Region","Farbe","Jg.","Kisten","Fl."].map(e).join(";"));
+      neu.forEach(p=>{const n=p.neu||{};L.push([n.winzer,n.wein,n.reb,n.region,n.f,p.jg,p.kisten,p.kisten*6].map(e).join(";"));});}
+  }
+  dl(protoTitel()+".csv","\ufeff"+L.join("\r\n"),"text/csv");toast("CSV gespeichert");
+}
 function dl(n,t,ty){const b=new Blob([t],{type:ty+";charset=utf-8"});const a=document.createElement("a");
   a.href=URL.createObjectURL(b);a.download=n;document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
-function ask(t,p,fn){$("#ovT").textContent=t;$("#ovP").textContent=p;$("#ov").classList.add("on");
+
+function ask(t,html,fn){$("#ovT").textContent=t;$("#ovBody").innerHTML=html;$("#ov").classList.add("on");
   $("#ovOk").onclick=()=>{$("#ov").classList.remove("on");fn();};}
 $("#ovNo").onclick=()=>$("#ov").classList.remove("on");
 
-function go(s){step=s;render();window.scrollTo(0,0);}
-document.querySelectorAll(".st").forEach(b=>b.onclick=()=>go(+b.dataset.s));
+/* ── Fußleiste ── */
+function renderFoot(){
+  const d=D(),f=$("#foot");let big=0,lb="",items=[],closed=true;const last=MODES[mode].steps.length-1;
+  if(step===last){f.style.display="none";return;}f.style.display="";
+  if(mode==="tag"){
+    if(step===0){big=sum(d.konsum);closed=false;
+      items=Object.keys(d.konsum).map(id=>({id,v:d.konsum[id],t:`${d.konsum[id]} verkauft`,b:"konsum"}));
+      lb=`<b>Flaschen verkauft</b>${items.length} Weine · antippen zum Korrigieren`;}
+    else if(step===1){big=sum(d.barrot)+sum(d.bar)+sum(d.backup);closed=false;
+      ["barrot","bar","backup"].forEach(bk=>Object.keys(d[bk]).forEach(id=>
+        items.push({id,v:d[bk][id],t:`${d[bk][id]} nachfüllen${bk==="backup"?" · Backup":""}`,b:bk})));
+      const all=PLAN.barrot.length+PLAN.bar.length+PLAN.backup.length;
+      const done=[["barrot",PLAN.barrot],["bar",PLAN.bar],["backup",PLAN.backup]]
+        .reduce((a,[k,arr])=>a+arr.filter(p=>d.seen[p.id+"_"+k]||g(d[k],p.id)).length,0);
+      lb=`<b>Bar nachfüllen</b>${done} von ${all} geprüft`;}
+    else if(step===2){big=sum(d.rest);closed=false;
+      items=Object.keys(d.rest).map(id=>({id,v:d.rest[id],t:`${d.rest[id]} nachfüllen`,b:"rest"}));
+      const n=Object.keys(PLAN.soll).length,done=WINES.filter(w=>PLAN.soll[w.id]!=null&&(d.seen[w.id]||g(d.rest,w.id))).length;
+      lb=`<b>Restaurant nachfüllen</b>${done} von ${n} geprüft`;}
+    else{const it=holList();big=it.reduce((a,x)=>a+x.n,0);
+      lb=`<b>Holen & einräumen</b>${it.filter(x=>d.holt[x.w.id]).length} von ${it.length} erledigt`;}
+  }else if(mode==="keller"){
+    const gez=WINES.filter(w=>d.zdone[w.id]).length;
+    big=WINES.reduce((a,w)=>a+g(d.reihen,w.id)*6+g(d.einzel,w.id),0);
+    lb=`<b>Flaschen gezählt</b>${gez} von ${WINES.length} Positionen`;
+  }else if(mode==="nach"){big=sum(d.ent);closed=false;
+    items=Object.keys(d.ent).map(id=>({id,v:d.ent[id],t:`${d.ent[id]} geholt`,b:"ent"}));
+    lb=`<b>Flaschen geholt</b>${items.length} Weine · antippen zum Korrigieren`;
+  }else{const pos=d.pos.filter(p=>p.id&&p.kisten>0);
+    big=pos.reduce((a,p)=>a+p.kisten*(PLAN.kiste[p.id]||6),0);
+    lb=`<b>Flaschen geliefert</b>${pos.length} Positionen`;}
+  $("#fBig").textContent=big;$("#fLb").innerHTML=lb;
+  if(closed){f.classList.remove("open");footOpen=false;$("#fList").innerHTML="";return;}
+  const L=$("#fList");
+  if(!items.length){L.innerHTML='<div class="fempty">Noch nichts erfasst.</div>';return;}
+  L.innerHTML="";
+  items.forEach(it=>{const w=byId(it.id);if(!w)return;
+    const el=document.createElement("div");el.className="fi";
+    el.innerHTML=`<span class="t">${esc(w.winzer)} · ${esc(w.wein)}<small>${it.t}</small></span><span class="v">${it.v}</span>`;
+    const x=document.createElement("button");x.className="x";x.textContent="\u00d7";
+    x.setAttribute("aria-label",`${w.wein} zurücksetzen`);
+    x.onclick=()=>{delete d[it.b][it.id];if(it.b!=="konsum"&&it.b!=="ent")delete d.seen[it.id];save();render();};
+    el.append(x);L.appendChild(el);});
+}
+
+/* ── Navigation ── */
+$("#bHome").onclick=()=>{mode=null;renderMenu();window.scrollTo(0,0);};
 $("#bBack").onclick=()=>{if(step>0)go(step-1);};
-$("#bNext").onclick=()=>{
-  if(step<4)return go(step+1);
-  if(!proto().length)return toast("Noch nichts erfasst");
-  if(!S.name.trim()){toast("Bitte Namen eintragen");$("#fName")?.focus();return;}
-  expCsv();
-};
+$("#bNext").onclick=()=>{const last=MODES[mode].steps.length-1;if(step<last)go(step+1);};
 $("#fh").onclick=()=>{footOpen=!footOpen;$("#foot").classList.toggle("open",footOpen);};
 $("#q").oninput=render;
-$("#dSel").onchange=e=>{S.tag=e.target.value||yest();save();render();};
-render();
+$("#dSel").onchange=e=>{D().tag=e.target.value||today();save();render();};
+renderMenu();
 </script>
 </body>
 </html>
