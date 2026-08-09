@@ -5,14 +5,19 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#1C1C1E">
+<link rel="manifest" href="manifest.json">
 <title>Weinkeller — Haus Hirt</title>
 <style>
 :root{
-  --ink:#1C1C1E;--grey:#6A6A70;--light:#9C9CA2;--line:#E6E4DE;--line2:#D8D5CD;
+  --ink:#1C1C1E;--grey:#6A6A70;--light:#7A7A80;--line:#E6E4DE;--line2:#D8D5CD;
   --bg:#FBFAF7;--card:#FFF;--soft:#F3F1EB;--soft2:#ECE9E1;
   --gold:#9A7B44;--warn:#B4471F;--warnbg:#FBEDE6;--ok:#3E7A3E;--okbg:#EFF5EE;
   --blue:#3A5266;--bluebg:#EDF2F6;
-  --r:10px;--foot:132px;--rail:30px}
+  --r:10px;--foot:132px;--rail:44px;--maxw:760px;--topH:118px;
+  /* Getränke: Trefferflächen skalieren mit der Viewport-Breite (3.3) */
+  --gd:clamp(26px,7vw,42px);      /* Punkt-Durchmesser */
+  --gcell:clamp(40px,11vw,64px);  /* Zelle Lade 1 */
+  --grack:clamp(30px,9vw,52px)}   /* Gasteiner-Regal */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);
@@ -47,7 +52,8 @@ h1,h2{font-weight:600}
   font-size:13px;cursor:pointer;padding:8px 16px;text-decoration:underline}
 
 /* Kopf */
-header{background:var(--ink);color:#fff;padding:11px 16px 0;position:sticky;top:0;z-index:40}
+.topwrap{position:sticky;top:0;z-index:40}
+header{background:var(--ink);color:#fff;padding:11px 16px 0}
 .hd{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .hd h1{margin:0;font-size:16px;font-weight:600}
 .hd .subh{font-size:11.5px;color:#9A9AA0;margin-top:1px}
@@ -61,13 +67,19 @@ header{background:var(--ink);color:#fff;padding:11px 16px 0;position:sticky;top:
 .st[aria-selected="true"]{background:var(--bg);color:var(--ink);font-weight:600}
 .st.done{color:#8FBF8F}
 
-/* Anleitung */
-.howto{background:var(--soft);border-bottom:1px solid var(--line);padding:13px 16px}
-.howto b{display:block;font-size:15.5px;margin-bottom:3px;font-weight:600}
-.howto p{margin:0;font-size:14px;color:var(--grey);line-height:1.45}
-.howto .tip{margin-top:7px;font-size:13px;color:var(--gold)}
+/* Anleitung (einklappbar, Standard zu) */
+.howto{background:var(--soft);border-bottom:1px solid var(--line)}
+.hwh{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;
+  padding:12px 16px;cursor:pointer;font:inherit;color:inherit}
+.hwh b{flex:1;display:block;font-size:15.5px;font-weight:600;line-height:1.3}
+.hwh .car2{color:var(--grey);font-size:13px;transition:transform .18s;flex-shrink:0}
+.howto.open .hwh .car2{transform:rotate(90deg)}
+.hwb{display:none;padding:0 16px 13px}
+.howto.open .hwb{display:block}
+.hwb p{margin:0;font-size:14px;color:var(--grey);line-height:1.45}
+.hwb .tip{margin-top:7px;font-size:13px;color:var(--gold)}
 
-.tools{padding:10px 16px;position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
+.tools{padding:10px 16px;position:static;background:var(--bg);border-bottom:1px solid var(--line)}
 #q{width:100%;padding:12px 13px;border:1px solid var(--line2);border-radius:9px;font-size:16px;background:var(--card)}
 #q:focus{outline:2px solid var(--ink);outline-offset:-1px}
 
@@ -83,8 +95,8 @@ main.hasrail{padding-right:calc(var(--rail) + 20px)}
 /* Sprungleiste rechts */
 .rail{position:fixed;right:3px;top:50%;transform:translateY(-50%);z-index:35;
   display:flex;flex-direction:column;gap:3px}
-.rail button{width:26px;min-height:30px;padding:6px 0;border-radius:6px;border:1px solid var(--line);
-  background:rgba(255,255,255,.82);color:var(--light);font-size:9.5px;font-weight:700;cursor:pointer;
+.rail button{width:40px;min-height:44px;padding:8px 0;border-radius:8px;border:1px solid var(--line);
+  background:rgba(255,255,255,.92);color:var(--grey);font-size:11px;font-weight:700;cursor:pointer;
   writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:.03em}
 .rail button:active{background:var(--ink);color:#fff}
 .rail button.on{border-color:var(--ink);color:var(--ink)}
@@ -104,16 +116,16 @@ main.hasrail{padding-right:calc(var(--rail) + 20px)}
 .fullbtn:active{background:var(--soft)}
 .fullbtn.done{border-color:var(--ok);color:var(--ok);background:var(--okbg)}
 .reb{font-size:12px;color:var(--grey);margin:15px 0 2px;font-weight:600;letter-spacing:.02em}
-.grpanchor{scroll-margin-top:120px}
+.grpanchor{scroll-margin-top:calc(var(--topH) + 8px)}
 
 /* Zeile */
 .w{width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);
   padding:12px 2px;display:flex;align-items:center;gap:11px;cursor:pointer}
 .w:active{background:var(--soft)}
 .w .tx{flex:1;min-width:0}
-.nm{font-size:16px;line-height:1.25}
+.nm{display:block;font-size:16px;line-height:1.25}
 .nm b{font-weight:600}
-.mt{font-size:12.5px;color:var(--grey);margin-top:1px}
+.mt{display:block;font-size:12.5px;color:var(--grey);margin-top:1px}
 .w.miss{background:var(--warnbg);border-radius:8px;border-bottom-color:transparent;padding-left:9px;padding-right:9px;margin:0 -7px}
 .w.miss .nm{color:var(--warn)}
 .w.seen{opacity:.5}
@@ -132,8 +144,8 @@ main.hasrail{padding-right:calc(var(--rail) + 20px)}
 .cnt.on{border-color:var(--ink);color:var(--ink);background:var(--soft)}
 
 /* Punkte + Häkchen */
-.dots{display:flex;gap:5px;align-items:center;flex-shrink:0}
-.dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--ink);background:var(--ink)}
+.dots{display:flex;gap:7px;align-items:center;flex-shrink:0;padding:10px 0;cursor:pointer}
+.dot{width:26px;height:26px;border-radius:50%;border:2px solid var(--ink);background:var(--ink)}
 .dot.off{background:var(--card);border-color:var(--line2)}
 .miss-n{font-size:13px;font-weight:700;color:var(--warn);margin-left:3px;min-width:22px;text-align:right}
 .chkbox{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0}
@@ -141,7 +153,7 @@ main.hasrail{padding-right:calc(var(--rail) + 20px)}
   display:grid;place-items:center;font-size:19px;font-weight:700;color:#fff;background:var(--card);cursor:pointer}
 .chk.on{background:var(--ok);border-color:var(--ok)}
 .chk.warn{background:var(--warn);border-color:var(--warn)}
-.chk-lbl{font-size:10px;font-weight:600;color:var(--light);letter-spacing:.03em}
+.chk-lbl{font-size:11px;font-weight:600;color:var(--light);letter-spacing:.03em}
 .chk.on ~ .chk-lbl,.chkbox .chk.on+.chk-lbl{color:var(--ok)}
 .pos{width:20px;font-size:13px;color:var(--light);font-weight:700;flex-shrink:0;text-align:right}
 .box2{width:34px;height:34px;border:2px solid var(--ink);border-radius:8px;flex-shrink:0;
@@ -156,7 +168,7 @@ main.hasrail{padding-right:calc(var(--rail) + 20px)}
 .ztop{margin-bottom:9px}
 .zsteppers{display:flex;gap:10px;align-items:flex-end}
 .zstep{flex:1;text-align:center}
-.zstep .zl{font-size:10px;color:var(--light);font-weight:600;margin-bottom:4px}
+.zstep .zl{font-size:11px;color:var(--light);font-weight:600;margin-bottom:4px}
 .zsteprow{display:flex;align-items:center;gap:4px;justify-content:center}
 .zbtn{width:36px;height:40px;border:1px solid var(--line2);border-radius:8px;background:var(--card);
   font-size:20px;color:var(--grey);cursor:pointer;line-height:1;flex-shrink:0}
@@ -184,12 +196,9 @@ main.hasrail{padding-right:calc(var(--rail) + 20px)}
   font-size:17px;font-weight:700;background:var(--card)}
 .zf:focus{outline:2px solid var(--ink);outline-offset:-2px;border-color:var(--ink)}
 .zf.on{border-color:var(--ink);background:var(--soft)}
-.zl{font-size:10px;color:var(--light);font-weight:600}
+.zl{font-size:11px;color:var(--light);font-weight:600}
 .zsum{font-size:17px;font-weight:700;min-width:30px;text-align:right}
 .zsum.on{color:var(--ok)}
-.z5{width:36px;height:44px;border:2px solid var(--line2);border-radius:9px;background:var(--card);
-  font-size:15px;font-weight:700;color:var(--grey);cursor:pointer}
-.z5:active{background:var(--ink);color:#fff}
 
 .empty{padding:40px 0;text-align:center;color:var(--light)}
 .pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:20px;
@@ -313,8 +322,14 @@ label.f input{width:100%;padding:12px;border:1px solid var(--line2);border-radiu
 .card2 .row button{flex:1;padding:13px;border-radius:9px;font-size:15px;font-weight:600;cursor:pointer;border:1px solid var(--line2);background:var(--card)}
 .card2 .row .ok{background:var(--ink);color:#fff;border-color:var(--ink)}
 
-@media(min-width:720px){header,.howto,.tools,main,.leadbig{max-width:760px;margin-left:auto;margin-right:auto}
-  .foot>*{max-width:760px;margin:0 auto}.rail{right:calc(50% - 380px + 6px)}}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.offline{background:#F3F1EB;color:#5F5D57;font-size:12px;padding:6px 16px;border-bottom:1px solid var(--line);
+  display:none}
+body.off .offline{display:block}
+
+@media(min-width:720px){header,.howto,.tools,main,.leadbig{max-width:var(--maxw);margin-left:auto;margin-right:auto}
+  .foot>*{max-width:var(--maxw);margin:0 auto}.rail{right:calc(50% - (var(--maxw)/2) + 6px)}}
+@media(min-width:768px){:root{--maxw:900px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 @media print{header,.tools,.foot,.howto,.rail,.exprow,.explesser,.leadbig{display:none!important}
   body{background:#fff}.doc{padding:0}}
@@ -345,56 +360,69 @@ label.f input{width:100%;padding:12px;border:1px solid var(--line2);border-radiu
 .gbtn.getr b{font-size:15px}
 .gbtn span.s{display:block;font-size:12.5px;color:#6A6A70;margin-top:1px}
 .gbtn .go2{margin-left:auto;color:#9C9CA2;font-size:20px}
-.drw{margin:14px 0 0;border:1.5px solid #C9C5BA;border-radius:10px;background:#F1EEE7;overflow:hidden}
-.drwf{background:#ECE9E1;border-bottom:1.5px solid #C9C5BA;padding:7px 11px 8px;
+.drw{margin:16px 0 0;border:1.5px solid #C9C5BA;border-radius:10px;background:#F1EEE7;overflow:hidden}
+.drwf{background:#ECE9E1;border-bottom:1.5px solid #C9C5BA;padding:9px 11px 10px;
  display:flex;align-items:center;justify-content:space-between;gap:9px}
-.drwf b{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5A584F}
-.drwf i{font-style:normal;font-size:10.5px;color:#8C8A80;font-variant-numeric:tabular-nums}
+.drwf b{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#3F3E38}
+.drwf i{font-style:normal;font-size:11px;color:#6A6A70;font-variant-numeric:tabular-nums;white-space:nowrap}
 .drwf i.low{color:#B4471F;font-weight:700}
 .drwh{width:28px;height:4px;border-radius:3px;background:#C4C0B4;flex-shrink:0}
-.drwi{padding:10px 6px 9px;border-top:1px solid #FCFAF5;display:flex;gap:9px;
- justify-content:center;touch-action:none}
-.gcol{display:flex;flex-direction:column;align-items:center;position:relative}
-.gcol+.gcol::before{content:"";position:absolute;left:0;top:19px;bottom:0;width:1px;background:#E2DED4}
-.gnum{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;height:17px;letter-spacing:-.02em}
+.drwi{padding:12px 10px 10px;border-top:1px solid #FCFAF5;display:flex;gap:10px;
+ justify-content:flex-start;align-items:flex-end;touch-action:none;
+ overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.drwi.fit{justify-content:center}
+.gcol{display:flex;flex-direction:column;align-items:center;position:relative;flex-shrink:0}
+.gnum{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.3;
+ letter-spacing:-.02em;margin-bottom:3px}
 .gnum.low{color:#B4471F}
-.gnum s{font-size:9px;font-weight:600;color:#9C9CA2;text-decoration:none}
-.gstk{display:flex;flex-direction:column-reverse;align-items:center;justify-content:flex-start}
-.gpt{border-radius:50%;flex-shrink:0}
-.gpt.off{background:none!important;border:1.5px solid #D2CEC4}
-.gbase{width:70%;height:1.5px;background:#CBC7BC;margin:5px 0 0}
-.gshot{height:50px;width:100%;display:flex;align-items:flex-end;justify-content:center;margin-top:2px}
+.gnum s{font-size:11px;font-weight:600;color:#7A7A80;text-decoration:none}
+.gstk{display:flex;flex-direction:column-reverse;align-items:center;justify-content:flex-start;gap:5px}
+.gpt{border-radius:50%;flex-shrink:0;width:var(--gd);height:var(--gd)}
+.gpt.off{background:none!important;border:1.5px solid #C6C2B8}
+.gbase{width:80%;height:2px;background:#CBC7BC;margin:6px 0 0}
+.gshot{height:52px;width:100%;display:flex;align-items:flex-end;justify-content:center;margin-top:3px}
 .gshot img{display:block;opacity:.92}
-.gcap{font-size:8.5px;line-height:1.15;text-align:center;color:#6A6A70;margin-top:4px;min-height:22px;padding:0 1px}
-.gcell{position:relative;cursor:pointer;display:grid;place-items:center;flex-shrink:0}
+.gcap{font-size:11px;line-height:1.2;text-align:center;color:#5F5D57;margin-top:5px;
+ min-height:26px;padding:0 1px;overflow-wrap:break-word;hyphens:auto}
+.drwi.top{align-items:flex-start}
+.gcell{position:relative;cursor:pointer;display:grid;place-items:center;flex-shrink:0;
+ width:var(--gcell);height:calc(var(--gcell) * 1.24)}
 .gcell .gsh{position:absolute;inset:0;border:1.5px solid #CDC9BF;background:#FCFAF6;border-radius:5px}
 .gcell svg{position:relative;z-index:1;width:80%;height:80%}
-.gcell.gx svg{display:none}
-.gcell.gx .gsh{background:none;border-style:dashed;border-color:#CFCBC1}
-.gsq{display:flex;flex-direction:column;gap:5px}
-.gspec{display:flex;flex-direction:column;gap:2px}
-.gsp{display:flex;flex-direction:column;align-items:center;cursor:pointer}
-.gsp .gcell .gsh{display:none}
-.gsp .gcell svg{width:100%;height:100%}
-.gsp .gcell.gx svg{display:block;opacity:.17;filter:grayscale(1)}
-.gsp span{font-size:7.5px;line-height:1;color:#6A6A70;margin-top:1px;text-align:center;
- white-space:nowrap;height:8px}
-.gsp.gx span{color:#B4471F}
-.rsec{padding:11px 10px 10px;display:flex;gap:6px;justify-content:center;touch-action:none}
+.gcell.gx svg{opacity:.16;filter:grayscale(1)}
+.gcell.gx .gsh{background:none;border-style:dashed;border-color:#C6C2B8}
+.gsq{display:flex;flex-direction:column;gap:6px}
+.gitem{display:flex;flex-direction:column;align-items:center}
+.gitem .gcap{margin-top:3px;min-height:0}
+.gitem.gx .gcap{color:#B4471F}
+.gspec{display:flex;flex-direction:column;gap:4px;padding-left:4px;border-left:1px solid #E2DED4}
+.rsec{padding:12px 10px 10px;display:flex;gap:10px;justify-content:flex-start;
+ align-items:flex-end;touch-action:none;overflow-x:auto}
 .rdiv{height:1px;background:#D2CEC4;margin:0 10px}
-.rsec2{padding:10px 10px 12px;touch-action:none}
-.rhd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
-.rhd b{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5A584F}
-.rhd i{font-style:normal;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.rsec2{padding:12px 10px 14px;touch-action:none}
+.rhd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.rhd b{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#3F3E38}
+.rhd i{font-style:normal;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
 .rhd i.low{color:#B4471F}
-.rhd i s{font-size:9.5px;font-weight:600;color:#9C9CA2;text-decoration:none}
-.rrows{display:grid;grid-template-columns:repeat(6,1fr);column-gap:1px;row-gap:14px;
+.rhd i s{font-size:11px;font-weight:600;color:#7A7A80;text-decoration:none}
+.rrows{display:grid;grid-template-columns:repeat(6,1fr);column-gap:6px;row-gap:12px;
  justify-items:center;cursor:pointer}
-.rrows .gpt{width:100%;max-width:36px;aspect-ratio:1;margin:0!important}
-.drwb{padding:0 9px 9px}
-.drwb button{width:100%;padding:9px;border:1px solid #D8D5CD;background:#fff;border-radius:8px;
- font:inherit;font-size:12.5px;font-weight:600;color:#5F5D57;cursor:pointer}
+.rrows .gpt{width:100%;max-width:var(--grack);height:auto;aspect-ratio:1;margin:0!important}
+.drwb{padding:0 9px 10px;display:flex;gap:8px}
+.drwb button{flex:1;padding:11px 8px;border:1px solid #D8D5CD;background:#fff;border-radius:8px;
+ font:inherit;font-size:13px;font-weight:600;color:#5F5D57;cursor:pointer;min-height:44px}
 .drwb button.ok{background:#EFF5EE;border-color:#3E7A3E;color:#2F5E2F}
+.drwb button.reset{flex:0 0 auto;color:#7A7A80;font-weight:500}
+.ghint{font-size:12px;color:#7A7A80;padding:0 11px 9px;margin-top:-4px}
+.gsprow{display:flex;align-items:center;gap:9px;min-height:44px;cursor:pointer}
+.gsprow .lb{font-size:11px;color:#5F5D57;flex:1;min-width:60px;line-height:1.15}
+.gsprow .ic{display:flex;gap:5px;flex-shrink:0}
+.gsprow .gcell{width:26px;height:34px}
+.gsprow .gcell .gsh{display:none}
+.gsprow .gcell svg{width:100%;height:100%}
+.gsprow.gx .lb{color:#B4471F}
+@media(min-width:768px){.gladen{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;align-items:start}
+ .gladen .drw.wide{grid-column:1 / -1}}
 .grow2{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #E6E4DE}
 .grow2:last-child{border-bottom:0}
 .grow2 .gt{flex:1;font-size:14px}
@@ -409,19 +437,22 @@ label.f input{width:100%;padding:12px;border:1px solid var(--line2);border-radiu
 
 <div id="menu" class="menu"></div>
 <div id="app" style="display:none">
+<div class="topwrap" id="topwrap">
 <header>
   <div class="hd">
     <div><h1 id="mTitle">—</h1><div class="subh">Haus Hirt · Weinkeller</div></div>
-    <div class="hdr-r"><input type="date" id="dSel"><button class="home" id="bHome">Menü</button></div>
+    <div class="hdr-r"><label for="dSel" class="vh">Datum</label><input type="date" id="dSel"><button class="home" id="bHome">Menü</button></div>
   </div>
   <nav class="steps" id="steps" role="tablist"></nav>
 </header>
+<div class="offline">Offline — Protokoll später senden</div>
 <div class="howto" id="howto"></div>
 <div class="tools" id="tools"><input id="q" type="search" placeholder="Wein suchen …" autocomplete="off"></div>
+</div>
 <div class="rail" id="rail"></div>
-<main id="main"></main>
+<main id="main" role="tabpanel" tabindex="-1"></main>
 <div class="foot" id="foot">
-  <div class="fh" id="fh"><span class="big" id="fBig">0</span><span class="lb" id="fLb"></span><span class="car">\u25b2</span></div>
+  <div class="fh" id="fh"><span class="big" id="fBig">0</span><span class="lb" id="fLb"></span><span class="car">▲</span></div>
   <div class="flist" id="fList"></div>
   <div class="fb"><button class="b sm" id="bBack">Zurück</button><button class="b go" id="bNext">Weiter</button></div>
 </div>
@@ -433,7 +464,9 @@ label.f input{width:100%;padding:12px;border:1px solid var(--line2);border-radiu
 <div class="toast" id="toast"></div>
 <script>
 const WINES = [{"id":"w001","f":"WEISS","r":"Grüner Veltliner","winzer":"Leindl","wein":"Langenlois","jg":"2024","region":"Kamptal DAC","reb":"Grüner Veltliner","at":1,"grp":"Grüner Veltliner"},{"id":"w003","f":"WEISS","r":"Grüner Veltliner","winzer":"Ott","wein":"Fass 4","jg":"2025","region":"Wagram, Feuersbrunn","reb":"Grüner Veltliner","at":1,"grp":"Grüner Veltliner"},{"id":"w002","f":"WEISS","r":"Grüner Veltliner","winzer":"Simon Gattinger","wein":"Loiben Federspiel","jg":"2024","region":"Wachau DAC","reb":"Grüner Veltliner","at":1,"grp":"Grüner Veltliner"},{"id":"w004","f":"WEISS","r":"Grüner Veltliner","winzer":"Weinberghof Fritsch","wein":"Ried Schlossberg 1ÖTW","jg":"2022","region":"Wagram DAC, Oberstockstall","reb":"Grüner Veltliner","at":1,"grp":"Grüner Veltliner"},{"id":"w005","f":"WEISS","r":"Riesling","winzer":"Hirsch","wein":"Zöbing","jg":"2024","region":"Kamptal","reb":"Riesling","at":1,"grp":"Riesling"},{"id":"w006","f":"WEISS","r":"Riesling","winzer":"Pichler-Krutzler","wein":"Loiben","jg":"2024","region":"Wachau DAC","reb":"Riesling","at":1,"grp":"Riesling"},{"id":"w007","f":"WEISS","r":"Riesling","winzer":"Emrich-Schönleber","wein":"Mineral","jg":"2023","region":"Monzingen (DE)","reb":"Riesling","at":0,"grp":"Riesling"},{"id":"w008","f":"WEISS","r":"Sauvignon Blanc","winzer":"Hannes Sabathi","wein":"Sauvignon Blanc","jg":"2024","region":"Südsteiermark DAC, Gamlitz","reb":"Sauvignon Blanc","at":1,"grp":"Sauvignon Blanc"},{"id":"w009","f":"WEISS","r":"Sauvignon Blanc","winzer":"Verus","wein":"Sauvignon Blanc","jg":"?","region":"Slowenien, Ormož","reb":"Sauvignon Blanc","at":0,"grp":"Sauvignon Blanc"},{"id":"w010","f":"WEISS","r":"Weißburgunder","winzer":"Hannes Sabathi","wein":"Weißburgunder","jg":"2024","region":"Südsteiermark DAC, Gamlitz","reb":"Weißburgunder","at":1,"grp":"Weißburgunder"},{"id":"w011","f":"WEISS","r":"Chardonnay","winzer":"Gesellmann","wein":"Chardonnay","jg":"2022","region":"Mittelburgenland, Deutschkreutz","reb":"Chardonnay","at":1,"grp":"Chardonnay"},{"id":"w013","f":"WEISS","r":"Chardonnay","winzer":"Domaine Borgeot","wein":"Bourgogne Blanc Côte d'Or","jg":"2022","region":"Burgund (FR)","reb":"Chardonnay","at":0,"grp":"Chardonnay"},{"id":"w014","f":"WEISS","r":"Chardonnay","winzer":"Domaine Pillot","wein":"Bourgogne Blanc","jg":"2023","region":"Burgund (FR)","reb":"Chardonnay","at":0,"grp":"Chardonnay"},{"id":"w016","f":"WEISS","r":"Grauburgunder","winzer":"Andreas Gsellmann","wein":"Grauburgunder","jg":"2025","region":"Neusiedlersee, Gols","reb":"Grauburgunder","at":1,"grp":"Grauburgunder"},{"id":"w015","f":"WEISS","r":"Grauburgunder","winzer":"Dürnberg","wein":"Grauburgunder","jg":"2021","region":"Weinviertel","reb":"Grauburgunder","at":1,"grp":"Grauburgunder"},{"id":"w017","f":"WEISS","r":"Roter Veltliner","winzer":"Josef Fritz","wein":"Wagram Terrassen","jg":"2024","region":"Wagram DAC, Zaussenberg","reb":"Roter Veltliner","at":1,"grp":"Roter Veltliner"},{"id":"w018","f":"WEISS","r":"Muskateller","winzer":"Muster","wein":"Gelber Muskateller Styria","jg":"2025","region":"Südsteiermark","reb":"Gelber Muskateller","at":1,"grp":"Muskateller"},{"id":"w019","f":"WEISS","r":"Gemischter Satz","winzer":"Ingrid Groiss","wein":"Anna's 17","jg":"2025","region":"Weinviertel, Breitenwaida","reb":"Gemischter Satz","at":1,"grp":"Gemischter Satz"},{"id":"w020","f":"WEISS","r":"Gemischter Satz","winzer":"Mayer am Pfarrplatz","wein":"Wiener Gemischter Satz","jg":"2025","region":"Wien","reb":"Gemischter Satz","at":1,"grp":"Gemischter Satz"},{"id":"w023","f":"WEISS","r":"Cuvée","winzer":"Bründlmayer","wein":"Spiegel","jg":"2022","region":"Kamptal, Langenlois","reb":"Grauburgunder / Weißburgunder","at":1,"grp":"Cuvée"},{"id":"w022","f":"WEISS","r":"Cuvée","winzer":"Heinrich (f. U&K)","wein":"Tulpe","jg":"2019","region":"Neusiedlersee, Gols","reb":"Weißburgunder / Chardonnay","at":1,"grp":"Cuvée"},{"id":"w060","f":"WEISS","r":"Cuvée","winzer":"Muster (U&K)","wein":"Fräulein Klein","jg":"2021","region":"Südsteiermark, Gamlitz","reb":"Muskateller-Cuvée","at":1,"grp":"Cuvée"},{"id":"w021","f":"WEISS","r":"Cuvée","winzer":"Wolfgang Seher","wein":"Wilde Reben","jg":"2024","region":"Niederösterreich","reb":"GV / Riesling / Muskateller","at":1,"grp":"Cuvée"},{"id":"w045","f":"ROSÉ","r":"Zweigelt","winzer":"Dürnberg","wein":"Blanc de Noir","jg":"2024","region":"Weinviertel","reb":"Zweigelt","at":1,"grp":"Rosé"},{"id":"w043","f":"ROSÉ","r":"Zweigelt","winzer":"Fritsch (Karl)","wein":"Wagram Rosé","jg":"?","region":"Wagram, Oberstockstall","reb":"Zweigelt","at":1,"grp":"Rosé"},{"id":"w046","f":"ROSÉ","r":"Cuvée","winzer":"Ultimate Provence","wein":"UP Rosé","jg":"2025","region":"Côtes de Provence (FR)","reb":"Cinsault / Grenache / Syrah / Rolle","at":0,"grp":"Rosé"},{"id":"w026","f":"ROT","r":"Zweigelt","winzer":"Glatzer","wein":"Rubin Carnuntum","jg":"2023","region":"Carnuntum, Göttlesbrunn","reb":"Zweigelt","at":1,"grp":"Zweigelt"},{"id":"w027","f":"ROT","r":"Zweigelt","winzer":"Glatzer","wein":"Dornenvogel","jg":"2022","region":"Carnuntum DAC, Göttlesbrunn","reb":"Zweigelt Reserve","at":1,"grp":"Zweigelt"},{"id":"w025","f":"ROT","r":"Zweigelt","winzer":"Kollwentz","wein":"Leithakalk","jg":"2022","region":"Leithaberg, Großhöflein","reb":"Zweigelt","at":1,"grp":"Zweigelt"},{"id":"w024","f":"ROT","r":"Zweigelt","winzer":"Werner Achs","wein":"Goldberg","jg":"2024","region":"Neusiedlersee DAC, Gols","reb":"Zweigelt","at":1,"grp":"Zweigelt"},{"id":"w031","f":"ROT","r":"Blaufränkisch","winzer":"Moric","wein":"Reserve","jg":"2023","region":"Burgenland","reb":"Blaufränkisch","at":1,"grp":"Blaufränkisch"},{"id":"w030","f":"ROT","r":"Blaufränkisch","winzer":"Muhr","wein":"Samt & Seide","jg":"2022","region":"Carnuntum, Prellenkirchen","reb":"Blaufränkisch","at":1,"grp":"Blaufränkisch"},{"id":"w028","f":"ROT","r":"Blaufränkisch","winzer":"Nittnaus","wein":"Kalk & Schiefer","jg":"2019","region":"Neusiedlersee, Gols","reb":"Blaufränkisch","at":1,"grp":"Blaufränkisch"},{"id":"w032","f":"ROT","r":"Pinot Noir","winzer":"Gebeshuber","wein":"Gumpoldskirchen","jg":"2022","region":"Thermenregion","reb":"Pinot Noir","at":1,"grp":"Pinot Noir"},{"id":"w035","f":"ROT","r":"Pinot Noir","winzer":"Schiefer","wein":"Pinot Noir","jg":"2021","region":"Eisenberg, Königsberg","reb":"Pinot Noir","at":1,"grp":"Pinot Noir"},{"id":"w033","f":"ROT","r":"Pinot Noir","winzer":"Domaine Confuron-Gindre","wein":"Bourgogne","jg":"2022","region":"Burgund (FR)","reb":"Pinot Noir","at":0,"grp":"Pinot Noir"},{"id":"w034","f":"ROT","r":"Pinot Noir","winzer":"Domaine Ecard","wein":"Savigny-les-Beaune","jg":"2020","region":"Burgund (FR)","reb":"Pinot Noir","at":0,"grp":"Pinot Noir"},{"id":"w036","f":"ROT","r":"Merlot","winzer":"Dürnberg","wein":"Elementum","jg":"2022","region":"Niederösterreich, Rosenberg","reb":"Merlot","at":1,"grp":"Merlot"},{"id":"w041","f":"ROT","r":"Sangiovese","winzer":"Lamole di Lamole","wein":"Chianti Classico Duelame","jg":"2024","region":"Toscana (IT)","reb":"Sangiovese","at":0,"grp":"Sangiovese"},{"id":"w042","f":"ROT","r":"Barbera","winzer":"Ceste","wein":"Barbera d'Alba Sposabella","jg":"?","region":"Piemont (IT)","reb":"Barbera","at":0,"grp":"Barbera"},{"id":"w038","f":"ROT","r":"Cuvée","winzer":"Claus Preisinger","wein":"Heideboden","jg":"2023","region":"Gols, Leithagebirge","reb":"Zw / BF / Merlot","at":1,"grp":"Cuvée"},{"id":"w039","f":"ROT","r":"Cuvée","winzer":"Heinrich","wein":"Pannobile","jg":"2020","region":"Neusiedlersee, Gols","reb":"Zweigelt / Blaufränkisch","at":1,"grp":"Cuvée"},{"id":"w037","f":"ROT","r":"Cuvée","winzer":"Heinrich (f. U&K)","wein":"Nelke","jg":"2017","region":"Neusiedlersee, Gols","reb":"Zweigelt / Blaufränkisch","at":1,"grp":"Cuvée"},{"id":"w040","f":"ROT","r":"Cuvée","winzer":"Werner Achs","wein":"Xur","jg":"2022","region":"Neusiedlersee, Gols","reb":"Zw / BF / St. Laurent","at":1,"grp":"Cuvée"},{"id":"w055","f":"BUBBLES","r":"Schaumwein","winzer":"Seher","wein":"La Petite Frizzante Rosé","jg":"?","region":"Niederösterreich","reb":"Pinot Noir","at":1,"grp":"Sekt Rosé"},{"id":"w056","f":"BUBBLES","r":"Schaumwein","winzer":"De Saint Gall","wein":"Champagne 1er Cru Blanc de Blancs","jg":"n.v.","region":"Champagne (FR)","reb":"Chardonnay","at":0,"grp":"Champagner"},{"id":"w057","f":"BUBBLES","r":"Schaumwein","winzer":"La Farra","wein":"Prosecco Rosé Brut","jg":"n.v.","region":"Veneto (IT)","reb":"Glera / Pinot Nero","at":0,"grp":"Sekt Rosé"},{"id":"serena","f":"BUBBLES","r":"Schaumwein","winzer":"Serena","wein":"Piu Frizzante","jg":"n.v.","region":"Veneto (IT)","reb":"Glera","at":0,"grp":"Sekt"},{"id":"w048","f":"NATURAL","r":"Traminer","winzer":"Andreas Gsellmann","wein":"Traminer","jg":"2021","region":"Neusiedlersee, Gols","reb":"Traminer","at":1,"grp":"Naturwein weiss"},{"id":"w050","f":"NATURAL","r":"Traminer","winzer":"Heinrich","wein":"Roter Traminer Freyheit","jg":"2021","region":"Neusiedlersee, Gols","reb":"Roter Traminer","at":1,"grp":"Naturwein weiss"},{"id":"w049","f":"NATURAL","r":"Muskateller","winzer":"Heinrich","wein":"Muskat Freyheit","jg":"2022","region":"Neusiedlersee, Gols","reb":"Muskateller","at":1,"grp":"Naturwein weiss"},{"id":"w052","f":"NATURAL","r":"Pinot Noir","winzer":"Heinrich","wein":"Pinot Freyheit","jg":"2022","region":"Neusiedlersee, Gols","reb":"Pinot Noir","at":1,"grp":"Naturwein rot"},{"id":"w047","f":"NATURAL","r":"Cuvée","winzer":"Claus Preisinger","wein":"Kalk und Kiesel","jg":"2022","region":"Gols, Leithagebirge","reb":"WB / GV / Welschriesling","at":1,"grp":"Naturwein weiss"},{"id":"w051","f":"NATURAL","r":"Cuvée","winzer":"Heinrich","wein":"Naked White","jg":"2023","region":"Neusiedlersee, Gols","reb":"WB / Chardonnay / GV","at":1,"grp":"Naturwein weiss"},{"id":"w053","f":"NATURAL","r":"Cuvée","winzer":"Heinrich","wein":"Naked Red","jg":"n.v.","region":"Burgenland","reb":"Zw / BF / St. Laurent","at":1,"grp":"Naturwein rot"},{"id":"w065","f":"ROT","r":"Blaufränkisch","grp":"Blaufränkisch","winzer":"Gesellmann","wein":"Creitzer Reserve","jg":"2021","region":"Mittelburgenland DAC, Deutschkreutz","reb":"Blaufränkisch","at":1},{"id":"w066","f":"WEISS","r":"Chardonnay","grp":"Chardonnay","winzer":"Kollwentz","wein":"Leithakalk","jg":"2024","region":"Leithaberg, Großhöflein","reb":"Chardonnay","at":1}];
-const PLAN = {"soll":{"w001":3,"w003":3,"w002":3,"w004":3,"w005":3,"w006":2,"w007":2,"w008":3,"w009":3,"w010":3,"w011":3,"w013":3,"w014":3,"w016":3,"w015":3,"w017":3,"w018":3,"w019":3,"w020":3,"w023":2,"w022":2,"w060":2,"w021":2,"w045":2,"w043":2,"w046":2,"w026":3,"w027":3,"w025":3,"w024":3,"w031":3,"w030":3,"w028":3,"w032":3,"w035":3,"w033":3,"w034":3,"w036":3,"w041":3,"w042":3,"w038":3,"w039":3,"w037":3,"w040":3,"w048":2,"w050":2,"w049":2,"w052":3,"w047":2,"w051":3,"w053":3,"w065":3,"w066":3},"schrank":{"w001":3,"w003":3,"w002":3,"w004":3,"w005":3,"w006":3,"w007":3,"w008":3,"w009":3,"w010":3,"w011":3,"w013":3,"w014":3,"w016":4,"w015":4,"w017":4,"w018":4,"w019":4,"w020":4,"w023":4,"w022":4,"w060":4,"w021":4,"w045":4,"w043":4,"w046":4,"w026":1,"w027":1,"w025":1,"w024":1,"w031":1,"w030":1,"w028":1,"w032":2,"w035":2,"w033":2,"w034":2,"w036":1,"w041":2,"w042":2,"w038":2,"w039":2,"w037":2,"w040":2,"w048":4,"w050":4,"w049":4,"w052":2,"w047":4,"w051":4,"w053":2,"w065":1,"w066":3},"restorder":{"w024":0,"w026":1,"w025":2,"w027":3,"w028":4,"w030":5,"w031":6,"w065":7,"w036":8,"w032":9,"w035":10,"w033":11,"w034":12,"w041":13,"w042":14,"w037":15,"w039":16,"w040":17,"w038":18,"w053":19,"w052":20,"w001":21,"w002":22,"w003":23,"w004":24,"w005":25,"w006":26,"w007":27,"w008":28,"w009":29,"w010":30,"w011":31,"w066":32,"w013":33,"w014":34,"w015":35,"w016":36,"w017":37,"w018":38,"w019":39,"w020":40,"w021":41,"w022":42,"w023":43,"w060":44,"w043":45,"w045":46,"w046":47,"w047":48,"w051":49,"w049":50,"w048":51,"w050":52},"zone":{"w001":3,"w003":3,"w002":3,"w004":3,"w005":3,"w006":3,"w007":3,"w008":3,"w009":3,"w010":3,"w011":3,"w013":3,"w014":3,"w016":3,"w015":3,"w017":3,"w018":3,"w019":3,"w020":3,"w023":4,"w022":4,"w060":4,"w021":4,"w045":2,"w043":2,"w046":2,"w026":1,"w027":1,"w025":1,"w024":1,"w031":1,"w030":1,"w028":1,"w032":1,"w035":1,"w033":1,"w034":1,"w036":1,"w041":1,"w042":1,"w038":1,"w039":1,"w037":1,"w040":1,"w055":6,"w056":6,"w057":6,"serena":6,"w048":5,"w050":5,"w049":5,"w052":5,"w047":5,"w051":5,"w053":5,"w065":1,"w066":3},"zonen":{"1":{"t":"Rot","s":"Linker Raum · Hauptregal"},"2":{"t":"Rosé","s":"Eingang · Frontregal"},"3":{"t":"Weiss","s":"Rechter Raum · Hauptregal"},"4":{"t":"Cuvée Weiss","s":"Rechter Raum · Seitenregal links"},"5":{"t":"Natural","s":"Rechter Raum · Seitenregal rechts"},"6":{"t":"Bubbles","s":"Eingang · Frontregal"},"7":{"t":"Einzelgänger","s":"Oben auf dem Regal"}},"kiste":{},"barrot":[{"id":"w026","soll":3},{"id":"w065","soll":3},{"id":"w053","soll":3}],"bar":[{"id":"serena","soll":6},{"id":"w055","soll":2},{"id":"w056","soll":1},{"id":"w001","soll":3},{"id":"w009","soll":3},{"id":"w011","soll":3},{"id":"w005","soll":3},{"id":"w043","soll":3}],"backup":[{"id":"serena","soll":2},{"id":"w055","soll":2},{"id":"w056","soll":2}]};
+const PLAN = {"soll":{"w001":3,"w003":3,"w002":3,"w004":3,"w005":3,"w006":2,"w007":2,"w008":3,"w009":3,"w010":3,"w011":3,"w013":3,"w014":3,"w016":3,"w015":3,"w017":3,"w018":3,"w019":3,"w020":3,"w023":2,"w022":2,"w060":2,"w021":2,"w045":2,"w043":2,"w046":2,"w026":3,"w027":3,"w025":3,"w024":3,"w031":3,"w030":3,"w028":3,"w032":3,"w035":3,"w033":3,"w034":3,"w036":3,"w041":3,"w042":3,"w038":3,"w039":3,"w037":3,"w040":3,"w048":2,"w050":2,"w049":2,"w052":3,"w047":2,"w051":3,"w053":3,"w065":3,"w066":3},"schrank":{"w001":3,"w003":3,"w002":3,"w004":3,"w005":3,"w006":3,"w007":3,"w008":3,"w009":3,"w010":3,"w011":3,"w013":3,"w014":3,"w016":4,"w015":4,"w017":4,"w018":4,"w019":4,"w020":4,"w023":4,"w022":4,"w060":4,"w021":4,"w045":4,"w043":4,"w046":4,"w026":1,"w027":1,"w025":1,"w024":1,"w031":1,"w030":1,"w028":1,"w032":2,"w035":2,"w033":2,"w034":2,"w036":1,"w041":2,"w042":2,"w038":2,"w039":2,"w037":2,"w040":2,"w048":4,"w050":4,"w049":4,"w052":2,"w047":4,"w051":4,"w053":2,"w065":1,"w066":3},"restorder":{"w024":0,"w026":1,"w025":2,"w027":3,"w028":4,"w030":5,"w031":6,"w065":7,"w036":8,"w032":9,"w035":10,"w033":11,"w034":12,"w041":13,"w042":14,"w037":15,"w039":16,"w040":17,"w038":18,"w053":19,"w052":20,"w001":21,"w002":22,"w003":23,"w004":24,"w005":25,"w006":26,"w007":27,"w008":28,"w009":29,"w010":30,"w011":31,"w066":32,"w013":33,"w014":34,"w015":35,"w016":36,"w017":37,"w018":38,"w019":39,"w020":40,"w021":41,"w022":42,"w023":43,"w060":44,"w043":45,"w045":46,"w046":47,"w047":48,"w051":49,"w049":50,"w048":51,"w050":52},"zone":{"w001":3,"w003":3,"w002":3,"w004":3,"w005":3,"w006":3,"w007":3,"w008":3,"w009":3,"w010":3,"w011":3,"w013":3,"w014":3,"w016":3,"w015":3,"w017":3,"w018":3,"w019":3,"w020":3,"w023":4,"w022":4,"w060":4,"w021":4,"w045":2,"w043":2,"w046":2,"w026":1,"w027":1,"w025":1,"w024":1,"w031":1,"w030":1,"w028":1,"w032":1,"w035":1,"w033":1,"w034":1,"w036":1,"w041":1,"w042":1,"w038":1,"w039":1,"w037":1,"w040":1,"w055":6,"w056":6,"w057":6,"serena":6,"w048":5,"w050":5,"w049":5,"w052":5,"w047":5,"w051":5,"w053":5,"w065":1,"w066":3},"zonen":{"1":{"t":"Rot","s":"Linker Raum · Hauptregal"},"2":{"t":"Rosé","s":"Eingang · Frontregal"},"3":{"t":"Weiss","s":"Rechter Raum · Hauptregal"},"4":{"t":"Cuvée Weiss","s":"Rechter Raum · Seitenregal links"},"5":{"t":"Natural","s":"Rechter Raum · Seitenregal rechts"},"6":{"t":"Bubbles","s":"Eingang · Frontregal"},"7":{"t":"Einzelgänger","s":"Oben auf dem Regal"}},"kiste":{"w003":12},"barrot":[{"id":"w026","soll":3},{"id":"w065","soll":3},{"id":"w053","soll":3}],"bar":[{"id":"serena","soll":6},{"id":"w055","soll":2},{"id":"w056","soll":1},{"id":"w001","soll":3},{"id":"w009","soll":3},{"id":"w011","soll":3},{"id":"w005","soll":3},{"id":"w043","soll":3}],"backup":[{"id":"serena","soll":2},{"id":"w055","soll":2},{"id":"w056","soll":2}]};
+const KISTE_STD=6;
+const kg=p=>+(p&&p.kistengr)||KISTE_STD;
 const MAIL="casimir.ikrath@haus-hirt.com";
 const NAMES=["Asad Karakiri","Casimir","Ian Lauchbein"];
 const KEY="hh_keller_v10";
@@ -456,21 +489,39 @@ const MODES={
  ware:{t:"Wareneingang",d:"Neue Lieferung aufnehmen, Jahrgänge prüfen, einräumen.",ic:"ware",
       steps:["Kisten","Jahrgänge","Einräumen","Abschluss"]}};
 
+/* 3.8 · Schrittlisten pro Zweig */
+const STEPS={
+ tag:   {wein:["Konsum","Bar","Restaurant","Keller","Abschluss"]},
+ keller:{wein:["Zählen","Abschluss"], getr:["Laden prüfen","Abschluss"]},
+ nach:  {wein:["Entnahme","Abschluss"], getr:["Getränke","Abschluss"]},
+ ware:  {wein:["Kisten","Jahrgänge","Einräumen","Abschluss"], getr:["Getränke","Abschluss"]}};
+function steps(){return (STEPS[mode]||{})[branch||"wein"]||MODES[mode].steps;}
+function lastStep(){return steps().length-1;}
+
 const HOWTO={
  tag:[
-  {t:"Fassungsliste von der Rezeption eintragen",p:"Die Liste durchgehen. Pro verkaufter Flasche den Wein einmal antippen. Zu oft getippt? Das Minus links neben der Zahl.",tip:"Rechts die Sprungleiste führt direkt zu Weiss, Rosé, Rot …"},
-  {t:"Barkühlschrank prüfen",p:"Zuerst die Rotweine (nicht gekühlt), dann der Kühlschrank in der Reihenfolge, zuletzt das Backup dahinter. Jede Position einzeln.",tip:"Alles da: Häkchen antippen. Fehlt etwas: auf die Punkte tippen, pro fehlender Flasche einmal."},
-  {t:"Restaurantkühlschränke prüfen",p:"Vier Schränke der Reihe nach. Soll: 3 Flaschen, je 2 bei Riesling, Rosé, Cuvée Weiss und Naturwein weiss.",tip:"Ist ein Schrank ganz voll, genügt der Knopf oben. Sonst jede Zeile einzeln."},
+  {t:"Fassungsliste von der Rezeption eintragen",p:"Du zählst hier verkaufte Flaschen. Die Liste durchgehen, pro verkaufter Flasche den Wein einmal antippen. Zu oft getippt? Das Minus links neben der Zahl.",tip:"Rechts die Sprungleiste führt direkt zu Weiss, Rosé, Rot …"},
+  {t:"Barkühlschrank prüfen",p:"Du tippst herunter auf das, was noch dasteht. Zuerst die Rotweine (nicht gekühlt), dann der Kühlschrank in der Reihenfolge, zuletzt das Backup dahinter.",tip:"Alles da: Häkchen antippen. Sonst auf den Punkt tippen, der dem tatsächlichen Bestand entspricht."},
+  {t:"Restaurantkühlschränke prüfen",p:"Du tippst herunter auf das, was noch dasteht. Vier Schränke der Reihe nach. Soll: 3 Flaschen, je 2 bei Riesling, Rosé, Cuvée Weiss und Naturwein weiss.",tip:"Ist ein Schrank ganz voll, genügt der Knopf oben. Sonst jede Zeile einzeln."},
   {t:"Holen und einräumen",p:"Diese Flaschen fehlen, sortiert nach Laufweg. Holen, einräumen, abhaken — die Zeile wandert nach unten zu Bar oder Restaurant.",tip:"Weg: Rot, Rosé, Weiss, Cuvée, Natural, Bubbles."},
   {t:"Fertig",p:"",tip:""}],
  keller:[
-  {t:"Keller zählen",p:"Im Laufweg: Rot, Rosé, Weiss, Cuvée, Natural, Bubbles, Einzelgänger. Pro Wein Reihen und einzelne Flaschen.",tip:"1 Reihe = 12 Flaschen. Der Knopf +5 springt in Fünferschritten."},
+  {t:"Keller zählen",p:"Du zählst den tatsächlichen Bestand. Im Laufweg: Rot, Rosé, Weiss, Cuvée, Natural, Bubbles, Einzelgänger. Pro Wein Reihen und einzelne Flaschen.",tip:"1 Reihe = 6 Flaschen."},
   {t:"Fertig",p:"",tip:""}],
  nach:[
-  {t:"Was wurde geholt",p:"Wein antippen, pro Flasche einmal. Minus links, falls zu viel. Nur was zwischendurch aus dem Keller geholt wurde.",tip:""},
+  {t:"Was wurde geholt",p:"Du zählst geholte Flaschen. Wein antippen, pro Flasche einmal. Minus links, falls zu viel. Nur was zwischendurch aus dem Keller geholt wurde.",tip:""},
+  {t:"Fertig",p:"",tip:""}],
+ getr_keller:[
+  {t:"Laden prüfen",p:"Du tippst herunter auf das, was noch dasteht. Jede Lade einzeln bestätigen.",tip:"Voller Stapel = voll. Antippen oder über die Punkte ziehen."},
+  {t:"Fertig",p:"",tip:""}],
+ getr_nach:[
+  {t:"Was wurde geholt",p:"Du zählst geholte Flaschen aus dem Kistenlager.",tip:""},
+  {t:"Fertig",p:"",tip:""}],
+ getr_ware:[
+  {t:"Was wurde geliefert",p:"Pro Position die gelieferte Anzahl Flaschen.",tip:""},
   {t:"Fertig",p:"",tip:""}],
  ware:[
-  {t:"Kisten aufnehmen",p:"Pro Position: Wein wählen, Jahrgang, Kistenzahl. Neuer Wein: unten die Checkliste.",tip:"Eine Kiste sind 12 Flaschen."},
+  {t:"Kisten aufnehmen",p:"Pro Position: Wein wählen, Jahrgang, Kistenzahl. Die Kistengröße steht daneben und lässt sich pro Position ändern. Neuer Wein: unten die Checkliste.",tip:"Standard 6er-Kisten. Ott · Fass 4 kommt als 12er."},
   {t:"Jahrgänge prüfen",p:"Vergleich mit dem letzten Stand. Stimmt, abhaken. Stimmt nicht, im Feld korrigieren.",tip:"Referenz ist Juli 2026, kein Live-Bestand."},
   {t:"Einräumen",p:"Wohin die Kisten kommen. Nach Kellerbereich sortiert. Abhaken.",tip:""},
   {t:"Fertig",p:"",tip:""}]};
@@ -495,8 +546,20 @@ function blank(m){
   return b;
 }
 function load(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r);}catch(e){}return{};}
+/* 2.2 · Archiv: Schlüssel ist Modus + Datum, maximal 30 Einträge */
+const AKEY="hh_archiv";
+function loadArch(){try{const r=localStorage.getItem(AKEY);if(r)return JSON.parse(r);}catch(e){}return{};}
+function saveArch(a){try{localStorage.setItem(AKEY,JSON.stringify(a));}catch(e){}}
+function archive(rec){
+  if(!rec)return;
+  const a=loadArch();
+  a[rec.mode+"_"+rec.tag]=Object.assign({},rec,{archiviert:new Date().toISOString()});
+  const ks=Object.keys(a).sort((x,y)=>(a[x].archiviert||"").localeCompare(a[y].archiviert||""));
+  while(ks.length>30)delete a[ks.shift()];
+  saveArch(a);}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){toast("Speicher voll");}}
-function D(){return S[mode];}
+let ARCHREC=null;
+function D(){return ARCHREC||S[mode];}
 function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");
   clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("on"),1900);}
 function deTag(iso){const d=new Date(iso+"T12:00");
@@ -526,9 +589,55 @@ function renderMenu(){
   $("#menu").innerHTML=`<h1>Weinkeller</h1><p class="sub">Haus Hirt · Bad Gastein</p>
     <div class="mgrp">Service</div>${card("tag")}${card("nach")}
     <div class="mgrp">Bestand</div>${card("keller")}${card("ware")}
-    <button class="adminlink" id="bAdmin">Verwaltung</button>`;
+    <button class="adminlink" id="bAdmin">Verwaltung</button>
+    <button class="adminlink" id="bArch" style="margin-top:2px">Letzte Protokolle (${Object.keys(loadArch()).length})</button>`;
   document.querySelectorAll(".mi").forEach(b=>b.onclick=()=>start(b.dataset.m));
   $("#bAdmin").onclick=askPin;
+  $("#bArch").onclick=openArchList;
+}
+/* 2.2 · Liste der archivierten Vorgänge */
+function shellFor(titel){
+  $("#menu").style.display="none";$("#app").style.display="";
+  $("#mTitle").textContent=titel;$("#steps").innerHTML="";$("#howto").style.display="none";
+  $("#tools").style.display="none";$("#foot").style.display="none";$("#rail").innerHTML="";
+  $("#main").className="";return $("#main");
+}
+function openArchList(){
+  const a=loadArch(),m=shellFor("Letzte Protokolle");m.innerHTML="";
+  const ks=Object.keys(a).sort((x,y)=>(a[y].archiviert||"").localeCompare(a[x].archiviert||""));
+  if(!ks.length)add(m,"empty","Noch keine archivierten Protokolle.");
+  ks.forEach(k=>{const r=a[k];
+    const b=document.createElement("button");b.className="w";
+    b.innerHTML=`<span class="tx"><span class="nm"><b>${esc(MODES[r.mode].t)}</b> · ${deTag(r.tag)}</span>
+      <span class="mt">${esc(r.name)||"ohne Namen"}${r.finished?"":" · unvollständig"}</span></span>
+      <span class="go">\u203a</span>`;
+    b.onclick=()=>openArchDoc(k);m.appendChild(b);});
+  const back=document.createElement("button");back.className="recheck";back.textContent="Zurück zum Menü";
+  back.onclick=()=>{mode=null;renderMenu();window.scrollTo(0,0);};
+  m.appendChild(back);
+}
+function openArchDoc(k){
+  const rec=loadArch()[k];if(!rec)return;
+  ARCHREC=rec;mode=rec.mode;branch=rec.branch||"wein";step=lastStep();
+  const m=shellFor(MODES[mode].t+" · Archiv");m.innerHTML="";
+  const box=document.createElement("div");box.className="doc";
+  box.innerHTML=(mode==="tag"?docTag():mode==="keller"?docKeller():mode==="nach"?docNach():docWare());
+  if(mode==="tag"||(mode==="keller"&&branch==="getr"))box.insertAdjacentHTML("beforeend",gDocSec());
+  box.querySelectorAll(".sec").forEach(sec=>{const h3=sec.querySelector("h3");if(!h3)return;
+    sec.classList.add("collapsible","closed");
+    const c=document.createElement("span");c.className="secarrow";c.textContent="\u203a";h3.appendChild(c);
+    h3.style.cursor="pointer";h3.onclick=()=>sec.classList.toggle("closed");});
+  const ex=document.createElement("div");ex.className="exprow";
+  ex.innerHTML=`<button class="primary" id="aShare">Protokoll teilen</button>
+    <button class="primary" id="aMail" style="background:#3A5266">Per Mail an Casimir</button>`;
+  box.appendChild(ex);
+  const le=document.createElement("div");le.className="explesser";
+  le.innerHTML=`<button id="aView">Als PDF sichern</button><button id="aCsv">Auch als CSV</button>
+    <button id="aJson">Rohdaten sichern (JSON)</button><button id="aBack">Zurück zur Liste</button>`;
+  box.appendChild(le);m.appendChild(box);
+  $("#aShare").onclick=doShare;$("#aMail").onclick=doMail;$("#aView").onclick=openHtml;
+  $("#aCsv").onclick=expCsv;$("#aJson").onclick=expJson;
+  $("#aBack").onclick=()=>{ARCHREC=null;openArchList();};
 }
 const PIN="2797";
 function askPin(){
@@ -555,6 +664,9 @@ function renderAdmin(){
   const intro=document.createElement("div");intro.className="howto";intro.style.display="block";
   intro.innerHTML=`<b>Glasweine verwalten</b><p>Hier legst du fest, welche Weine im Bar-Schritt als Glasweine erscheinen. Änderungen wirken sofort. Der Kellerbestand liegt im Master — hier geht es nur um die Zuordnung.</p>`;
   m.appendChild(intro);
+  const scope=document.createElement("div");scope.className="box";scope.style.margin="14px 2px 0";
+  scope.innerHTML="<b>Diese Einstellung gilt nur auf diesem Gerät.</b><br>Für die anderen Geräte den Code unten übertragen.";
+  m.appendChild(scope);
   const wrap=document.createElement("div");wrap.style.padding="0 2px";
   const opts=WINES.slice().sort((a,b)=>a.winzer.localeCompare(b.winzer))
     .map(w=>`<option value="${w.id}">${esc(w.winzer)} · ${esc(w.wein)}</option>`).join("");
@@ -584,6 +696,28 @@ function renderAdmin(){
   block("Backup","backup");
   m.appendChild(wrap);
   const foot=document.createElement("div");foot.style.cssText="display:flex;gap:9px;margin:24px 2px 0";
+  const cfgbox=document.createElement("div");cfgbox.style.cssText="margin:26px 2px 0";
+  cfgbox.innerHTML=`<div class="hd1" style="margin-bottom:10px">Konfiguration übertragen</div>
+    <label class="f"><span>Code von einem anderen Gerät einsetzen</span>
+      <input id="cfgIn" placeholder="Code einfügen"></label>
+    <div style="display:flex;gap:9px;margin-top:11px">
+      <button class="recheck" id="cfgCopy" style="flex:1;margin-top:0">Konfiguration kopieren</button>
+      <button class="recheck" id="cfgPaste" style="flex:1;margin-top:0">Konfiguration einsetzen</button>
+    </div>`;
+  m.appendChild(cfgbox);
+  cfgbox.querySelector("#cfgCopy").onclick=()=>{
+    let code="";
+    try{code=btoa(unescape(encodeURIComponent(JSON.stringify(CFG))));}catch(e){toast("Code fehlgeschlagen");return;}
+    (navigator.clipboard?navigator.clipboard.writeText(code):Promise.reject())
+      .then(()=>toast("Code kopiert"))
+      .catch(()=>{cfgbox.querySelector("#cfgIn").value=code;toast("Code steht im Feld");});};
+  cfgbox.querySelector("#cfgPaste").onclick=()=>{
+    const v=cfgbox.querySelector("#cfgIn").value.trim();if(!v)return toast("Kein Code");
+    try{
+      const o=JSON.parse(decodeURIComponent(escape(atob(v))));
+      if(!o||!Array.isArray(o.barrot)||!Array.isArray(o.bar)||!Array.isArray(o.backup))throw 0;
+      CFG=o;saveCfg(CFG);renderAdmin();toast("Übernommen");
+    }catch(e){toast("Code ungültig");}};
   foot.innerHTML=`<button class="recheck" id="aReset" style="flex:1">Auf Standard zurücksetzen</button>
     <button class="finishbtn" id="aDone" style="flex:1;margin-top:0">Fertig</button>`;
   foot.querySelector("#aReset").onclick=()=>ask("Zurücksetzen","<p>Glasweine auf die Werkseinstellung zurücksetzen?</p>",
@@ -593,47 +727,104 @@ function renderAdmin(){
   m.appendChild(foot);
 }
 function hasData(k,d){
-  if(k==="tag")return sum(d.konsum)||sum(d.rest)||sum(d.barrot)||sum(d.bar)||sum(d.backup)||Object.keys(d.seen||{}).length;
-  if(k==="keller")return Object.keys(d.zdone||{}).length;
-  if(k==="nach")return sum(d.ent);
-  if(k==="ware")return (d.pos||[]).length;
+  if(k==="tag")return sum(d.konsum)||sum(d.rest)||sum(d.barrot)||sum(d.bar)||sum(d.backup)
+    ||Object.keys(d.seen||{}).length||Object.keys(d.getr||{}).length;
+  if(k==="keller")return Object.keys(d.zdone||{}).length||Object.keys(d.getr||{}).length;
+  if(k==="nach")return sum(d.ent)||sum(d.gent);
+  if(k==="ware")return (d.pos||[]).length||sum(d.gent);
 }
 function start(m){
-  mode=m;gtab="wein";branch=(m==="tag")?"wein":null;if(!S[m]||S[m].finished)S[m]=blank(m);step=0;save();
+  mode=m;gtab="wein";branch=(m==="tag")?"wein":null;
+  const ziel=(m==="tag")?yest():today();
+  const cur=S[m];
+  if(cur&&(cur.finished||cur.tag!==ziel)){archive(cur);S[m]=blank(m);}
+  else if(!cur)S[m]=blank(m);
+  step=0;save();
   $("#menu").style.display="none";$("#app").style.display="";
   $("#mTitle").textContent=MODES[m].t;
-  $("#steps").innerHTML=MODES[m].steps.map((t,i)=>
-    `<button class="st" role="tab" data-s="${i}"${i===0?' aria-selected="true"':""}>${i+1} · ${t}</button>`).join("");
-  document.querySelectorAll(".st").forEach(b=>b.onclick=()=>go(+b.dataset.s));
+  buildSteps();
   render();window.scrollTo(0,0);
+}
+function buildSteps(){
+  $("#steps").innerHTML=steps().map((t,i)=>
+    `<button class="st" role="tab" aria-controls="main" data-s="${i}"${i===step?' aria-selected="true"':""}>${i+1} · ${t}</button>`).join("");
+  document.querySelectorAll(".st").forEach(b=>b.onclick=()=>go(+b.dataset.s));
 }
 function go(s){step=s;render();window.scrollTo(0,0);}
 
+/* 3.5 · grün nur bei echter Vollständigkeit */
+function stepComplete(i){
+  const d=D();if(!d)return false;
+  if(branch==="getr"&&mode!=="tag"){
+    if(mode==="keller")return i===0?GETR.laden.every(L=>(d.gdone||{})[L.id]):false;
+    return i===0?sum(d.gent)>0:false;
+  }
+  if(mode==="tag"){
+    if(i===0)return sum(d.konsum)>0;
+    if(i===1){const ks=["barrot","bar","backup"];
+      return ks.every(k=>barSlots(k).every(pp=>d.seen[pp.id+"_"+k]||g(d[k],pp.id)));}
+    if(i===2)return WINES.filter(w=>PLAN.soll[w.id]!=null).every(w=>d.seen[w.id]||g(d.rest,w.id));
+    if(i===3){const it=holList();return it.length>0&&it.every(x=>d.holt[x.w.id]);}
+    return false;
+  }
+  if(mode==="keller")return i===0?WINES.every(w=>d.zdone[w.id]):false;
+  if(mode==="nach")return i===0?sum(d.ent)>0:false;
+  if(mode==="ware"){
+    const pos=(d.pos||[]).filter(x=>x.id&&x.kisten>0);
+    if(i===0)return pos.length>0;
+    if(i===1)return pos.length>0&&pos.filter(x=>x.id!=="__neu").every(x=>d.jok[x.id]);
+    if(i===2)return pos.length>0&&pos.filter(x=>x.id!=="__neu").every(x=>d.ein[x.id]);
+  }
+  return false;
+}
+
 /* ── Dispatch ── */
+function howtoFor(){
+  if(mode!=="tag"&&branch==="getr")return (HOWTO["getr_"+mode]||HOWTO[mode])[step]||{t:"",p:"",tip:""};
+  return HOWTO[mode][step]||{t:"",p:"",tip:""};
+}
+/* 4.2 · Zustand der Anleitung pro Modus + Schritt */
+const HWKEY="hh_howto_v1";
+function hwState(){try{return JSON.parse(localStorage.getItem(HWKEY))||{};}catch(e){return{};}}
+function hwKey(){return mode+"_"+(branch||"wein")+"_"+step;}
+function renderHowto(){
+  const h=howtoFor(),box=$("#howto");
+  if(!h.p){box.style.display="none";return;}
+  box.style.display="block";
+  const st=hwState(),open=!!st[hwKey()];
+  box.className="howto"+(open?" open":"");
+  box.innerHTML=`<button class="hwh" aria-expanded="${open}"><b>${h.t}</b><span class="car2">\u203a</span></button>
+    <div class="hwb"><p>${h.p}</p>${h.tip?`<p class="tip">${h.tip}</p>`:""}</div>`;
+  box.querySelector(".hwh").onclick=()=>{
+    const s2=hwState();s2[hwKey()]=!s2[hwKey()];
+    try{localStorage.setItem(HWKEY,JSON.stringify(s2));}catch(e){}
+    renderHowto();measure();};
+}
 function render(){
   const d=D();$("#dSel").value=d.tag;
-  const h=HOWTO[mode][step];
-  $("#howto").innerHTML=`<b>${h.t}</b>${h.p?`<p>${h.p}</p>`:""}${h.tip?`<p class="tip">${h.tip}</p>`:""}`;
-  document.querySelectorAll(".st").forEach(b=>{const i=+b.dataset.s;
-    b.setAttribute("aria-selected",i===step);b.classList.toggle("done",i<step);});
-  const last=MODES[mode].steps.length-1;
-  $("#bBack").style.display=step===0?"none":"";
-  $("#bNext").style.display=step===last?"none":"";
   const m=$("#main");m.innerHTML="";m.className="";
   if(mode!=="tag"&&branch===null){$("#tools").style.display="none";$("#howto").style.display="none";
-    $("#steps").style.display="none";$("#foot").style.display="none";rGate(m);return;}
+    $("#steps").style.display="none";$("#foot").style.display="none";rGate(m);measure();return;}
   $("#steps").style.display="";$("#foot").style.display="";
+  buildSteps();
+  renderHowto();
+  document.querySelectorAll(".st").forEach(b=>{const i=+b.dataset.s;
+    b.setAttribute("aria-selected",i===step);b.classList.toggle("done",stepComplete(i));});
+  const last=lastStep();
+  $("#bBack").style.display=step===0?"none":"";
+  $("#bNext").style.display=step===last?"none":"";
   const RG={keller:[rGetr,rDoc],nach:[rGetrMenge,rDoc],ware:[rGetrMenge,rDoc]};
   const R={tag:[rKonsum,rBar,rRest,rHol,rDoc],keller:[rZaehl,rDoc],
            nach:[rNach,rDoc],ware:[rKisten,rJahr,rEin,rDoc]};
-  let fn;
-  if(mode!=="tag"&&branch==="getr"){const a=RG[mode];fn=a[Math.min(step,a.length-1)];}
-  else fn=R[mode][step];
-  $("#tools").style.display=(fn===rKonsum||fn===rRest||fn===rNach)?"block":"none";
-  $("#howto").style.display=h.p?"block":"none";
+  const fn=(mode!=="tag"&&branch==="getr")?RG[mode][step]:R[mode][step];
+  $("#tools").style.display=((fn===rKonsum||fn===rRest||fn===rNach)&&!(mode==="tag"&&gtab==="getr"))?"block":"none";
+  /* 4.4 · Wein/Getränke-Umschalter in jedem Modus, sobald ein Zweig gewählt ist */
+  if(mode==="tag"&&step!==lastStep())gSegment(m);
+  else if(mode!=="tag"&&branch&&step!==lastStep())gBranchSeg(m);
+  if(mode==="tag"&&gtab==="getr"&&step!==lastStep()){rGetrTag(m);buildRail(false);renderFoot();measure();return;}
   fn(m);
   buildRail(fn===rKonsum||fn===rRest||fn===rZaehl);
-  renderFoot();
+  renderFoot();measure();
 }
 function add(m,cls,txt){const d=document.createElement("div");d.className=cls;d.innerHTML=txt;m.appendChild(d);return d;}
 const DISPORD=["WEISS","ROSÉ","ROT","NATURAL","BUBBLES"];
@@ -654,19 +845,24 @@ function buildRail(show){
 }
 
 /* ── Konsum ── */
-function konsumRow(w){
-  const v=g(D().konsum,w.id);
+function countRow(w,bucket,sub,lab){
   const row=document.createElement("div");row.className="w";
-  row.innerHTML=`<span class="tx"><span class="nm"><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</span></span>`;
+  row.innerHTML=`<span class="tx"><span class="nm"><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</span>${
+    sub?`<span class="mt">${sub}</span>`:""}</span>`;
   const kn=document.createElement("div");kn.className="knum";
-  const minus=document.createElement("button");minus.className="kminus"+(v?"":" hide");minus.textContent="\u2212";
+  const minus=document.createElement("button");minus.className="kminus";minus.textContent="\u2212";
   minus.setAttribute("aria-label",`Eine Flasche ${w.wein} weniger`);
-  minus.onclick=e=>{e.stopPropagation();if(v>1)D().konsum[w.id]=v-1;else delete D().konsum[w.id];save();render();};
-  const num=document.createElement("button");num.className="cnt"+(v?" on":"");num.textContent=v||"0";
-  num.setAttribute("aria-label",`${w.wein}, ${v} erfasst, antippen für eine weitere`);
-  num.onclick=()=>{D().konsum[w.id]=v+1;save();render();};
-  kn.append(minus,num);row.append(kn);return row;
+  const num=document.createElement("button");num.className="cnt";
+  num.setAttribute("aria-label",`${w.wein}, antippen für eine weitere`);
+  const upd=()=>{const v=g(D()[bucket],w.id);
+    minus.classList.toggle("hide",!v);num.textContent=v||"0";num.classList.toggle("on",!!v);
+    renderFoot();};
+  const set=n=>{const d=D();if(n>0)d[bucket][w.id]=n;else delete d[bucket][w.id];save();upd();};
+  minus.onclick=e=>{e.stopPropagation();set(g(D()[bucket],w.id)-1);};
+  num.onclick=()=>set(g(D()[bucket],w.id)+1);
+  kn.append(minus,num);row.append(kn);upd();return row;
 }
+function konsumRow(w){return countRow(w,"konsum","");}
 function rKonsum(m){
   const l=filt();
   if(!l.length)return m.innerHTML='<p class="empty">Kein Wein gefunden.</p>';
@@ -689,8 +885,6 @@ function groupedList(m,list,rowFn,tag){
 /* ── Bar (zuerst) ── */
 function rBar(m){
   const d=D();railGroups=[];
-  gSegment(m);
-  if(gtab==="getr")return rGetr(m);
   const blk=(tit,sub,arr,bucket,showPos,voll)=>{
     const chk=p=>d.seen[p.id+"_"+bucket]||g(d[bucket],p.id);
     schrankHead(m,tit,sub,arr,chk,voll?()=>{
@@ -736,32 +930,49 @@ function schrankHead(m,titel,sub,list,checkFn,fullFn,fullLabel){
   m.appendChild(wrap);return wrap;
 }
 
+/* 3.1 · Bestand: voll ist der Start, man tippt herunter auf das, was noch dasteht.
+   Gespeichert wird weiterhin die Fehlmenge (soll − ist). */
 function dotRow(w,bucket,soll,pos){
-  const d=D(),fehlt=g(d[bucket],w.id);
+  const d=D();
   const key=bucket==="rest"?w.id:w.id+"_"+bucket;
-  const seen=!!d.seen[key]||fehlt>0;
-  const b=document.createElement("div");b.className="w"+(fehlt?" miss":(seen?" seen":""));
-  const tx=document.createElement("button");
-  tx.style.cssText="border:0;background:none;padding:0;flex:1;min-width:0;text-align:left;display:flex;align-items:center;gap:11px;color:inherit;cursor:pointer";
-  let dots="";for(let i=0;i<soll;i++)dots+=`<span class="dot${i<fehlt?" off":""}"></span>`;
+  const b=document.createElement("div");b.className="w";
+  const tx=document.createElement("div");
+  tx.style.cssText="flex:1;min-width:0;display:flex;align-items:center;gap:11px";
   tx.innerHTML=`${pos?`<span class="pos">${pos}</span>`:""}
     <span class="tx"><span class="nm"><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</span>
-    <span class="mt">Soll ${soll}</span></span>
-    <span class="dots">${dots}${fehlt?`<span class="miss-n">\u2212${fehlt}</span>`:""}</span>`;
-  tx.setAttribute("aria-label",`${w.wein}, Soll ${soll}, ${fehlt} fehlen. Antippen für eine fehlende mehr.`);
-  tx.onclick=()=>{const n=fehlt+1>soll?0:fehlt+1;
-    if(n){d[bucket][w.id]=n;d.seen[key]=1;}else{delete d[bucket][w.id];delete d.seen[key];}save();render();};
+    <span class="mt">Soll ${soll}</span></span>`;
+  const dots=document.createElement("span");dots.className="dots";
+  const pts=[];
+  for(let i=0;i<soll;i++){const s=document.createElement("span");s.className="dot";s.dataset.i=i;
+    s.setAttribute("role","button");
+    s.setAttribute("aria-label",`${w.wein}: noch ${i+1} von ${soll} da`);
+    pts.push(s);dots.appendChild(s);}
+  const missN=document.createElement("span");missN.className="miss-n";dots.appendChild(missN);
+  tx.appendChild(dots);
   const cbox=document.createElement("div");cbox.className="chkbox";
-  const chk=document.createElement("button");
-  chk.className="chk"+(fehlt?" warn":(seen?" on":""));chk.textContent=fehlt?"!":(seen?"\u2713":"");
-  chk.setAttribute("aria-label",seen?`${w.wein} als voll bestätigt — antippen zum Lösen`:`${w.wein} als voll bestätigen`);
-  chk.onclick=e=>{e.stopPropagation();
-    if(fehlt){delete d[bucket][w.id];delete d.seen[key];}
-    else if(d.seen[key])delete d.seen[key];else d.seen[key]=1;save();render();};
+  const chk=document.createElement("button");chk.className="chk";
   const lbl=document.createElement("span");lbl.className="chk-lbl";lbl.textContent="voll";
-  if(seen&&!fehlt)lbl.style.color="var(--ok)";
   cbox.append(chk,lbl);
-  b.append(tx,cbox);return b;
+  const upd=()=>{const f=g(D()[bucket],w.id),ist=soll-f,seen=!!D().seen[key]||f>0;
+    pts.forEach((s,i)=>s.classList.toggle("off",i>=ist));
+    missN.textContent=f?"\u2212"+f:"";
+    b.className="w"+(f?" miss":(seen?" seen":""));
+    chk.className="chk"+(f?" warn":(seen?" on":""));
+    chk.textContent=f?"!":(seen?"\u2713":"");
+    chk.setAttribute("aria-label",seen&&!f?`${w.wein} als voll bestätigt — antippen zum Lösen`:`${w.wein} als voll bestätigen`);
+    lbl.style.color=(seen&&!f)?"var(--ok)":"";
+    renderFoot();};
+  const setIst=ist=>{const d2=D(),f=Math.max(0,Math.min(soll,soll-ist));
+    if(f>0)d2[bucket][w.id]=f;else delete d2[bucket][w.id];
+    d2.seen[key]=1;save();upd();};
+  dots.onclick=e=>{const s=e.target.closest(".dot");if(!s)return;
+    const i=+s.dataset.i,ist=soll-g(D()[bucket],w.id);
+    setIst(ist===i+1?i:i+1);};
+  chk.onclick=e=>{e.stopPropagation();const d2=D(),f=g(d2[bucket],w.id);
+    if(f){delete d2[bucket][w.id];d2.seen[key]=1;}
+    else if(d2.seen[key])delete d2.seen[key];else d2.seen[key]=1;
+    save();upd();};
+  b.append(tx,cbox);upd();return b;
 }
 
 /* ── Keller holen ── */
@@ -789,7 +1000,7 @@ function rHol(m){
   const totFl=items.reduce((a,x)=>a+x.n,0);
   const kisten=Math.ceil(totFl/12);
   const info=document.createElement("div");info.className="kisteninfo";
-  info.innerHTML=`<div><b>${totFl}</b> Flaschen</div><div><b>${kisten}</b> Kiste${kisten!==1?"n":""} mitnehmen</div>
+  info.innerHTML=`<div><b>${totFl}</b> Flaschen</div><div><b>${kisten}</b> Tragekiste${kisten!==1?"n":""} (à 12 Fl.)</div>
     <div><b>${offen.length}</b> offen</div>`;
   m.appendChild(info);
   if(offen.length){
@@ -817,20 +1028,7 @@ function holRow(it){
 
 /* ── Nachschub ── */
 let nachFilter=null;
-function nachRow(w){
-  const v=g(D().ent,w.id);
-  const row=document.createElement("div");row.className="w";
-  row.innerHTML=`<span class="tx"><span class="nm"><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</span>
-    <span class="mt">${FARBKURZ[w.f]} · ${esc(w.grp)}</span></span>`;
-  const kn=document.createElement("div");kn.className="knum";
-  const minus=document.createElement("button");minus.className="kminus"+(v?"":" hide");minus.textContent="\u2212";
-  minus.setAttribute("aria-label",`Eine ${w.wein} weniger`);
-  minus.onclick=e=>{e.stopPropagation();if(v>1)D().ent[w.id]=v-1;else delete D().ent[w.id];save();render();};
-  const num=document.createElement("button");num.className="cnt"+(v?" on":"");num.textContent=v||"0";
-  num.setAttribute("aria-label",`${w.wein}, ${v} geholt`);
-  num.onclick=()=>{D().ent[w.id]=v+1;save();render();};
-  kn.append(minus,num);row.append(kn);return row;
-}
+function nachRow(w){return countRow(w,"ent",`${FARBKURZ[w.f]} · ${esc(w.grp)}`);}
 function rNach(m){
   const q=$("#q").value.trim().toLowerCase();
   // Farb-Filterchips
@@ -849,7 +1047,8 @@ function rNach(m){
   }
   // Liste nur bei Suche oder Filter
   if(!q&&!nachFilter){
-    if(!erf.length)m.innerHTML+='<p class="empty">Wein suchen oder oben eine Farbe wählen.</p>';
+    if(!erf.length)m.appendChild(Object.assign(document.createElement("p"),
+      {className:"empty",textContent:"Wein suchen oder oben eine Farbe wählen."}));
     else{const hint=document.createElement("p");hint.className="empty";hint.style.paddingTop="24px";
       hint.textContent="Weiteren Wein suchen oder Farbe wählen.";m.appendChild(hint);}
     return;
@@ -888,17 +1087,27 @@ function zRow(w,idx){
   const z=document.createElement("div");z.className="zsteppers";
   const stepper=(bucket,lab)=>{
     const box=document.createElement("div");box.className="zstep";
-    const set=(v)=>{v=Math.max(0,v);if(v)d[bucket][w.id]=v;else delete d[bucket][w.id];d.zdone[w.id]=1;save();
+    const set=(v)=>{v=Math.max(0,v);if(v)d[bucket][w.id]=v;else delete d[bucket][w.id];
+      const tot=g(d.reihen,w.id)*6+g(d.einzel,w.id);
+      if(tot>0)d.zdone[w.id]=1;else delete d.zdone[w.id];
+      save();
       valEl.textContent=g(d[bucket],w.id);valEl.classList.toggle("on",!!g(d[bucket],w.id));
-      row.classList.add("seen");
-      sumEl.textContent=g(d.reihen,w.id)*6+g(d.einzel,w.id);
-      sumEl.classList.toggle("on",!!(g(d.reihen,w.id)*6+g(d.einzel,w.id)));};
+      row.classList.toggle("seen",tot>0);
+      sumEl.textContent=tot;sumEl.classList.toggle("on",!!tot);renderFoot();};
     const mn=document.createElement("button");mn.className="zbtn";mn.textContent="\u2212";
     mn.setAttribute("aria-label",`${w.wein} ${lab} weniger`);mn.onclick=()=>set(g(d[bucket],w.id)-1);
     const valEl=document.createElement("button");valEl.className="zval"+(g(d[bucket],w.id)?" on":"");
     valEl.textContent=g(d[bucket],w.id);valEl.setAttribute("aria-label",`${w.wein} ${lab} eingeben`);
-    valEl.onclick=()=>{const v=prompt(`${lab} für ${w.winzer} ${w.wein}:`,g(d[bucket],w.id));
-      if(v!==null)set(parseInt(v,10)||0);};
+    valEl.onclick=()=>{
+      if(box.querySelector(".zin"))return;
+      const inp=document.createElement("input");inp.type="number";inp.inputMode="numeric";
+      inp.className="zval zin";inp.value=g(d[bucket],w.id);
+      inp.style.cssText="width:100%;text-align:center;padding:0";
+      inp.setAttribute("aria-label",`${w.wein} ${lab} eingeben`);
+      valEl.replaceWith(inp);inp.focus();inp.select();
+      const fin=()=>{set(parseInt(inp.value,10)||0);inp.replaceWith(valEl);};
+      inp.onblur=fin;
+      inp.onkeydown=e=>{if(e.key==="Enter")inp.blur();};};
     const pl=document.createElement("button");pl.className="zbtn";pl.textContent="+";
     pl.setAttribute("aria-label",`${w.wein} ${lab} mehr`);pl.onclick=()=>set(g(d[bucket],w.id)+1);
     const l=document.createElement("div");l.className="zl";l.textContent=lab;
@@ -927,13 +1136,15 @@ function posCard(p,i){
   const d=D(),c=document.createElement("div");c.className="li";
   const w=p.id&&p.id!=="__neu"?byId(p.id):null;
   const opts=WINES.map(x=>`<option value="${x.id}"${x.id===p.id?" selected":""}>${esc(x.winzer)} · ${esc(x.wein)}</option>`).join("");
-  const kist=w?(PLAN.kiste[p.id]||6):6;
+  if(p.kistengr==null)p.kistengr=(p.id&&p.id!=="__neu"?(PLAN.kiste[p.id]||KISTE_STD):KISTE_STD);
+  const kist=kg(p);
   c.innerHTML=`<div class="top"><b>Position ${i+1}</b><button class="x" aria-label="entfernen">\u00d7</button></div>
    <div class="g">
      <label class="fld" style="flex:2 1 100%"><span>Wein</span>
        <select class="selW"><option value="">— wählen —</option>${opts}<option value="__neu"${p.id==="__neu"?" selected":""}>+ Neuer Wein</option></select></label>
      <label class="fld"><span>Jahrgang</span><input class="inJ" value="${esc(p.jg)}" placeholder="2025"></label>
      <label class="fld"><span>Kisten</span><input class="inK" type="number" min="0" inputmode="numeric" value="${p.kisten}"></label>
+     <label class="fld"><span>Kistengröße</span><input class="inKG" type="number" min="1" inputmode="numeric" value="${kist}"></label>
    </div>`;
   if(p.id==="__neu"){const n=p.neu||{};
     c.innerHTML+=`<div class="g" style="margin-top:4px">
@@ -943,16 +1154,19 @@ function posCard(p,i){
       <label class="fld"><span>Region</span><input class="n_region" value="${esc(n.region)}"></label>
       <label class="fld"><span>Farbe</span><select class="n_f">${["","WEISS","ROSÉ","ROT","BUBBLES","NATURAL"].map(x=>`<option${x===n.f?" selected":""}>${x}</option>`).join("")}</select></label>
     </div><div class="info">Neuer Wein — wird im Protokoll als Neuzugang geführt.</div>`;
-  }else if(w){const fl=(+p.kisten||0)*kist,chg=p.jg&&p.jg!==w.jg;
-    c.innerHTML+=`<div class="info${chg?" chg":""}">${fl} Flaschen · ${kist}er Kisten${
+  }else if(w){const fl=(+p.kisten||0)*kg(p),chg=p.jg&&p.jg!==w.jg;
+    c.innerHTML+=`<div class="info${chg?" chg":""}">${fl} Flaschen · ${kg(p)}er Kisten${
       chg?`<br><b>Jahrgangswechsel:</b> bisher ${esc(w.jg)}, jetzt ${esc(p.jg)}`:
       (p.jg?`<br>Jahrgang unverändert (${esc(w.jg)})`:`<br>Bisher im Keller: Jg. ${esc(w.jg)} (Stand Juli 2026)`)}</div>`;}
   c.querySelector(".x").onclick=()=>{d.pos.splice(i,1);save();render();};
-  c.querySelector(".selW").onchange=e=>{p.id=e.target.value;if(p.id==="__neu"&&!p.neu)p.neu={};save();render();};
+  c.querySelector(".selW").onchange=e=>{p.id=e.target.value;if(p.id==="__neu"&&!p.neu)p.neu={};
+    p.kistengr=(p.id&&p.id!=="__neu")?(PLAN.kiste[p.id]||KISTE_STD):KISTE_STD;save();render();};
   c.querySelector(".inJ").oninput=e=>{p.jg=e.target.value;save();};
   c.querySelector(".inJ").onblur=()=>render();
   c.querySelector(".inK").oninput=e=>{p.kisten=Math.max(0,parseInt(e.target.value,10)||0);save();};
   c.querySelector(".inK").onblur=()=>render();
+  c.querySelector(".inKG").oninput=e=>{p.kistengr=Math.max(1,parseInt(e.target.value,10)||KISTE_STD);save();};
+  c.querySelector(".inKG").onblur=()=>render();
   ["winzer","wein","reb","region","f"].forEach(k=>{const el=c.querySelector(".n_"+k);
     if(el)el.oninput=e=>{p.neu=p.neu||{};p.neu[k]=e.target.value;save();};});
   return c;
@@ -984,7 +1198,7 @@ function rJahr(m){
       const row=document.createElement("div");row.className="w";
       row.innerHTML=`<span class="tx"><span class="nm"><b>${esc(n.winzer)||"—"}</b> · ${esc(n.wein)||"—"}<span class="pill new">neu</span></span>
         <span class="mt">${esc(n.reb)||"?"} · ${esc(n.region)||"?"} · ${esc(n.f)||"?"} · Jg. ${esc(p.jg)||"?"}</span></span>
-        <span class="qty">${(+p.kisten||0)*6}</span>`;
+        <span class="qty">${(+p.kisten||0)*kg(p)}</span>`;
       m.appendChild(row);});
   }
 }
@@ -995,11 +1209,11 @@ function rEin(m){
   let lz=null;
   srt.forEach(p=>{const w=byId(p.id);if(!w)return;const z=PLAN.zone[p.id];
     if(z!==lz){lz=z;const h=add(m,"hd1w","");h.innerHTML=`<div class="hd1">${PLAN.zonen[z].t}</div><div class="hd1sub">${PLAN.zonen[z].s}</div>`;}
-    const fl=p.kisten*(PLAN.kiste[p.id]||6),on=!!d.ein[p.id];
+    const fl=p.kisten*kg(p),on=!!d.ein[p.id];
     const b=document.createElement("button");b.className="w"+(on?" tick":"");
     b.innerHTML=`<span class="box2${on?" on":""}">${on?"\u2713":""}</span>
       <span class="tx"><span class="nm"><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</span>
-      <span class="mt">${p.kisten} Kisten · Jg. ${esc(p.jg||"?")}</span></span><span class="qty">${fl}</span>`;
+      <span class="mt">${p.kisten} Kisten à ${kg(p)} · Jg. ${esc(p.jg||"?")}</span></span><span class="qty">${fl}</span>`;
     b.onclick=()=>{if(on)delete d.ein[p.id];else d.ein[p.id]=1;save();render();};
     m.appendChild(b);});
 }
@@ -1039,105 +1253,179 @@ function gLadeFehlt(L){let f=0;const ids=new Set();
   if(L.rack)ids.add(L.rack[0]);
   ids.forEach(id=>f+=GSOLL[id]-gIst(id));return f;}
 
-function gStack(id,n,w,H){
-  const st=document.createElement("div");st.className="gstk";st.style.height=H+"px";
-  const gap=3;let d=Math.min(24,Math.max(5,(H-(n-1)*gap)/n));
-  const ist=gIst(id);
-  for(let k=0;k<n;k++){const p=document.createElement("div");p.className="gpt"+(k<ist?"":" off");
-    p.style.width=d+"px";p.style.height=d+"px";p.style.marginTop=(k===n-1?0:gap)+"px";
-    p.style.background=k<ist?(GETR.col[id]||"#1C1C1E"):"none";
-    p.dataset.k=k;st.appendChild(p);}
-  st.addEventListener("pointerdown",e=>{const p=e.target.closest(".gpt");if(!p)return;
-    const k=+p.dataset.k;gSet(id,gIst(id)===k+1?k:k+1);render();});
+/* ── Schubladen ──────────────────────────────────────────────────────
+   Ein Punkt = eine Flasche an ihrem Platz. Start ist voll, man tippt
+   herunter auf das, was noch dasteht. Ziehen über die Punkte geht auch.
+   Größen kommen aus den CSS-Variablen --gd / --gcell / --grack (3.3). */
+
+function gPaint(id){
+  const ist=gIst(id),soll=GSOLL[id],col=GETR.col[id]||GETR.spec[id]||"#1C1C1E";
+  document.querySelectorAll('[data-gid="'+id+'"]').forEach(el=>{
+    const k=+el.dataset.k,on=k<ist;
+    if(el.classList.contains("gpt")){el.classList.toggle("off",!on);
+      el.style.background=on?col:"none";}
+    else{el.classList.toggle("gx",!on);
+      const par=el.closest(".gitem,.gsprow");if(par)par.classList.toggle("gx",!on);}
+  });
+  document.querySelectorAll('[data-gnum="'+id+'"]').forEach(el=>{
+    el.innerHTML=ist+'<s>/'+soll+'</s>';el.className=el.className.replace(/ low/g,"")+(ist<soll?" low":"");});
+  document.querySelectorAll('[data-gtot="'+id+'"]').forEach(el=>{
+    el.innerHTML=ist+'<s>/'+soll+'</s>';el.className=ist<soll?"low":"";});
+}
+function gPaintLade(L){
+  const box=document.getElementById("drw_"+L.id);if(!box)return;
+  const f=gLadeFehlt(L),i=box.querySelector(".drwf i");
+  if(i){i.textContent=f?f+" fehlen":"voll";i.className=f?"low":"";}
+}
+/* Tippen und Ziehen auf denselben Flächen */
+function gBindPaint(el,L){
+  let run=false;
+  const fire=e=>{
+    const t=document.elementFromPoint(e.clientX,e.clientY);
+    const p2=t&&t.closest("[data-gid]");
+    if(!p2||!el.contains(p2))return;
+    const id=p2.dataset.gid,k=+p2.dataset.k,cur=gIst(id);
+    const nv=(!run&&cur===k+1)?k:k+1;
+    if(nv!==cur){gSet(id,nv);gPaint(id);gPaintLade(L);}
+  };
+  el.addEventListener("pointerdown",e=>{
+    try{el.setPointerCapture(e.pointerId);}catch(x){}
+    run=false;fire(e);run=true;e.preventDefault();});
+  el.addEventListener("pointermove",e=>{
+    if(el.hasPointerCapture&&el.hasPointerCapture(e.pointerId))fire(e);});
+  const end=()=>{run=false;renderFoot();};
+  el.addEventListener("pointerup",end);
+  el.addEventListener("pointercancel",end);
+}
+
+function gStack(id,n){
+  const st=document.createElement("div");st.className="gstk";
+  const ist=gIst(id),col=GETR.col[id]||"#1C1C1E";
+  for(let k=0;k<n;k++){const pt=document.createElement("div");
+    pt.className="gpt"+(k<ist?"":" off");
+    pt.style.background=k<ist?col:"none";
+    pt.dataset.gid=id;pt.dataset.k=k;
+    pt.setAttribute("aria-label",GN(id)+": noch "+(k+1)+" von "+n);
+    st.appendChild(pt);}
   return st;}
-function gCell(id,i,w,h,cls){
+
+function gCell(id,i,cls){
   const c=document.createElement("div");c.className="gcell"+(i<gIst(id)?"":" gx")+(cls?" "+cls:"");
-  c.style.width=w+"px";c.style.height=h+"px";
   c.innerHTML='<span class="gsh"></span>'+(FRUCHT[id]||flasche(GETR.spec[id]||GETR.col[id]||"#8A7E62"));
-  c.title=GN(id);
-  c.onclick=()=>{gSet(id,gIst(id)===i+1?i:i+1);render();};
+  c.title=GN(id);c.dataset.gid=id;c.dataset.k=i;
   return c;}
 
+function drwHead(L,box){
+  const f=gLadeFehlt(L);
+  box.innerHTML='<div class="drwf"><b>'+esc(L.t)+'</b><span class="drwh"></span>'+
+    '<i class="'+(f?"low":"")+'">'+(f?f+" fehlen":"voll")+'</i></div>';
+}
+function drwFoot(L,box){
+  const d=D();d.gdone=d.gdone||{};
+  const fb=document.createElement("div");fb.className="drwb";
+  const done=!!d.gdone[L.id];
+  const bt=document.createElement("button");bt.className=done?"ok":"";
+  bt.textContent=done?"\u2713 gepr\u00fcft":"Lade gepr\u00fcft";
+  bt.onclick=()=>{if(d.gdone[L.id])delete d.gdone[L.id];else d.gdone[L.id]=1;save();render();};
+  const rs=document.createElement("button");rs.className="reset";rs.textContent="alles voll";
+  rs.setAttribute("aria-label","Lade "+L.t+" auf voll zur\u00fccksetzen");
+  rs.onclick=()=>{gLadeIds(L).forEach(id=>{gSet(id,GSOLL[id]);gPaint(id);});
+    gPaintLade(L);renderFoot();};
+  fb.append(bt,rs);box.appendChild(fb);
+}
+function gLadeIds(L){const ids=[];
+  (L.grid||[]).forEach(c=>c.forEach(id=>{if(!ids.includes(id))ids.push(id);}));
+  (L.spec||[]).forEach(g2=>g2.forEach(([id])=>{if(!ids.includes(id))ids.push(id);}));
+  (L.cols||[]).forEach(([id])=>{if(!ids.includes(id))ids.push(id);});
+  if(L.rack&&!ids.includes(L.rack[0]))ids.push(L.rack[0]);
+  return ids;}
+
 function rGetr(m){
+  const wrap=document.createElement("div");wrap.className="gladen";
   GETR.laden.forEach(L=>{
-    const box=document.createElement("div");box.className="drw";
-    const fehlt=gLadeFehlt(L);
-    box.innerHTML='<div class="drwf"><b>'+esc(L.t)+'</b><span class="drwh"></span>'+
-      '<i class="'+(fehlt?"low":"")+'">'+(fehlt?fehlt+" fehlen":"voll")+'</i></div>';
+    const box=document.createElement("div");box.className="drw"+(L.kind==="col"?"":" wide");
+    box.id="drw_"+L.id;
+    drwHead(L,box);
+
     if(L.kind==="grid"){
-      const inner=document.createElement("div");inner.className="drwi";
+      const inner=document.createElement("div");inner.className="drwi top";
       const seen={};
-      const g2=document.createElement("div");g2.style.display="flex";g2.style.gap="5px";
-      L.grid.forEach(col=>{const cv=document.createElement("div");cv.className="gsq";
-        col.forEach(id=>{seen[id]=(seen[id]||0);cv.appendChild(gCell(id,seen[id]++,L.cell,L.cell*1.24));});
-        g2.appendChild(cv);});
-      inner.appendChild(g2);
-      const HT=7*(L.cell*1.24)+6*5, SH=Math.round((HT-6*9-5*2)/6), SW=Math.round(L.cell*1.06);
-      L.spec.forEach(grp=>{const sp=document.createElement("div");sp.className="gspec";
-        grp.forEach(([id,n])=>{for(let k=0;k<n;k++){
-          const row=document.createElement("div");row.className="gsp"+(k<gIst(id)?"":" gx");
-          const c=gCell(id,k,SW,SH);const t=document.createElement("span");t.textContent=GK(id);
-          row.append(c,t);sp.appendChild(row);}});
-        inner.appendChild(sp);});
-      box.appendChild(inner);
+      L.grid.forEach(col=>{
+        const cv=document.createElement("div");cv.className="gsq";
+        col.forEach((id,ci)=>{
+          const it=document.createElement("div");it.className="gitem";
+          const k=(seen[id]=(seen[id]||0));seen[id]++;
+          const c=gCell(id,k);
+          const cap=document.createElement("div");cap.className="gcap";
+          /* Nur am Ende einer Folge gleicher Packungen beschriften — sonst steht
+             viermal „Mango" untereinander. Die Höhe bleibt, das Raster stimmt. */
+          const letzte=col[ci+1]!==id;
+          cap.textContent=letzte?GK(id):"";
+          it.append(c,cap);it.classList.toggle("gx",!(k<gIst(id)));
+          cv.appendChild(it);});
+        inner.appendChild(cv);});
+      const sp=document.createElement("div");sp.className="gspec";
+      (L.spec||[]).forEach(grp=>grp.forEach(([id,n])=>{
+        const row=document.createElement("div");row.className="gsprow"+(gIst(id)<n?" gx":"");
+        const lb=document.createElement("span");lb.className="lb";
+        lb.textContent=GK(id)+(n>1?" · "+n:"");
+        const ic=document.createElement("span");ic.className="ic";
+        for(let k=0;k<n;k++)ic.appendChild(gCell(id,k));
+        row.append(lb,ic);sp.appendChild(row);}));
+      inner.appendChild(sp);
+      gBindPaint(inner,L);box.appendChild(inner);
+
     } else if(L.kind==="col"){
       const inner=document.createElement("div");inner.className="drwi";
-      inner.style.gap=L.photo?"1px":"4px";
       L.cols.forEach(([id,n])=>{
-        const cv=document.createElement("div");cv.className="gcol";cv.style.width=L.w+"px";
+        const cv=document.createElement("div");cv.className="gcol";
+        cv.style.width="max("+L.w+"px, var(--gd), 54px)";
         const num=document.createElement("div");
-        num.className="gnum"+(gIst(id)<n?" low":"");num.innerHTML=gIst(id)+'<s>/'+n+'</s>';
-        cv.append(num,gStack(id,n,L.w,126));
+        num.className="gnum"+(gIst(id)<n?" low":"");num.dataset.gnum=id;
+        num.innerHTML=gIst(id)+'<s>/'+n+'</s>';
+        cv.append(num,gStack(id,n));
         const b=document.createElement("div");b.className="gbase";cv.appendChild(b);
         if(L.photo&&GETR.pic[id]){const s=document.createElement("div");s.className="gshot";
           s.innerHTML='<img src="'+GETR.pic[id]+'" alt="" title="'+esc(GN(id))+'">';cv.appendChild(s);}
-        else{const s=document.createElement("div");s.className="gcap";s.textContent=GK(id);cv.appendChild(s);}
+        const cap=document.createElement("div");cap.className="gcap";cap.textContent=GK(id);
+        cv.appendChild(cap);
         inner.appendChild(cv);});
-      box.appendChild(inner);
+      gBindPaint(inner,L);box.appendChild(inner);
+
     } else {
       const s1=document.createElement("div");s1.className="rsec";
-      L.cols.forEach(([id,n])=>{const cv=document.createElement("div");cv.className="gcol";
-        cv.style.width=L.w+"px";
+      L.cols.forEach(([id,n])=>{
+        const cv=document.createElement("div");cv.className="gcol";
+        cv.style.width="max("+L.w+"px, var(--gd))";
         const num=document.createElement("div");
-        num.className="gnum"+(gIst(id)<n?" low":"");num.innerHTML=gIst(id)+'<s>/'+n+'</s>';
-        cv.append(num,gStack(id,n,L.w,58));
-        const c=document.createElement("div");c.className="gcap";c.textContent=GK(id);cv.appendChild(c);
+        num.className="gnum"+(gIst(id)<n?" low":"");num.dataset.gnum=id;
+        num.innerHTML=gIst(id)+'<s>/'+n+'</s>';
+        cv.append(num,gStack(id,n));
+        const cap=document.createElement("div");cap.className="gcap";cap.textContent=GK(id);
+        cv.appendChild(cap);
         s1.appendChild(cv);});
+      gBindPaint(s1,L);
       const dv=document.createElement("div");dv.className="rdiv";
       const s2=document.createElement("div");s2.className="rsec2";
-      const [rid,rn,rc]=L.rack;const rist=gIst(rid);
-      s2.innerHTML='<div class="rhd"><b>'+esc(GN(rid))+'</b><i class="'+(rist<rn?"low":"")+'">'+
-        rist+'<s>/'+rn+'</s></i></div>';
+      const rid=L.rack[0],rn=L.rack[1],rc=L.rack[2],rist=gIst(rid);
+      s2.innerHTML='<div class="rhd"><b>'+esc(GN(rid))+'</b><i data-gtot="'+rid+'" class="'+
+        (rist<rn?"low":"")+'">'+rist+'<s>/'+rn+'</s></i></div>';
       const rows=document.createElement("div");rows.className="rrows";
       rows.style.gridTemplateColumns="repeat("+rc+",1fr)";
-      for(let k=0;k<rn;k++){const p=document.createElement("div");
-        p.className="gpt"+(k<rist?"":" off");p.dataset.k=k;
-        p.style.background=k<rist?GETR.col[rid]:"none";rows.appendChild(p);}
-      let run=false;
-      const setF=e=>{const el=document.elementFromPoint(e.clientX,e.clientY);
-        const p=el&&el.closest(".rrows .gpt");if(!p)return;const k=+p.dataset.k;
-        const cur=gIst(rid);const nv=(!run&&cur===k+1)?k:k+1;
-        if(nv!==cur){gSet(rid,nv);
-          [...rows.children].forEach((c,i)=>{c.classList.toggle("off",i>=nv);
-            c.style.background=i<nv?GETR.col[rid]:"none";});
-          const ii=s2.querySelector(".rhd i");ii.innerHTML=nv+'<s>/'+rn+'</s>';
-          ii.className=nv<rn?"low":"";}};
-      rows.addEventListener("pointerdown",e=>{rows.setPointerCapture(e.pointerId);run=false;setF(e);run=true;});
-      rows.addEventListener("pointermove",e=>{if(rows.hasPointerCapture(e.pointerId))setF(e);});
-      rows.addEventListener("pointerup",()=>{run=false;render();});
+      const col=GETR.col[rid];
+      for(let k=0;k<rn;k++){const pt=document.createElement("div");
+        pt.className="gpt"+(k<rist?"":" off");pt.dataset.gid=rid;pt.dataset.k=k;
+        pt.style.background=k<rist?col:"none";rows.appendChild(pt);}
+      gBindPaint(rows,L);
       s2.appendChild(rows);box.append(s1,dv,s2);
     }
-    const d=D();d.gdone=d.gdone||{};
-    const fb=document.createElement("div");fb.className="drwb";
-    const done=!!d.gdone[L.id];
-    const bt=document.createElement("button");bt.className=done?"ok":"";
-    bt.textContent=done?"\u2713 geprüft":"Lade geprüft";
-    bt.onclick=()=>{if(d.gdone[L.id])delete d.gdone[L.id];else d.gdone[L.id]=1;save();render();};
-    fb.appendChild(bt);box.appendChild(fb);
-    m.appendChild(box);});
+    drwFoot(L,box);
+    wrap.appendChild(box);});
+  m.appendChild(wrap);
   const off=GETR.laden.filter(L=>!(D().gdone||{})[L.id]).length;
-  if(off)add(m,"box","<b>"+off+" von "+GETR.laden.length+" Laden noch nicht bestätigt.</b>");
+  if(off)add(m,"box","<b>"+off+" von "+GETR.laden.length+" Laden noch nicht best\u00e4tigt.</b><br>Ohne best\u00e4tigte Laden l\u00e4sst sich kein Protokoll erstellen.");
 }
+function rGetrTag(m){return rGetr(m);}
 function gHolBlock(m){
   const f=gFehlt();if(!f.length)return;
   const blk=document.createElement("div");blk.className="gblk";
@@ -1154,10 +1442,26 @@ function gHolBlock(m){
   m.appendChild(blk);
 }
 function gDocSec(){
-  const f=gFehlt();if(!f.length)return "";
-  return '<div class="sec"><h3>Getränke nachfüllen</h3><table>'+
-    f.map(x=>'<tr><td>'+esc(GN(x.id))+'</td><td class="n">'+x.n+'</td></tr>').join("")+
-    '</table></div>';
+  const d=D(),f=gFehlt();
+  const offen=GETR.laden.filter(L=>!(d.gdone||{})[L.id]);
+  let h="";
+  if(f.length)h+='<div class="sec"><h3>Getränke nachfüllen</h3>'+
+    tbl('<th>Position</th><th class="r">Fehlt</th>',
+      f.map(x=>'<tr><td>'+esc(GN(x.id))+'</td><td class="r"><b>'+x.n+'</b></td></tr>').join(""),
+      '<tr class="tot"><td>Summe</td><td class="r">'+f.reduce((a,x)=>a+x.n,0)+'</td></tr>')+'</div>';
+  if(offen.length)h+='<div class="box"><b>'+offen.length+' Lade'+(offen.length>1?"n":"")+
+    ' nicht bestätigt.</b><br>'+offen.map(L=>esc(L.t)).join(" · ")+'</div>';
+  return h;
+}
+/* 2.1 · erfasste Getränkemengen (Nachschub / Wareneingang) */
+function docGetrMenge(gent){
+  const ids=Object.keys(gent||{}).filter(id=>+gent[id]>0);
+  if(!ids.length)return "";
+  const tot=ids.reduce((a,id)=>a+ +gent[id],0);
+  return '<div class="sec"><h3>Getränke</h3>'+
+    tbl('<th>Position</th><th class="r">Anzahl</th>',
+      ids.map(id=>'<tr><td>'+esc(GN(id))+'</td><td class="r"><b>'+gent[id]+'</b></td></tr>').join(""),
+      '<tr class="tot"><td>Summe</td><td class="r">'+tot+'</td></tr>')+'</div>';
 }
 function gSegment(m){
   const s=document.createElement("div");s.className="gseg";
@@ -1169,6 +1473,20 @@ function gSegment(m){
   m.appendChild(s);
 }
 let gtab="wein", branch=null;
+/* 4.4 · Wein/Getränke auch in Kellerzählung, Nachschub, Wareneingang */
+function gBranchSeg(m){
+  const d=D();
+  const n=(mode==="keller")?gFehltSum():sum(d.gent||{});
+  const s=document.createElement("div");s.className="gseg";
+  s.innerHTML='<button data-b="wein"'+(branch==="wein"?' class="on"':'')+'>Wein</button>'+
+    '<button data-b="getr"'+(branch==="getr"?' class="on"':'')+'>Getränke'+
+    (n?' <span class="gb">'+n+'</span>':'')+'</button>';
+  s.querySelectorAll("button").forEach(b=>b.onclick=()=>{
+    if(branch===b.dataset.b)return;
+    branch=b.dataset.b;if(step>lastStep())step=lastStep();
+    render();window.scrollTo(0,0);});
+  m.appendChild(s);
+}
 const GICO={
  wein:'<svg viewBox="0 0 24 24" fill="none" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l-1 6a3 3 0 0 1-6 0z"/><path d="M12 15v6M9 21h6"/></svg>',
  getr:'<svg viewBox="0 0 24 24" fill="none" stroke="#6A6A70" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4l2 3v11H7V10l2-3z"/><path d="M7 14h10"/></svg>'};
@@ -1217,23 +1535,39 @@ function summaryBig(){
   if(mode==="keller")return [WINES.reduce((a,w)=>a+g(d.reihen,w.id)*6+g(d.einzel,w.id),0),"Flaschen gezählt"];
   if(mode==="nach")return [sum(d.ent),"Flaschen geholt"];
   const pos=d.pos.filter(p=>p.id&&p.kisten>0);
-  return [pos.reduce((a,p)=>a+p.kisten*(PLAN.kiste[p.id]||12),0),"Flaschen geliefert"];
+  return [pos.reduce((a,p)=>a+p.kisten*kg(p),0),"Flaschen geliefert"];
+}
+/* 1.4 · Getränkeladen müssen bestätigt sein, sonst kein Protokoll */
+function ladenOffen(){
+  const d=D();
+  const benutzt=(mode==="keller"&&branch==="getr")||
+    (mode==="tag"&&(Object.keys(d.getr||{}).length>0||Object.keys(d.gdone||{}).length>0));
+  if(!benutzt)return 0;
+  return GETR.laden.filter(L=>!(d.gdone||{})[L.id]).length;
 }
 function rDoc(m){
   const d=D();
   if(!d.finished){
     const [big,lb]=summaryBig();
     const konsumLeer=mode==="tag"&&sum(d.konsum)===0;
+    const lOff=ladenOffen();
+    const blockiert=konsumLeer||lOff>0;
     const cta=document.createElement("div");cta.className="done-cta";
     cta.innerHTML=`<div class="big">${big}</div><div class="lb">${lb}</div>
       ${konsumLeer?`<div class="box" style="text-align:left;margin-top:20px"><b>Konsum fehlt.</b><br>Ohne die Fassungsliste von der Rezeption lässt sich kein Protokoll erstellen. Zurück zu Schritt 1.</div>`:""}
-      <button class="finishbtn"${konsumLeer?" disabled":""}>Fertig — Protokoll erstellen</button>
-      <button class="recheck">${konsumLeer?"Zum Konsum":"Noch mal nachsehen"}</button>`;
+      ${lOff?`<div class="box" style="text-align:left;margin-top:20px"><b>${lOff} Lade${lOff>1?"n":""} noch nicht bestätigt.</b><br>Ohne bestätigte Laden lässt sich kein Protokoll erstellen.</div>`:""}
+      <button class="finishbtn"${blockiert?" disabled":""}>Fertig — Protokoll erstellen</button>
+      <button class="recheck">${konsumLeer?"Zum Konsum":(lOff?"Zu den Getränken":"Noch mal nachsehen")}</button>`;
     const fb=cta.querySelector(".finishbtn");
-    if(konsumLeer)fb.style.opacity=".4";
-    fb.onclick=()=>{if(konsumLeer){toast("Bitte zuerst den Konsum eintragen");return;}
+    if(blockiert)fb.style.opacity=".4";
+    fb.onclick=()=>{
+      if(konsumLeer){toast("Bitte zuerst den Konsum eintragen");return;}
+      if(lOff){toast("Bitte zuerst alle Laden bestätigen");return;}
       d.finished=true;save();render();window.scrollTo(0,0);};
-    cta.querySelector(".recheck").onclick=()=>go(konsumLeer?0:step-1);
+    cta.querySelector(".recheck").onclick=()=>{
+      if(konsumLeer)return go(0);
+      if(lOff){if(mode==="tag"){gtab="getr";return go(1);}return go(0);}
+      go(step-1);};
     m.appendChild(cta);return;
   }
   const box=document.createElement("div");box.className="doc";
@@ -1266,8 +1600,9 @@ function rDoc(m){
     <button class="primary" id="bMail" style="background:#3A5266">Per Mail an Casimir</button>`;
   box.appendChild(ex);
   const le=document.createElement("div");le.className="explesser";
-  le.innerHTML=`<button id="bView">Als PDF öffnen / drucken</button>
+  le.innerHTML=`<button id="bView">Als PDF sichern</button>
     <button id="bCsv">Auch als CSV</button>
+    <button id="bJson">Rohdaten sichern (JSON)</button>
     <button class="del" id="bReset">Zurücksetzen</button>`;
   box.appendChild(le);
   m.appendChild(box);
@@ -1283,8 +1618,9 @@ function rDoc(m){
   $("#bMail").onclick=doMail;
   $("#bView").onclick=openHtml;
   $("#bCsv").onclick=expCsv;
-  $("#bReset").onclick=()=>ask("Zurücksetzen","<p>Dieser Vorgang wird gelöscht. Schon geteilt?</p>",
-    ()=>{S[mode]=blank(mode);save();step=0;render();window.scrollTo(0,0);toast("Zurückgesetzt");});
+  $("#bJson").onclick=expJson;
+  $("#bReset").onclick=()=>ask("Zurücksetzen","<p>Dieser Vorgang wird gelöscht und vorher ins Archiv gelegt.</p>",
+    ()=>{archive(S[mode]);S[mode]=blank(mode);save();step=0;render();window.scrollTo(0,0);toast("Archiviert und zurückgesetzt");});
 }
 function needName(){if(!D().name.trim()){toast("Bitte Namen wählen");$("#fNameSel")?.focus();return false;}return true;}
 
@@ -1342,19 +1678,21 @@ function docKeller(){
 function docNach(){
   const d=D(),rows=WINES.filter(w=>g(d.ent,w.id));
   let h=docHeadHtml();
-  h+=`<div class="kpi"><div><span>Positionen</span><b>${rows.length}</b></div><div><span>Flaschen</span><b>${sum(d.ent)}</b></div></div>`;
+  h+=`<div class="kpi"><div><span>Positionen</span><b>${rows.length}</b></div><div><span>Flaschen</span><b>${sum(d.ent)}</b></div>${
+    sum(d.gent)?`<div><span>Getränke</span><b>${sum(d.gent)}</b></div>`:""}</div>`;
   if(rows.length){let tr="",lz=null;
     rows.sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id]).forEach(w=>{const z=PLAN.zone[w.id];
       if(z!==lz){lz=z;tr+=`<tr><td class="grp" colspan="2">${PLAN.zonen[z].t}</td></tr>`;}
       tr+=`<tr><td><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</td><td class="r"><b>${g(d.ent,w.id)}</b></td></tr>`;});
     h+=`<div class="sec"><h3>Aus dem Keller geholt</h3>
       ${tbl(`<th>Wein</th><th class="r">Flaschen</th>`,tr,`<tr class="tot"><td>Summe</td><td class="r">${sum(d.ent)}</td></tr>`)}</div>`;}
+  h+=docGetrMenge(d.gent);
   return h;
 }
 function docWare(){
   const d=D(),pos=d.pos.filter(p=>p.id&&p.kisten>0);
   const best=pos.filter(p=>p.id!=="__neu"),neu=pos.filter(p=>p.id==="__neu");
-  const fl=pos.reduce((a,p)=>a+p.kisten*(PLAN.kiste[p.id]||6),0);
+  const fl=pos.reduce((a,p)=>a+p.kisten*kg(p),0);
   const chg=best.filter(p=>{const w=byId(p.id);const j=d.jneu[p.id]!=null?d.jneu[p.id]:p.jg;return w&&j&&j!==w.jg;});
   let h=docHeadHtml();
   h+=`<div class="kpi"><div><span>Positionen</span><b>${pos.length}</b></div>
@@ -1364,47 +1702,108 @@ function docWare(){
   if(best.length){let tr="";
     best.forEach(p=>{const w=byId(p.id);if(!w)return;const j=d.jneu[p.id]!=null?d.jneu[p.id]:p.jg,ch=j&&j!==w.jg;
       tr+=`<tr class="${ch?"flag":""}"><td><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</td>
-        <td>${esc(w.jg)}</td><td>${esc(j)||"–"}</td><td class="r">${p.kisten}</td><td class="r"><b>${p.kisten*(PLAN.kiste[p.id]||6)}</b></td></tr>`;});
+        <td>${esc(w.jg)}</td><td>${esc(j)||"–"}</td><td class="r">${p.kisten} à ${kg(p)}</td><td class="r"><b>${p.kisten*kg(p)}</b></td></tr>`;});
     h+=`<div class="sec"><h3>Lieferung</h3>${tbl(`<th>Wein</th><th>Bisher</th><th>Neu</th><th class="r">Ki.</th><th class="r">Fl.</th>`,tr)}</div>`;}
   if(neu.length){let tr="";
     neu.forEach(p=>{const n=p.neu||{};
       tr+=`<tr><td><b>${esc(n.winzer)||"—"}</b> · ${esc(n.wein)||"—"}</td><td>${esc(n.f)||"?"} · ${esc(n.reb)||"?"}</td>
-        <td>${esc(n.region)||"?"}</td><td>${esc(p.jg)||"?"}</td><td class="r"><b>${p.kisten*6}</b></td></tr>`;});
+        <td>${esc(n.region)||"?"}</td><td>${esc(p.jg)||"?"}</td><td class="r"><b>${p.kisten*kg(p)}</b></td></tr>`;});
     h+=`<div class="sec"><h3>Neue Weine</h3>${tbl(`<th>Wein</th><th>Farbe/Rebsorte</th><th>Region</th><th>Jg.</th><th class="r">Fl.</th>`,tr)}
       <div class="box"><b>In den Master aufnehmen.</b></div></div>`;}
+  h+=docGetrMenge(d.gent);
   h+=chg.length?`<div class="box"><b>${chg.length} Jahrgangswechsel.</b><br>Weinkarte prüfen.</div>`:`<div class="box good"><b>Keine Jahrgangsänderung.</b></div>`;
   return h;
 }
 
 /* ── Export: Titel, HTML-Seite, Teilen, Mail, CSV ── */
 function protoTitel(){const d=D();return `Fassungsprotokoll ${MODES[mode].t} — ${kurzTag(d.tag)} — ${d.name||"—"}`;}
+/* 2.5 · Klartext-Ergebnis in zwei Sätzen */
+function resultText(){
+  const d=D();
+  if(mode==="tag"){const fl=sum(d.rest)+sum(d.barrot)+sum(d.bar)+sum(d.backup);
+    const ab=protoTag().filter(x=>x.diff!==0).length;
+    return [fl+" Flaschen aus dem Keller geholt.",
+      ab?ab+" Abweichung"+(ab>1?"en":"")+" zwischen Konsum und Restaurant.":"Alles stimmig."];}
+  if(mode==="keller"){const gez=WINES.filter(w=>d.zdone[w.id]).length;
+    const tot=WINES.reduce((a,w)=>a+g(d.reihen,w.id)*6+g(d.einzel,w.id),0);
+    return [gez+" von "+WINES.length+" Positionen gezählt, "+tot+" Flaschen.",
+      gez===WINES.length?"Vollständig gezählt.":(WINES.length-gez)+" Positionen fehlen noch."];}
+  if(mode==="nach"){const n=WINES.filter(w=>g(d.ent,w.id)).length;
+    return [sum(d.ent)+" Flaschen aus dem Keller geholt.",
+      n+" Position"+(n===1?"":"en")+(sum(d.gent)?" · dazu "+sum(d.gent)+" Getränke.":".")];}
+  const pos=(d.pos||[]).filter(x=>x.id&&x.kisten>0);
+  const fl=pos.reduce((a,x)=>a+x.kisten*kg(x),0);
+  const chg=pos.filter(x=>{const w=byId(x.id);const j2=d.jneu[x.id]!=null?d.jneu[x.id]:x.jg;return w&&j2&&j2!==w.jg;}).length;
+  return [pos.length+" Positionen, "+fl+" Flaschen geliefert.",
+    chg?chg+" Jahrgangswechsel.":"Keine Jahrgangsänderung."];
+}
 function fullHtml(){
-  const d=D(),inner=(mode==="tag"?docTag():mode==="keller"?docKeller():mode==="nach"?docNach():docWare());
+  const d=D();
+  let inner=(mode==="tag"?docTag():mode==="keller"?docKeller():mode==="nach"?docNach():docWare());
+  if(mode==="tag"||(mode==="keller"&&branch==="getr"))inner+=gDocSec();
+  const kpi=(inner.match(/<div class="kpi">[\s\S]*?<\/div>\s*<\/div>/)||[""])[0];
+  const rest=inner.replace(kpi,"").replace(/<div class="dh">[\s\S]*?<\/div><\/div>/,"");
+  const [s1,s2]=resultText();
   return `<!DOCTYPE html><html lang="de"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(protoTitel())}</title><style>
-body{font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#1C1C1E;
-  max-width:760px;margin:0 auto;padding:24px 18px 60px;background:#fff}
-.dh{border:1px solid #D8D5CD;border-radius:10px;padding:14px;margin-bottom:18px}
-.dh .t{font-size:19px;font-weight:600}.dh .m{display:flex;flex-wrap:wrap;gap:4px 20px;margin-top:8px;font-size:13px;color:#6A6A70}
-.dh .m b{color:#1C1C1E}.sec{margin-top:22px}
-.sec>h3{font-size:13px;margin:0 0 4px;padding-bottom:6px;border-bottom:2px solid #1C1C1E;text-transform:uppercase;letter-spacing:.05em}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th{text-align:left;font-size:11px;color:#6A6A70;border-bottom:1px solid #1C1C1E;padding:6px 4px;font-weight:700}
-th.r,td.r{text-align:right}td{padding:8px 4px;border-bottom:1px solid #E6E4DE}
-td.grp{background:#F3F1EB;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#6A6A70}
-tr.flag{background:#FBEDE6}tr.tot td{border-top:2px solid #1C1C1E;font-weight:700;background:#F3F1EB}
-.kpi{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
-.kpi div{flex:1;min-width:80px;border:1px solid #E6E4DE;border-radius:9px;padding:10px}
-.kpi span{display:block;font-size:11px;color:#6A6A70;font-weight:600}.kpi b{font-size:22px}
-.kpi div.w2{border-color:#E7C3B2;background:#FBEDE6}.kpi div.w2 b{color:#B4471F}
-.box{border:1px solid #E6E4DE;border-left:4px solid #B4471F;background:#FBEDE6;border-radius:0 8px 8px 0;padding:12px;margin-top:14px;font-size:14px}
-.box.good{border-left-color:#3E7A3E;background:#EFF5EE}
-.pr{margin:14px 0 22px}.pr button{padding:12px 20px;border:0;background:#1C1C1E;color:#fff;border-radius:9px;font-size:15px;font-weight:600;cursor:pointer}
-@media print{.pr{display:none}body{padding:0}}
+@page{size:A4;margin:16mm 14mm}
+*{box-sizing:border-box}
+body{font:11pt/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#1C1C1E;
+  max-width:186mm;margin:0 auto;padding:18px 16px 70px;background:#fff;
+  font-variant-numeric:tabular-nums}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+.ph .brand{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#6A6A70}
+.ph h1{font-size:22px;font-weight:600;margin:4px 0 0}
+.ph dl{margin:0;font-size:11px;color:#6A6A70;display:grid;grid-template-columns:auto auto;
+  gap:2px 10px;text-align:right;align-content:start}
+.ph dt{font-weight:600}.ph dd{margin:0;color:#1C1C1E}
+.rule{height:2px;background:#1C1C1E;margin:10px 0 18px}
+.lead{margin:0 0 6px;font-size:13pt;line-height:1.4}
+.lead b{font-weight:600}
+.kpi{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 6px;break-inside:avoid}
+.kpi div{flex:1;min-width:88px;border:1px solid #E6E4DE;border-radius:8px;padding:10px 12px}
+.kpi span{display:block;font-size:10px;color:#6A6A70;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.kpi b{font-size:34px;font-weight:700;line-height:1.05;display:block;margin-top:2px}
+.kpi div.w2{border-left:3px solid #B4471F}
+.sec{margin-top:20px;break-inside:avoid-page}
+.sec>h3{font-size:11px;margin:0 0 4px;padding-bottom:5px;border-bottom:2px solid #1C1C1E;
+  text-transform:uppercase;letter-spacing:.06em}
+table{width:100%;border-collapse:collapse;font-size:10.5pt}
+thead{display:table-header-group}
+tr{break-inside:avoid}
+th{text-align:left;font-size:9px;color:#6A6A70;border-bottom:1px solid #1C1C1E;padding:5px 4px;
+  font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+th.r,td.r{text-align:right}
+td{padding:6px 4px;border-bottom:1px solid #E6E4DE;vertical-align:top}
+td.grp{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6A6A70;
+  padding-top:10px;border-bottom:1px solid #1C1C1E}
+tr.flag td:first-child{border-left:3px solid #B4471F;padding-left:7px}
+tr.tot td{border-top:2px solid #1C1C1E;border-bottom:0;font-weight:700}
+.box{border-left:3px solid #B4471F;padding:8px 12px;margin-top:14px;font-size:10.5pt;break-inside:avoid}
+.box.good{border-left-color:#1C1C1E}
+.pr{margin:0 0 18px}
+.pr button{padding:12px 20px;border:0;background:#1C1C1E;color:#fff;border-radius:9px;
+  font-size:15px;font-weight:600;cursor:pointer}
+.pf{display:none}
+@media print{
+  .pr{display:none}body{padding:0}
+  .pf{display:block;position:fixed;bottom:0;left:0;right:0;font-size:8.5pt;color:#6A6A70;
+    border-top:1px solid #E6E4DE;padding-top:4px}
+}
 </style></head><body>
 <div class="pr"><button onclick="window.print()">Drucken / als PDF sichern</button></div>
-${inner}</body></html>`;
+<div class="ph">
+  <div><div class="brand">Haus Hirt · Weinkeller</div><h1>${esc(MODES[mode].t)}</h1></div>
+  <dl><dt>Datum</dt><dd>${deTag(d.tag)}</dd><dt>Name</dt><dd>${esc(d.name)||"—"}</dd>
+  ${d.notiz?`<dt>Notiz</dt><dd>${esc(d.notiz)}</dd>`:""}</dl>
+</div>
+<div class="rule"></div>
+${kpi}
+<p class="lead"><b>${esc(s1)}</b> ${esc(s2)}</p>
+${rest}
+<div class="pf">${deTag(d.tag)} · ${esc(d.name)||"—"} · Haus Hirt, Bad Gastein</div>
+</body></html>`;
 }
 function plainTxt(){
   const d=D();let o=`${protoTitel()}\n${deTag(d.tag)}\n`;
@@ -1428,11 +1827,16 @@ function plainTxt(){
   }else{o+="LIEFERUNG\n";
     d.pos.filter(p=>p.id&&p.id!=="__neu"&&p.kisten>0).forEach(p=>{const w=byId(p.id);if(!w)return;
       const j=d.jneu[p.id]!=null?d.jneu[p.id]:p.jg,ch=j&&j!==w.jg;
-      o+=`${ch?"! ":"  "}${p.kisten} Ki (${p.kisten*(PLAN.kiste[p.id]||6)} Fl) ${w.winzer} ${w.wein} ${j||"?"}${ch?` [bisher ${w.jg}]`:""}\n`;});
+      o+=`${ch?"! ":"  "}${p.kisten} Ki à ${kg(p)} (${p.kisten*kg(p)} Fl) ${w.winzer} ${w.wein} ${j||"?"}${ch?` [bisher ${w.jg}]`:""}\n`;});
     const neu=d.pos.filter(p=>p.id==="__neu"&&p.kisten>0);
     if(neu.length){o+="\nNEUE WEINE\n";neu.forEach(p=>{const n=p.neu||{};
-      o+=`  ${p.kisten*6} Fl ${n.winzer||"?"} ${n.wein||"?"} ${p.jg||"?"} · ${n.f||"?"} · ${n.reb||"?"}\n`;});}
+      o+=`  ${p.kisten*kg(p)} Fl ${n.winzer||"?"} ${n.wein||"?"} ${p.jg||"?"} · ${n.f||"?"} · ${n.reb||"?"}\n`;});}
   }
+  const gi=Object.keys(d.gent||{}).filter(id=>+d.gent[id]>0);
+  if(gi.length){o+="\nGETRÄNKE\n";gi.forEach(id=>o+=`  ${d.gent[id]} × ${GN(id)}\n`);
+    o+=`\nSumme ${sum(d.gent)} Getränke\n`;}
+  const gf=(mode==="tag"||(mode==="keller"&&branch==="getr"))?gFehlt():[];
+  if(gf.length){o+="\nGETRÄNKE NACHFÜLLEN\n";gf.forEach(x=>o+=`  ${x.n} × ${GN(x.id)}\n`);}
   return o;
 }
 function openHtml(){
@@ -1483,15 +1887,26 @@ function expCsv(){
     WINES.filter(w=>g(d.ent,w.id)).sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id])
       .forEach(w=>L.push([PLAN.zonen[PLAN.zone[w.id]].t,w.winzer,w.wein,g(d.ent,w.id)].map(e).join(";")));
   }else{
-    L.push(["Winzer","Wein","Jg. bisher","Jg. neu","Kisten","Flaschen","Status"].map(e).join(";"));
+    L.push(["Winzer","Wein","Jg. bisher","Jg. neu","Kisten","Kistengröße","Flaschen","Status"].map(e).join(";"));
     d.pos.filter(p=>p.id&&p.id!=="__neu"&&p.kisten>0).forEach(p=>{const w=byId(p.id);if(!w)return;
       const j=d.jneu[p.id]!=null?d.jneu[p.id]:p.jg;
-      L.push([w.winzer,w.wein,w.jg,j,p.kisten,p.kisten*(PLAN.kiste[p.id]||6),(j&&j!==w.jg)?"JG GEÄNDERT":"ok"].map(e).join(";"));});
+      L.push([w.winzer,w.wein,w.jg,j,p.kisten,kg(p),p.kisten*kg(p),(j&&j!==w.jg)?"JG GEÄNDERT":"ok"].map(e).join(";"));});
     const neu=d.pos.filter(p=>p.id==="__neu"&&p.kisten>0);
-    if(neu.length){L.push("",["Neue Weine"].map(e).join(";"),["Winzer","Wein","Rebsorte","Region","Farbe","Jg.","Kisten","Fl."].map(e).join(";"));
-      neu.forEach(p=>{const n=p.neu||{};L.push([n.winzer,n.wein,n.reb,n.region,n.f,p.jg,p.kisten,p.kisten*6].map(e).join(";"));});}
+    if(neu.length){L.push("",["Neue Weine"].map(e).join(";"),["Winzer","Wein","Rebsorte","Region","Farbe","Jg.","Kisten","Kistengröße","Fl."].map(e).join(";"));
+      neu.forEach(p=>{const n=p.neu||{};L.push([n.winzer,n.wein,n.reb,n.region,n.f,p.jg,p.kisten,kg(p),p.kisten*kg(p)].map(e).join(";"));});}
   }
+  const gi=Object.keys(d.gent||{}).filter(id=>+d.gent[id]>0);
+  if(gi.length){L.push("",["GETRÄNKE"].map(e).join(";"),["Position","Anzahl"].map(e).join(";"));
+    gi.forEach(id=>L.push([GN(id),d.gent[id]].map(e).join(";")));}
+  const gf=(mode==="tag"||(mode==="keller"&&branch==="getr"))?gFehlt():[];
+  if(gf.length){L.push("",["GETRÄNKE NACHFÜLLEN"].map(e).join(";"),["Position","Soll","Ist","Fehlt"].map(e).join(";"));
+    gf.forEach(x=>L.push([GN(x.id),GSOLL[x.id],GSOLL[x.id]-x.n,x.n].map(e).join(";")));}
   dl(protoTitel()+".csv","\ufeff"+L.join("\r\n"),"text/csv");toast("CSV gespeichert");
+}
+/* 2.4 · Rohdaten */
+function expJson(){
+  if(!needName())return;
+  dl(protoTitel()+".json",JSON.stringify(D(),null,2),"application/json");toast("JSON gespeichert");
 }
 function dl(n,t,ty){const b=new Blob([t],{type:ty+";charset=utf-8"});const a=document.createElement("a");
   a.href=URL.createObjectURL(b);a.download=n;document.body.appendChild(a);a.click();a.remove();
@@ -1503,8 +1918,22 @@ $("#ovNo").onclick=()=>$("#ov").classList.remove("on");
 
 /* ── Fußleiste ── */
 function renderFoot(){
-  const d=D(),f=$("#foot");let big=0,lb="",items=[],closed=true;const last=MODES[mode].steps.length-1;
+  const d=D(),f=$("#foot");let big=0,lb="",items=[],closed=true;const last=lastStep();
   if(step===last){f.style.display="none";return;}f.style.display="";
+  if(mode!=="tag"&&branch==="getr"){
+    if(mode==="keller"){const off=GETR.laden.filter(L=>!(d.gdone||{})[L.id]).length;
+      big=gFehltSum();lb=`<b>Getränke fehlen</b>${GETR.laden.length-off} von ${GETR.laden.length} Laden bestätigt`;}
+    else{big=sum(d.gent);lb=`<b>Getränke erfasst</b>${Object.keys(d.gent||{}).length} Positionen`;}
+    $("#fBig").textContent=big;$("#fLb").innerHTML=lb;
+    f.classList.remove("open");footOpen=false;$("#fList").innerHTML="";return;
+  }
+  if(mode==="tag"&&gtab==="getr"){
+    big=gFehltSum();
+    const off=GETR.laden.filter(L=>!(d.gdone||{})[L.id]).length;
+    lb=`<b>Getränke fehlen</b>${GETR.laden.length-off} von ${GETR.laden.length} Laden bestätigt`;
+    $("#fBig").textContent=big;$("#fLb").innerHTML=lb;
+    f.classList.remove("open");footOpen=false;$("#fList").innerHTML="";return;
+  }
   if(mode==="tag"){
     if(step===0){big=sum(d.konsum);closed=false;
       items=Object.keys(d.konsum).map(id=>({id,v:d.konsum[id],t:`${d.konsum[id]} verkauft`,b:"konsum"}));
@@ -1530,7 +1959,7 @@ function renderFoot(){
     items=Object.keys(d.ent).map(id=>({id,v:d.ent[id],t:`${d.ent[id]} geholt`,b:"ent"}));
     lb=`<b>Flaschen geholt</b>${items.length} Weine · antippen zum Korrigieren`;
   }else{const pos=d.pos.filter(p=>p.id&&p.kisten>0);
-    big=pos.reduce((a,p)=>a+p.kisten*(PLAN.kiste[p.id]||6),0);
+    big=pos.reduce((a,p)=>a+p.kisten*kg(p),0);
     lb=`<b>Flaschen geliefert</b>${pos.length} Positionen`;}
   $("#fBig").textContent=big;$("#fLb").innerHTML=lb;
   if(closed){f.classList.remove("open");footOpen=false;$("#fList").innerHTML="";return;}
@@ -1542,18 +1971,41 @@ function renderFoot(){
     el.innerHTML=`<span class="t">${esc(w.winzer)} · ${esc(w.wein)}<small>${it.t}</small></span><span class="v">${it.v}</span>`;
     const x=document.createElement("button");x.className="x";x.textContent="\u00d7";
     x.setAttribute("aria-label",`${w.wein} zurücksetzen`);
-    x.onclick=()=>{delete d[it.b][it.id];if(it.b!=="konsum"&&it.b!=="ent")delete d.seen[it.id];save();render();};
+    x.onclick=()=>{delete d[it.b][it.id];
+      if(it.b!=="konsum"&&it.b!=="ent")delete d.seen[it.b==="rest"?it.id:it.id+"_"+it.b];
+      save();render();};
     el.append(x);L.appendChild(el);});
 }
 
 /* ── Navigation ── */
-$("#bHome").onclick=()=>{mode=null;renderMenu();window.scrollTo(0,0);};
+$("#bHome").onclick=()=>{ARCHREC=null;mode=null;renderMenu();window.scrollTo(0,0);};
 $("#bBack").onclick=()=>{if(step>0)go(step-1);};
-$("#bNext").onclick=()=>{const last=MODES[mode].steps.length-1;if(step<last)go(step+1);};
+$("#bNext").onclick=()=>{if(step<lastStep())go(step+1);};
 $("#fh").onclick=()=>{footOpen=!footOpen;$("#foot").classList.toggle("open",footOpen);};
 $("#q").oninput=render;
 $("#dSel").onchange=e=>{D().tag=e.target.value||today();save();render();};
-renderMenu();
+/* 4.1 / 4.5 · echte Höhen statt fester Werte */
+function measure(){
+  const r=document.documentElement;
+  const t=$("#topwrap"),f=$("#foot");
+  if(t)r.style.setProperty("--topH",Math.round(t.getBoundingClientRect().height)+"px");
+  if(f&&f.style.display!=="none")r.style.setProperty("--foot",Math.round(f.getBoundingClientRect().height)+"px");
+}
+if(window.ResizeObserver){
+  const ro=new ResizeObserver(()=>measure());
+  ["#topwrap","#foot"].forEach(s=>{const el=$(s);if(el)ro.observe(el);});
+}
+window.addEventListener("resize",measure);
+
+/* 2.3 · Offline-Hinweis, kein Blocker */
+function netState(){document.body.classList.toggle("off",navigator.onLine===false);}
+window.addEventListener("online",netState);window.addEventListener("offline",netState);
+netState();
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+}
+
+renderMenu();measure();
 </script>
 </body>
 </html>
