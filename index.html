@@ -321,6 +321,92 @@ label.f input{width:100%;padding:12px;border:1px solid var(--line2);border-radiu
 </style>
 </head>
 <body>
+
+<style>
+/* ── Getränke ── */
+.gseg{display:flex;margin:12px 0 2px;border:1.5px solid var(--ink,#1C1C1E);border-radius:9px;overflow:hidden}
+.gseg button{flex:1;background:none;border:0;padding:10px 6px;font:inherit;font-size:13.5px;
+ font-weight:600;color:#6A6A70;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.gseg button.on{background:#1C1C1E;color:#fff}
+.gseg .gb{font-size:11px;font-weight:700;padding:1px 6px;border-radius:20px;background:#FBEDE6;color:#B4471F}
+.gseg button.on .gb{background:rgba(255,255,255,.16);color:#fff}
+.gate{padding:18px 0 8px}
+.gate h2{margin:0 0 3px;font-size:19px;font-weight:600}
+.gate p.gs{margin:0 0 20px;font-size:13.5px;color:#6A6A70}
+.gbtn{display:flex;align-items:center;gap:14px;width:100%;text-align:left;border-radius:11px;
+ padding:17px 16px;margin-bottom:11px;cursor:pointer;font:inherit}
+.gbtn.wein{background:#fff;border:1.5px solid #1C1C1E}
+.gbtn.getr{background:#F3F1EB;border:1px solid #D8D5CD;padding:12px 16px}
+.gbtn .gi{width:42px;height:42px;border-radius:10px;background:#F3F1EB;display:grid;place-items:center;flex-shrink:0}
+.gbtn.getr .gi{width:34px;height:34px;background:#ECE9E1}
+.gbtn .gi svg{width:21px;height:21px}
+.gbtn.getr .gi svg{width:18px;height:18px;stroke:#6A6A70}
+.gbtn b{display:block;font-size:16.5px;font-weight:600}
+.gbtn.getr b{font-size:15px}
+.gbtn span.s{display:block;font-size:12.5px;color:#6A6A70;margin-top:1px}
+.gbtn .go2{margin-left:auto;color:#9C9CA2;font-size:20px}
+.drw{margin:14px 0 0;border:1.5px solid #C9C5BA;border-radius:10px;background:#F1EEE7;overflow:hidden}
+.drwf{background:#ECE9E1;border-bottom:1.5px solid #C9C5BA;padding:7px 11px 8px;
+ display:flex;align-items:center;justify-content:space-between;gap:9px}
+.drwf b{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5A584F}
+.drwf i{font-style:normal;font-size:10.5px;color:#8C8A80;font-variant-numeric:tabular-nums}
+.drwf i.low{color:#B4471F;font-weight:700}
+.drwh{width:28px;height:4px;border-radius:3px;background:#C4C0B4;flex-shrink:0}
+.drwi{padding:10px 6px 9px;border-top:1px solid #FCFAF5;display:flex;gap:9px;
+ justify-content:center;touch-action:none}
+.gcol{display:flex;flex-direction:column;align-items:center;position:relative}
+.gcol+.gcol::before{content:"";position:absolute;left:0;top:19px;bottom:0;width:1px;background:#E2DED4}
+.gnum{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;height:17px;letter-spacing:-.02em}
+.gnum.low{color:#B4471F}
+.gnum s{font-size:9px;font-weight:600;color:#9C9CA2;text-decoration:none}
+.gstk{display:flex;flex-direction:column-reverse;align-items:center;justify-content:flex-start}
+.gpt{border-radius:50%;flex-shrink:0}
+.gpt.off{background:none!important;border:1.5px solid #D2CEC4}
+.gbase{width:70%;height:1.5px;background:#CBC7BC;margin:5px 0 0}
+.gshot{height:50px;width:100%;display:flex;align-items:flex-end;justify-content:center;margin-top:2px}
+.gshot img{display:block;opacity:.92}
+.gcap{font-size:8.5px;line-height:1.15;text-align:center;color:#6A6A70;margin-top:4px;min-height:22px;padding:0 1px}
+.gcell{position:relative;cursor:pointer;display:grid;place-items:center;flex-shrink:0}
+.gcell .gsh{position:absolute;inset:0;border:1.5px solid #CDC9BF;background:#FCFAF6;border-radius:5px}
+.gcell svg{position:relative;z-index:1;width:80%;height:80%}
+.gcell.gx svg{display:none}
+.gcell.gx .gsh{background:none;border-style:dashed;border-color:#CFCBC1}
+.gsq{display:flex;flex-direction:column;gap:5px}
+.gspec{display:flex;flex-direction:column;gap:2px}
+.gsp{display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.gsp .gcell .gsh{display:none}
+.gsp .gcell svg{width:100%;height:100%}
+.gsp .gcell.gx svg{display:block;opacity:.17;filter:grayscale(1)}
+.gsp span{font-size:7.5px;line-height:1;color:#6A6A70;margin-top:1px;text-align:center;
+ white-space:nowrap;height:8px}
+.gsp.gx span{color:#B4471F}
+.rsec{padding:11px 10px 10px;display:flex;gap:6px;justify-content:center;touch-action:none}
+.rdiv{height:1px;background:#D2CEC4;margin:0 10px}
+.rsec2{padding:10px 10px 12px;touch-action:none}
+.rhd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.rhd b{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5A584F}
+.rhd i{font-style:normal;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.rhd i.low{color:#B4471F}
+.rhd i s{font-size:9.5px;font-weight:600;color:#9C9CA2;text-decoration:none}
+.rrows{display:grid;grid-template-columns:repeat(6,1fr);column-gap:1px;row-gap:14px;
+ justify-items:center;cursor:pointer}
+.rrows .gpt{width:100%;max-width:36px;aspect-ratio:1;margin:0!important}
+.drwb{padding:0 9px 9px}
+.drwb button{width:100%;padding:9px;border:1px solid #D8D5CD;background:#fff;border-radius:8px;
+ font:inherit;font-size:12.5px;font-weight:600;color:#5F5D57;cursor:pointer}
+.drwb button.ok{background:#EFF5EE;border-color:#3E7A3E;color:#2F5E2F}
+.grow2{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #E6E4DE}
+.grow2:last-child{border-bottom:0}
+.grow2 .gt{flex:1;font-size:14px}
+.grow2 .gq{font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;min-width:24px;text-align:right}
+.grow2 .gic{width:24px;height:30px;display:flex;align-items:flex-end;justify-content:center;flex-shrink:0}
+.grow2 .gic img{max-height:30px}.grow2 .gic svg{width:22px;height:22px}
+.gblk{background:#F3F1EB;margin:18px -16px 0;padding:12px 16px 14px;border-top:1px solid #D8D5CD}
+.gblkh{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:#5F5D57;
+ padding-bottom:6px;border-bottom:1px solid #D8D5CD;display:flex;justify-content:space-between}
+.gblkh i{font-style:normal;letter-spacing:0;text-transform:none;font-weight:600;color:#9C9CA2}
+</style>
+
 <div id="menu" class="menu"></div>
 <div id="app" style="display:none">
 <header>
@@ -347,10 +433,10 @@ label.f input{width:100%;padding:12px;border:1px solid var(--line2);border-radiu
 <div class="toast" id="toast"></div>
 <script>
 const WINES = [{"id":"w001","f":"WEISS","r":"Grüner Veltliner","winzer":"Leindl","wein":"Langenlois","jg":"2024","region":"Kamptal DAC","reb":"Grüner Veltliner","at":1,"grp":"Grüner Veltliner"},{"id":"w003","f":"WEISS","r":"Grüner Veltliner","winzer":"Ott","wein":"Fass 4","jg":"2025","region":"Wagram, Feuersbrunn","reb":"Grüner Veltliner","at":1,"grp":"Grüner Veltliner"},{"id":"w002","f":"WEISS","r":"Grüner Veltliner","winzer":"Simon Gattinger","wein":"Loiben Federspiel","jg":"2024","region":"Wachau DAC","reb":"Grüner Veltliner","at":1,"grp":"Grüner Veltliner"},{"id":"w004","f":"WEISS","r":"Grüner Veltliner","winzer":"Weinberghof Fritsch","wein":"Ried Schlossberg 1ÖTW","jg":"2022","region":"Wagram DAC, Oberstockstall","reb":"Grüner Veltliner","at":1,"grp":"Grüner Veltliner"},{"id":"w005","f":"WEISS","r":"Riesling","winzer":"Hirsch","wein":"Zöbing","jg":"2024","region":"Kamptal","reb":"Riesling","at":1,"grp":"Riesling"},{"id":"w006","f":"WEISS","r":"Riesling","winzer":"Pichler-Krutzler","wein":"Loiben","jg":"2024","region":"Wachau DAC","reb":"Riesling","at":1,"grp":"Riesling"},{"id":"w007","f":"WEISS","r":"Riesling","winzer":"Emrich-Schönleber","wein":"Mineral","jg":"2023","region":"Monzingen (DE)","reb":"Riesling","at":0,"grp":"Riesling"},{"id":"w008","f":"WEISS","r":"Sauvignon Blanc","winzer":"Hannes Sabathi","wein":"Sauvignon Blanc","jg":"2024","region":"Südsteiermark DAC, Gamlitz","reb":"Sauvignon Blanc","at":1,"grp":"Sauvignon Blanc"},{"id":"w009","f":"WEISS","r":"Sauvignon Blanc","winzer":"Verus","wein":"Sauvignon Blanc","jg":"?","region":"Slowenien, Ormož","reb":"Sauvignon Blanc","at":0,"grp":"Sauvignon Blanc"},{"id":"w010","f":"WEISS","r":"Weißburgunder","winzer":"Hannes Sabathi","wein":"Weißburgunder","jg":"2024","region":"Südsteiermark DAC, Gamlitz","reb":"Weißburgunder","at":1,"grp":"Weißburgunder"},{"id":"w011","f":"WEISS","r":"Chardonnay","winzer":"Gesellmann","wein":"Chardonnay","jg":"2022","region":"Mittelburgenland, Deutschkreutz","reb":"Chardonnay","at":1,"grp":"Chardonnay"},{"id":"w013","f":"WEISS","r":"Chardonnay","winzer":"Domaine Borgeot","wein":"Bourgogne Blanc Côte d'Or","jg":"2022","region":"Burgund (FR)","reb":"Chardonnay","at":0,"grp":"Chardonnay"},{"id":"w014","f":"WEISS","r":"Chardonnay","winzer":"Domaine Pillot","wein":"Bourgogne Blanc","jg":"2023","region":"Burgund (FR)","reb":"Chardonnay","at":0,"grp":"Chardonnay"},{"id":"w016","f":"WEISS","r":"Grauburgunder","winzer":"Andreas Gsellmann","wein":"Grauburgunder","jg":"2025","region":"Neusiedlersee, Gols","reb":"Grauburgunder","at":1,"grp":"Grauburgunder"},{"id":"w015","f":"WEISS","r":"Grauburgunder","winzer":"Dürnberg","wein":"Grauburgunder","jg":"2021","region":"Weinviertel","reb":"Grauburgunder","at":1,"grp":"Grauburgunder"},{"id":"w017","f":"WEISS","r":"Roter Veltliner","winzer":"Josef Fritz","wein":"Wagram Terrassen","jg":"2024","region":"Wagram DAC, Zaussenberg","reb":"Roter Veltliner","at":1,"grp":"Roter Veltliner"},{"id":"w018","f":"WEISS","r":"Muskateller","winzer":"Muster","wein":"Gelber Muskateller Styria","jg":"2025","region":"Südsteiermark","reb":"Gelber Muskateller","at":1,"grp":"Muskateller"},{"id":"w019","f":"WEISS","r":"Gemischter Satz","winzer":"Ingrid Groiss","wein":"Anna's 17","jg":"2025","region":"Weinviertel, Breitenwaida","reb":"Gemischter Satz","at":1,"grp":"Gemischter Satz"},{"id":"w020","f":"WEISS","r":"Gemischter Satz","winzer":"Mayer am Pfarrplatz","wein":"Wiener Gemischter Satz","jg":"2025","region":"Wien","reb":"Gemischter Satz","at":1,"grp":"Gemischter Satz"},{"id":"w023","f":"WEISS","r":"Cuvée","winzer":"Bründlmayer","wein":"Spiegel","jg":"2022","region":"Kamptal, Langenlois","reb":"Grauburgunder / Weißburgunder","at":1,"grp":"Cuvée"},{"id":"w022","f":"WEISS","r":"Cuvée","winzer":"Heinrich (f. U&K)","wein":"Tulpe","jg":"2019","region":"Neusiedlersee, Gols","reb":"Weißburgunder / Chardonnay","at":1,"grp":"Cuvée"},{"id":"w060","f":"WEISS","r":"Cuvée","winzer":"Muster (U&K)","wein":"Fräulein Klein","jg":"2021","region":"Südsteiermark, Gamlitz","reb":"Muskateller-Cuvée","at":1,"grp":"Cuvée"},{"id":"w021","f":"WEISS","r":"Cuvée","winzer":"Wolfgang Seher","wein":"Wilde Reben","jg":"2024","region":"Niederösterreich","reb":"GV / Riesling / Muskateller","at":1,"grp":"Cuvée"},{"id":"w045","f":"ROSÉ","r":"Zweigelt","winzer":"Dürnberg","wein":"Blanc de Noir","jg":"2024","region":"Weinviertel","reb":"Zweigelt","at":1,"grp":"Rosé"},{"id":"w043","f":"ROSÉ","r":"Zweigelt","winzer":"Fritsch (Karl)","wein":"Wagram Rosé","jg":"?","region":"Wagram, Oberstockstall","reb":"Zweigelt","at":1,"grp":"Rosé"},{"id":"w046","f":"ROSÉ","r":"Cuvée","winzer":"Ultimate Provence","wein":"UP Rosé","jg":"2025","region":"Côtes de Provence (FR)","reb":"Cinsault / Grenache / Syrah / Rolle","at":0,"grp":"Rosé"},{"id":"w026","f":"ROT","r":"Zweigelt","winzer":"Glatzer","wein":"Rubin Carnuntum","jg":"2023","region":"Carnuntum, Göttlesbrunn","reb":"Zweigelt","at":1,"grp":"Zweigelt"},{"id":"w027","f":"ROT","r":"Zweigelt","winzer":"Glatzer","wein":"Dornenvogel","jg":"2022","region":"Carnuntum DAC, Göttlesbrunn","reb":"Zweigelt Reserve","at":1,"grp":"Zweigelt"},{"id":"w025","f":"ROT","r":"Zweigelt","winzer":"Kollwentz","wein":"Leithakalk","jg":"2022","region":"Leithaberg, Großhöflein","reb":"Zweigelt","at":1,"grp":"Zweigelt"},{"id":"w024","f":"ROT","r":"Zweigelt","winzer":"Werner Achs","wein":"Goldberg","jg":"2024","region":"Neusiedlersee DAC, Gols","reb":"Zweigelt","at":1,"grp":"Zweigelt"},{"id":"w031","f":"ROT","r":"Blaufränkisch","winzer":"Moric","wein":"Reserve","jg":"2023","region":"Burgenland","reb":"Blaufränkisch","at":1,"grp":"Blaufränkisch"},{"id":"w030","f":"ROT","r":"Blaufränkisch","winzer":"Muhr","wein":"Samt & Seide","jg":"2022","region":"Carnuntum, Prellenkirchen","reb":"Blaufränkisch","at":1,"grp":"Blaufränkisch"},{"id":"w028","f":"ROT","r":"Blaufränkisch","winzer":"Nittnaus","wein":"Kalk & Schiefer","jg":"2019","region":"Neusiedlersee, Gols","reb":"Blaufränkisch","at":1,"grp":"Blaufränkisch"},{"id":"w032","f":"ROT","r":"Pinot Noir","winzer":"Gebeshuber","wein":"Gumpoldskirchen","jg":"2022","region":"Thermenregion","reb":"Pinot Noir","at":1,"grp":"Pinot Noir"},{"id":"w035","f":"ROT","r":"Pinot Noir","winzer":"Schiefer","wein":"Pinot Noir","jg":"2021","region":"Eisenberg, Königsberg","reb":"Pinot Noir","at":1,"grp":"Pinot Noir"},{"id":"w033","f":"ROT","r":"Pinot Noir","winzer":"Domaine Confuron-Gindre","wein":"Bourgogne","jg":"2022","region":"Burgund (FR)","reb":"Pinot Noir","at":0,"grp":"Pinot Noir"},{"id":"w034","f":"ROT","r":"Pinot Noir","winzer":"Domaine Ecard","wein":"Savigny-les-Beaune","jg":"2020","region":"Burgund (FR)","reb":"Pinot Noir","at":0,"grp":"Pinot Noir"},{"id":"w036","f":"ROT","r":"Merlot","winzer":"Dürnberg","wein":"Elementum","jg":"2022","region":"Niederösterreich, Rosenberg","reb":"Merlot","at":1,"grp":"Merlot"},{"id":"w041","f":"ROT","r":"Sangiovese","winzer":"Lamole di Lamole","wein":"Chianti Classico Duelame","jg":"2024","region":"Toscana (IT)","reb":"Sangiovese","at":0,"grp":"Sangiovese"},{"id":"w042","f":"ROT","r":"Barbera","winzer":"Ceste","wein":"Barbera d'Alba Sposabella","jg":"?","region":"Piemont (IT)","reb":"Barbera","at":0,"grp":"Barbera"},{"id":"w038","f":"ROT","r":"Cuvée","winzer":"Claus Preisinger","wein":"Heideboden","jg":"2023","region":"Gols, Leithagebirge","reb":"Zw / BF / Merlot","at":1,"grp":"Cuvée"},{"id":"w039","f":"ROT","r":"Cuvée","winzer":"Heinrich","wein":"Pannobile","jg":"2020","region":"Neusiedlersee, Gols","reb":"Zweigelt / Blaufränkisch","at":1,"grp":"Cuvée"},{"id":"w037","f":"ROT","r":"Cuvée","winzer":"Heinrich (f. U&K)","wein":"Nelke","jg":"2017","region":"Neusiedlersee, Gols","reb":"Zweigelt / Blaufränkisch","at":1,"grp":"Cuvée"},{"id":"w040","f":"ROT","r":"Cuvée","winzer":"Werner Achs","wein":"Xur","jg":"2022","region":"Neusiedlersee, Gols","reb":"Zw / BF / St. Laurent","at":1,"grp":"Cuvée"},{"id":"w055","f":"BUBBLES","r":"Schaumwein","winzer":"Seher","wein":"La Petite Frizzante Rosé","jg":"?","region":"Niederösterreich","reb":"Pinot Noir","at":1,"grp":"Sekt Rosé"},{"id":"w056","f":"BUBBLES","r":"Schaumwein","winzer":"De Saint Gall","wein":"Champagne 1er Cru Blanc de Blancs","jg":"n.v.","region":"Champagne (FR)","reb":"Chardonnay","at":0,"grp":"Champagner"},{"id":"w057","f":"BUBBLES","r":"Schaumwein","winzer":"La Farra","wein":"Prosecco Rosé Brut","jg":"n.v.","region":"Veneto (IT)","reb":"Glera / Pinot Nero","at":0,"grp":"Sekt Rosé"},{"id":"serena","f":"BUBBLES","r":"Schaumwein","winzer":"Serena","wein":"Piu Frizzante","jg":"n.v.","region":"Veneto (IT)","reb":"Glera","at":0,"grp":"Sekt"},{"id":"w048","f":"NATURAL","r":"Traminer","winzer":"Andreas Gsellmann","wein":"Traminer","jg":"2021","region":"Neusiedlersee, Gols","reb":"Traminer","at":1,"grp":"Naturwein weiss"},{"id":"w050","f":"NATURAL","r":"Traminer","winzer":"Heinrich","wein":"Roter Traminer Freyheit","jg":"2021","region":"Neusiedlersee, Gols","reb":"Roter Traminer","at":1,"grp":"Naturwein weiss"},{"id":"w049","f":"NATURAL","r":"Muskateller","winzer":"Heinrich","wein":"Muskat Freyheit","jg":"2022","region":"Neusiedlersee, Gols","reb":"Muskateller","at":1,"grp":"Naturwein weiss"},{"id":"w052","f":"NATURAL","r":"Pinot Noir","winzer":"Heinrich","wein":"Pinot Freyheit","jg":"2022","region":"Neusiedlersee, Gols","reb":"Pinot Noir","at":1,"grp":"Naturwein rot"},{"id":"w047","f":"NATURAL","r":"Cuvée","winzer":"Claus Preisinger","wein":"Kalk und Kiesel","jg":"2022","region":"Gols, Leithagebirge","reb":"WB / GV / Welschriesling","at":1,"grp":"Naturwein weiss"},{"id":"w051","f":"NATURAL","r":"Cuvée","winzer":"Heinrich","wein":"Naked White","jg":"2023","region":"Neusiedlersee, Gols","reb":"WB / Chardonnay / GV","at":1,"grp":"Naturwein weiss"},{"id":"w053","f":"NATURAL","r":"Cuvée","winzer":"Heinrich","wein":"Naked Red","jg":"n.v.","region":"Burgenland","reb":"Zw / BF / St. Laurent","at":1,"grp":"Naturwein rot"},{"id":"w065","f":"ROT","r":"Blaufränkisch","grp":"Blaufränkisch","winzer":"Gesellmann","wein":"Creitzer Reserve","jg":"2021","region":"Mittelburgenland DAC, Deutschkreutz","reb":"Blaufränkisch","at":1},{"id":"w066","f":"WEISS","r":"Chardonnay","grp":"Chardonnay","winzer":"Kollwentz","wein":"Leithakalk","jg":"2024","region":"Leithaberg, Großhöflein","reb":"Chardonnay","at":1}];
-const PLAN = {"soll":{"w001":3,"w003":3,"w002":3,"w004":3,"w005":3,"w006":2,"w007":2,"w008":3,"w009":3,"w010":3,"w011":3,"w013":3,"w014":3,"w016":3,"w015":3,"w017":3,"w018":3,"w019":3,"w020":3,"w023":2,"w022":2,"w060":2,"w021":2,"w045":2,"w043":2,"w046":2,"w026":3,"w027":3,"w025":3,"w024":3,"w031":3,"w030":3,"w028":3,"w032":3,"w035":3,"w033":3,"w034":3,"w036":3,"w041":3,"w042":3,"w038":3,"w039":3,"w037":3,"w040":3,"w048":2,"w050":2,"w049":2,"w052":3,"w047":2,"w051":3,"w053":3,"w065":3,"w066":3},"schrank":{"w001":3,"w003":3,"w002":3,"w004":3,"w005":3,"w006":3,"w007":3,"w008":3,"w009":3,"w010":3,"w011":3,"w013":3,"w014":3,"w016":4,"w015":4,"w017":4,"w018":4,"w019":4,"w020":4,"w023":4,"w022":4,"w060":4,"w021":4,"w045":4,"w043":4,"w046":4,"w026":1,"w027":1,"w025":1,"w024":1,"w031":1,"w030":1,"w028":1,"w032":2,"w035":2,"w033":2,"w034":2,"w036":1,"w041":2,"w042":2,"w038":2,"w039":2,"w037":2,"w040":2,"w048":4,"w050":4,"w049":4,"w052":2,"w047":4,"w051":4,"w053":2,"w065":1,"w066":3},"restorder":{"w024":0,"w026":1,"w025":2,"w027":3,"w028":4,"w030":5,"w031":6,"w065":7,"w036":8,"w032":9,"w035":10,"w033":11,"w034":12,"w041":13,"w042":14,"w037":15,"w039":16,"w040":17,"w038":18,"w053":19,"w052":20,"w001":21,"w002":22,"w003":23,"w004":24,"w005":25,"w006":26,"w007":27,"w008":28,"w009":29,"w010":30,"w011":31,"w066":32,"w013":33,"w014":34,"w015":35,"w016":36,"w017":37,"w018":38,"w019":39,"w020":40,"w021":41,"w022":42,"w023":43,"w060":44,"w043":45,"w045":46,"w046":47,"w047":48,"w051":49,"w049":50,"w048":51,"w050":52},"zone":{"w001":3,"w003":3,"w002":3,"w004":3,"w005":3,"w006":3,"w007":3,"w008":3,"w009":3,"w010":3,"w011":3,"w013":3,"w014":3,"w016":3,"w015":3,"w017":3,"w018":3,"w019":3,"w020":3,"w023":4,"w022":4,"w060":4,"w021":4,"w045":2,"w043":2,"w046":2,"w026":1,"w027":1,"w025":1,"w024":1,"w031":1,"w030":1,"w028":1,"w032":1,"w035":1,"w033":1,"w034":1,"w036":1,"w041":1,"w042":1,"w038":1,"w039":1,"w037":1,"w040":1,"w055":6,"w056":6,"w057":6,"serena":6,"w048":5,"w050":5,"w049":5,"w052":5,"w047":5,"w051":5,"w053":5,"w065":1,"w066":3},"zonen":{"1":{"t":"Rot","s":"Linker Raum · Hauptregal"},"2":{"t":"Rosé","s":"Eingang · Frontregal"},"3":{"t":"Weiss","s":"Rechter Raum · Hauptregal"},"4":{"t":"Cuvée Weiss","s":"Rechter Raum · Seitenregal links"},"5":{"t":"Natural","s":"Rechter Raum · Seitenregal rechts"},"6":{"t":"Bubbles","s":"Eingang · Frontregal"},"7":{"t":"Einzelgänger","s":"Oben auf dem Regal"}},"kiste":{"w003":12},"barrot":[{"id":"w026","soll":3},{"id":"w065","soll":3},{"id":"w037","soll":3}],"bar":[{"id":"serena","soll":6},{"id":"w055","soll":2},{"id":"w056","soll":1},{"id":"w001","soll":3},{"id":"w008","soll":3},{"id":"w011","soll":3},{"id":"w005","soll":3},{"id":"w043","soll":3}],"backup":[{"id":"serena","soll":2},{"id":"w055","soll":2},{"id":"w056","soll":2}]};
+const PLAN = {"soll":{"w001":3,"w003":3,"w002":3,"w004":3,"w005":3,"w006":2,"w007":2,"w008":3,"w009":3,"w010":3,"w011":3,"w013":3,"w014":3,"w016":3,"w015":3,"w017":3,"w018":3,"w019":3,"w020":3,"w023":2,"w022":2,"w060":2,"w021":2,"w045":2,"w043":2,"w046":2,"w026":3,"w027":3,"w025":3,"w024":3,"w031":3,"w030":3,"w028":3,"w032":3,"w035":3,"w033":3,"w034":3,"w036":3,"w041":3,"w042":3,"w038":3,"w039":3,"w037":3,"w040":3,"w048":2,"w050":2,"w049":2,"w052":3,"w047":2,"w051":3,"w053":3,"w065":3,"w066":3},"schrank":{"w001":3,"w003":3,"w002":3,"w004":3,"w005":3,"w006":3,"w007":3,"w008":3,"w009":3,"w010":3,"w011":3,"w013":3,"w014":3,"w016":4,"w015":4,"w017":4,"w018":4,"w019":4,"w020":4,"w023":4,"w022":4,"w060":4,"w021":4,"w045":4,"w043":4,"w046":4,"w026":1,"w027":1,"w025":1,"w024":1,"w031":1,"w030":1,"w028":1,"w032":2,"w035":2,"w033":2,"w034":2,"w036":1,"w041":2,"w042":2,"w038":2,"w039":2,"w037":2,"w040":2,"w048":4,"w050":4,"w049":4,"w052":2,"w047":4,"w051":4,"w053":2,"w065":1,"w066":3},"restorder":{"w024":0,"w026":1,"w025":2,"w027":3,"w028":4,"w030":5,"w031":6,"w065":7,"w036":8,"w032":9,"w035":10,"w033":11,"w034":12,"w041":13,"w042":14,"w037":15,"w039":16,"w040":17,"w038":18,"w053":19,"w052":20,"w001":21,"w002":22,"w003":23,"w004":24,"w005":25,"w006":26,"w007":27,"w008":28,"w009":29,"w010":30,"w011":31,"w066":32,"w013":33,"w014":34,"w015":35,"w016":36,"w017":37,"w018":38,"w019":39,"w020":40,"w021":41,"w022":42,"w023":43,"w060":44,"w043":45,"w045":46,"w046":47,"w047":48,"w051":49,"w049":50,"w048":51,"w050":52},"zone":{"w001":3,"w003":3,"w002":3,"w004":3,"w005":3,"w006":3,"w007":3,"w008":3,"w009":3,"w010":3,"w011":3,"w013":3,"w014":3,"w016":3,"w015":3,"w017":3,"w018":3,"w019":3,"w020":3,"w023":4,"w022":4,"w060":4,"w021":4,"w045":2,"w043":2,"w046":2,"w026":1,"w027":1,"w025":1,"w024":1,"w031":1,"w030":1,"w028":1,"w032":1,"w035":1,"w033":1,"w034":1,"w036":1,"w041":1,"w042":1,"w038":1,"w039":1,"w037":1,"w040":1,"w055":6,"w056":6,"w057":6,"serena":6,"w048":5,"w050":5,"w049":5,"w052":5,"w047":5,"w051":5,"w053":5,"w065":1,"w066":3},"zonen":{"1":{"t":"Rot","s":"Linker Raum · Hauptregal"},"2":{"t":"Rosé","s":"Eingang · Frontregal"},"3":{"t":"Weiss","s":"Rechter Raum · Hauptregal"},"4":{"t":"Cuvée Weiss","s":"Rechter Raum · Seitenregal links"},"5":{"t":"Natural","s":"Rechter Raum · Seitenregal rechts"},"6":{"t":"Bubbles","s":"Eingang · Frontregal"},"7":{"t":"Einzelgänger","s":"Oben auf dem Regal"}},"kiste":{},"barrot":[{"id":"w026","soll":3},{"id":"w065","soll":3},{"id":"w053","soll":3}],"bar":[{"id":"serena","soll":6},{"id":"w055","soll":2},{"id":"w056","soll":1},{"id":"w001","soll":3},{"id":"w009","soll":3},{"id":"w011","soll":3},{"id":"w005","soll":3},{"id":"w043","soll":3}],"backup":[{"id":"serena","soll":2},{"id":"w055","soll":2},{"id":"w056","soll":2}]};
 const MAIL="casimir.ikrath@haus-hirt.com";
 const NAMES=["Asad Karakiri","Casimir","Ian Lauchbein"];
-const KEY="hh_keller_v7";
+const KEY="hh_keller_v10";
 const $=s=>document.querySelector(s);
 const byId=id=>WINES.find(w=>w.id===id);
 const FARBEN=["WEISS","ROSÉ","ROT","BUBBLES","NATURAL"];
@@ -378,13 +464,13 @@ const HOWTO={
   {t:"Holen und einräumen",p:"Diese Flaschen fehlen, sortiert nach Laufweg. Holen, einräumen, abhaken — die Zeile wandert nach unten zu Bar oder Restaurant.",tip:"Weg: Rot, Rosé, Weiss, Cuvée, Natural, Bubbles."},
   {t:"Fertig",p:"",tip:""}],
  keller:[
-  {t:"Keller zählen",p:"Im Laufweg: Rot, Rosé, Weiss, Cuvée, Natural, Bubbles, Einzelgänger. Pro Wein Reihen und einzelne Flaschen.",tip:"1 Reihe = 6 Flaschen. Der Knopf +5 springt in Fünferschritten."},
+  {t:"Keller zählen",p:"Im Laufweg: Rot, Rosé, Weiss, Cuvée, Natural, Bubbles, Einzelgänger. Pro Wein Reihen und einzelne Flaschen.",tip:"1 Reihe = 12 Flaschen. Der Knopf +5 springt in Fünferschritten."},
   {t:"Fertig",p:"",tip:""}],
  nach:[
   {t:"Was wurde geholt",p:"Wein antippen, pro Flasche einmal. Minus links, falls zu viel. Nur was zwischendurch aus dem Keller geholt wurde.",tip:""},
   {t:"Fertig",p:"",tip:""}],
  ware:[
-  {t:"Kisten aufnehmen",p:"Pro Position: Wein wählen, Jahrgang, Kistenzahl. Neuer Wein: unten die Checkliste.",tip:"Ott 12er-Kisten, alle anderen 6er."},
+  {t:"Kisten aufnehmen",p:"Pro Position: Wein wählen, Jahrgang, Kistenzahl. Neuer Wein: unten die Checkliste.",tip:"Eine Kiste sind 12 Flaschen."},
   {t:"Jahrgänge prüfen",p:"Vergleich mit dem letzten Stand. Stimmt, abhaken. Stimmt nicht, im Feld korrigieren.",tip:"Referenz ist Juli 2026, kein Live-Bestand."},
   {t:"Einräumen",p:"Wohin die Kisten kommen. Nach Kellerbereich sortiert. Abhaken.",tip:""},
   {t:"Fertig",p:"",tip:""}]};
@@ -401,11 +487,11 @@ function barSlots(k){return (CFG&&CFG[k])?CFG[k]:PLAN[k];}
 function yest(){const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().slice(0,10);}
 function today(){return new Date().toISOString().slice(0,10);}
 function blank(m){
-  const b={mode:m,tag:m==="tag"?yest():today(),name:"",notiz:"",finished:false,ver:7};
-  if(m==="tag")Object.assign(b,{konsum:{},rest:{},barrot:{},bar:{},backup:{},seen:{},holt:{}});
-  if(m==="keller")Object.assign(b,{reihen:{},einzel:{},zdone:{}});
-  if(m==="nach")Object.assign(b,{ent:{}});
-  if(m==="ware")Object.assign(b,{pos:[],jok:{},jneu:{},ein:{}});
+  const b={mode:m,tag:m==="tag"?yest():today(),name:"",notiz:"",finished:false,ver:10};
+  if(m==="tag")Object.assign(b,{konsum:{},rest:{},barrot:{},bar:{},backup:{},seen:{},holt:{},getr:{},gdone:{},gholt:{}});
+  if(m==="keller")Object.assign(b,{reihen:{},einzel:{},zdone:{},getr:{},gdone:{}});
+  if(m==="nach")Object.assign(b,{ent:{},gent:{}});
+  if(m==="ware")Object.assign(b,{pos:[],jok:{},jneu:{},ein:{},gent:{}});
   return b;
 }
 function load(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r);}catch(e){}return{};}
@@ -513,7 +599,7 @@ function hasData(k,d){
   if(k==="ware")return (d.pos||[]).length;
 }
 function start(m){
-  mode=m;if(!S[m]||S[m].finished)S[m]=blank(m);step=0;save();
+  mode=m;gtab="wein";branch=(m==="tag")?"wein":null;if(!S[m]||S[m].finished)S[m]=blank(m);step=0;save();
   $("#menu").style.display="none";$("#app").style.display="";
   $("#mTitle").textContent=MODES[m].t;
   $("#steps").innerHTML=MODES[m].steps.map((t,i)=>
@@ -534,9 +620,15 @@ function render(){
   $("#bBack").style.display=step===0?"none":"";
   $("#bNext").style.display=step===last?"none":"";
   const m=$("#main");m.innerHTML="";m.className="";
+  if(mode!=="tag"&&branch===null){$("#tools").style.display="none";$("#howto").style.display="none";
+    $("#steps").style.display="none";$("#foot").style.display="none";rGate(m);return;}
+  $("#steps").style.display="";$("#foot").style.display="";
+  const RG={keller:[rGetr,rDoc],nach:[rGetrMenge,rDoc],ware:[rGetrMenge,rDoc]};
   const R={tag:[rKonsum,rBar,rRest,rHol,rDoc],keller:[rZaehl,rDoc],
            nach:[rNach,rDoc],ware:[rKisten,rJahr,rEin,rDoc]};
-  const fn=R[mode][step];
+  let fn;
+  if(mode!=="tag"&&branch==="getr"){const a=RG[mode];fn=a[Math.min(step,a.length-1)];}
+  else fn=R[mode][step];
   $("#tools").style.display=(fn===rKonsum||fn===rRest||fn===rNach)?"block":"none";
   $("#howto").style.display=h.p?"block":"none";
   fn(m);
@@ -597,6 +689,8 @@ function groupedList(m,list,rowFn,tag){
 /* ── Bar (zuerst) ── */
 function rBar(m){
   const d=D();railGroups=[];
+  gSegment(m);
+  if(gtab==="getr")return rGetr(m);
   const blk=(tit,sub,arr,bucket,showPos,voll)=>{
     const chk=p=>d.seen[p.id+"_"+bucket]||g(d[bucket],p.id);
     schrankHead(m,tit,sub,arr,chk,voll?()=>{
@@ -688,11 +782,12 @@ function zielTags(it){
 }
 function rHol(m){
   const d=D(),items=holList();
-  if(!items.length)return m.innerHTML='<div class="box good"><b>Nichts zu holen.</b><br>Alle Kühlschränke sind voll.</div>';
+  if(!items.length){m.innerHTML='<div class="box good"><b>Kein Wein zu holen.</b><br>Alle Kühlschränke sind voll.</div>';
+    gHolBlock(m);return;}
   const offen=items.filter(it=>!d.holt[it.w.id]),fertig=items.filter(it=>d.holt[it.w.id]);
   // Kisten-Info oben
   const totFl=items.reduce((a,x)=>a+x.n,0);
-  const kisten=Math.ceil(totFl/6);
+  const kisten=Math.ceil(totFl/12);
   const info=document.createElement("div");info.className="kisteninfo";
   info.innerHTML=`<div><b>${totFl}</b> Flaschen</div><div><b>${kisten}</b> Kiste${kisten!==1?"n":""} mitnehmen</div>
     <div><b>${offen.length}</b> offen</div>`;
@@ -707,6 +802,7 @@ function rHol(m){
     const h=add(m,"hd1w","");h.innerHTML=`<div class="hd1">Erledigt<span class="cnt2 full">${fertig.length}/${items.length}</span></div>`;
     fertig.forEach(it=>m.appendChild(holRow(it)));
   }
+  gHolBlock(m);
 }
 function holRow(it){
   const d=D(),on=!!d.holt[it.w.id];
@@ -908,6 +1004,210 @@ function rEin(m){
     m.appendChild(b);});
 }
 
+
+/* ══════ GETRÄNKE ══════ */
+const GETR = {"pic": {"wildberry": "data:image/png;base64,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", "gingerbeer": "data:image/png;base64,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", "tonicfent": "data:image/png;base64,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", "sanbitter": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAhCAYAAAAPm1F2AAAEK0lEQVR42j2RTW9c5RmGr+d533PmjOfMmbFjm+APXCsfCCLSFJEUsQldlOYPJD8iK7aVKqWBHWId1B0qu2SBFImqRWqisKlVgRQR0oQQPkIabGInduyZMzPnnPd9WARY3Kv70q1busRABPjHsWOzc14+cM/O/+7x/QfF+nDQfK/N5rjbe/ftT29eOA3O//XcOcf588341B9/f3N3+0/13H7u9HNwahIt39rYfNOw9wSJHogAP7z40u18Oi9PvnK8vfrtV/S63aDt3F2//vk1+Vi4ePGiYmYK8M/PPjv470//G8pQ267VsTKr98zsyo3rfwO4evWq95fOnBGA/7z11tJvj5/QrcEw3nr/A3XBJBR9ttvpIsDmhQvm5x4+FID5teurx/Iuy0Uex+//XUsaGlLcSyf245TTly5F5do1EEha7kjezWFS0ZqeJnVO6eQkvXzlVvNjV8D86xBxnsbs2OD+fcKDTYkBLESpy9KYyma//3htBfhCBeKrn3zSFseLxcED+PlZod0hYJg1caoskf/dPQygAAfOnl3t+mS/tDsYQZNOzgSoJZrt7CG37x79Fe5u7x6dLfoiZiGdykn6M0SEkUWkLMk2to4goIiQVZOXl54/BGZm3uPzHHDUoMNqgtsZHD4XTRURfNo6On/4IH6qI4KQdDsYSgUybmrqvXL51OXLc/7UG2+0ehubh7LOFNs3bktaB4pOTlSPxEoQo6xDf/zRv36jUzfuPNfvFgtZu0Na9MTlHbTTwUQIQB1jzHwqfmPree2U5aF9+6YzMUyDSavfQ0UREwwITW1zGL4cH9FOv/vCbDGNVJNoTUWYVEiIqAkC1LGGNMXKatU/s7R4oMhaWN08XWwCRCOaIQixqsViIG3sWU1byUImEEMkqkI0wnCEEvE4QtNgwxFJE2fU+WQ+E4U0k87iAvnKInEwBgIKNCFKLMfsMwo/rKqZsPmY9A8nSasKnuzS7JUoNSoJYyI/xshAta37EpevX7vC6NYdsdEYvlln/N0d2kRy8fhg8nUqfLhYpH65KDKJgWowJP3hIU8uX+HR+pcgQtugINIua+Ju5XySZa67tELWn2a0dpNHd28ykUA0h2B4MbJxzfSTEd75lqvHI5rtHeLeCBFDBUB+jhFCBDVTnFhsGgAwUNOfMUUQVJyZCNY0jZpTlSRFVMUAxf0KgyAIOCGGOvpqXKlLWk/txfBLjSFggokQEXBqXkFEBOJTvYaBPf1kGBGIZuASNPFJaKUJYTQi1g0iEVEBiahGRAyJhqlMfGjq3SEy9ejBusWdR7ptQybBxKiY0FhNjK2dbTG/vOE38plb9xaeW7i9N2Cun6CrLzCp6lCqlx11up2Im+r1KJaeWfP+1df+/P/le3+ph7urj3f2eiuzM0UWgpXlwG9EC1tJWqpnreX9Oz8BGjwOi35iFIEAAAAASUVORK5CYII=", "gingerale": "data:image/png;base64,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", "bitterlemon": "data:image/png;base64,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", "fevertree": "data:image/png;base64,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", "tonicth": "data:image/png;base64,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", "gastklein": "data:image/png;base64,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"}, "laden": [{"id": "saft", "t": "Lade 1 · Säfte", "kind": "grid", "cell": 30, "grid": [["tomate", "cran", "johan", "mango", "mango", "mango", "mango"], ["grape", "anas", "johan", "mara", "mara", "mara", "mara"]], "spec": [[["holunder", 1], ["sprite", 1], ["birne", 2], ["limette", 1], ["zitrone", 1]], [["spritzer", 3]]]}, {"id": "mix", "t": "Lade 2 · Mischgetränke", "kind": "col", "w": 37, "photo": 1, "cols": [["sanbitter", 10], ["wildberry", 9], ["gingerale", 9], ["bitterlemon", 9], ["tonicth", 9], ["tonicfent", 9], ["gingerbeer", 8], ["gastklein", 8]]}, {"id": "soft", "t": "Lade 3 · Softdrinks", "kind": "col", "w": 46, "cols": [["cola", 7], ["colaz", 7], ["almd", 7], ["berry", 7], ["orange", 7], ["lemon", 7]]}, {"id": "bier", "t": "Lade 4 · Bier", "kind": "col", "w": 55, "cols": [["st03", 7], ["st05", 7], ["hefe0", 7], ["hell", 7], ["dunkel", 7]]}, {"id": "regal", "t": "Regal · Gasteiner", "kind": "rack", "w": 52, "cols": [["noblier", 1], ["gastill", 1]], "rack": ["gasteiner", 18, 6]}], "name": {"tomate": "Tomate", "grape": "Pink Grapefruit", "cran": "Cranberry", "anas": "Ananas", "johan": "Schwarze Johannisbeere", "mango": "Mango", "mara": "Maracuja", "holunder": "Holundersirup", "sprite": "Sprite", "birne": "Birnensaft van Nahmen", "limette": "Limettensaft", "zitrone": "Zitronensaft", "spritzer": "Spritzerwein", "sanbitter": "Sanbitter", "wildberry": "Schweppes Wild Berry", "gingerale": "Thomas Henry Ginger Ale", "bitterlemon": "Thomas Henry Bitter Lemon", "tonicth": "Thomas Henry Tonic", "tonicfent": "Fentimans Tonic", "gingerbeer": "Fentimans Ginger Beer", "gastklein": "Gasteiner 0,33", "cola": "Cola", "colaz": "Cola Zero", "almd": "Almdudler", "berry": "Berry Lemonade", "orange": "Orange Lemonade", "lemon": "Lemon Lemonade", "st03": "Stiegl 0,0 · 0,3", "st05": "Stiegl 0,0 · 0,5", "hefe0": "Hefeweizen alkoholfrei", "hell": "Weissbier hell", "dunkel": "Weissbier dunkel", "gasteiner": "Gasteiner 0,75", "gastill": "Gasteiner still", "noblier": "Noblier alkoholfrei"}, "kurz": {"tonicth": "Tonic T.H.", "tonicfent": "Tonic Fentimans", "gingerale": "Ginger Ale", "bitterlemon": "Bitter Lemon", "gingerbeer": "Ginger Beer", "wildberry": "Wild Berry", "gastklein": "Gasteiner 0,33", "holunder": "Holunder", "birne": "Birne", "limette": "Limette", "zitrone": "Zitrone", "spritzer": "Spritzer", "sprite": "Sprite", "st03": "Stiegl 0,3", "st05": "Stiegl 0,5", "hefe0": "Hefe alkfrei", "hell": "Weissbier hell", "dunkel": "Weissbier dunkel", "colaz": "Cola Zero", "almd": "Almdudler", "berry": "Berry", "orange": "Orange", "lemon": "Lemon", "cola": "Cola", "sanbitter": "Sanbitter", "noblier": "Noblier", "gastill": "Gasteiner still"}, "col": {"sanbitter": "#C3122B", "wildberry": "#DD4E74", "gingerale": "#A2547E", "bitterlemon": "#5FA83C", "tonicth": "#C9A227", "tonicfent": "#B0904E", "gingerbeer": "#7A3F1E", "gastklein": "#2C6E8F", "cola": "#4A2C1C", "colaz": "#2A2A2C", "almd": "#C08A2E", "berry": "#B0577E", "orange": "#E0913A", "lemon": "#B9AE2E", "st03": "#B01B1B", "st05": "#7C1414", "hefe0": "#C9A24A", "hell": "#D8A93A", "dunkel": "#5E3418", "gasteiner": "#2C6E8F", "gastill": "#5A7A88", "noblier": "#9A7B44"}, "spec": {"holunder": "#8A7E62", "sprite": "#3E9A54", "birne": "#C2A93E", "limette": "#6E9A2A", "zitrone": "#D9C43A", "spritzer": "#9A7B44"}};
+const GN=id=>GETR.name[id]||id, GK=id=>GETR.kurz[id]||GETR.name[id]||id;
+const FRUCHT={
+ tomate:'<svg viewBox="0 0 24 24"><circle cx="12" cy="14" r="8.4" fill="#C7301F"/><ellipse cx="9.2" cy="11" rx="2.4" ry="1.6" fill="#E06552" opacity=".55"/><path d="M7.4 5.2 12 7.2 16.6 5.2 15 8.2 12 8.9 9 8.2Z" fill="#3E7A3E"/><rect x="11.3" y="2.6" width="1.5" height="3.2" rx=".7" fill="#3E7A3E"/></svg>',
+ grape:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#D9564E"/><circle cx="12" cy="12" r="7.1" fill="#F0938A"/><g stroke="#FBE3DF" stroke-width="1.1"><path d="M12 5v14M5 12h14M6.8 6.8l10.4 10.4M17.2 6.8 6.8 17.2"/></g><circle cx="12" cy="12" r="1.5" fill="#FBE3DF"/></svg>',
+ cran:'<svg viewBox="0 0 24 24"><path d="M12 4.5c1.5 1.5 3 1 4 2" stroke="#4A6B2A" stroke-width="1.3" fill="none"/><circle cx="8.6" cy="14.4" r="5" fill="#9E2340"/><circle cx="15.6" cy="15.4" r="4.2" fill="#7C1830"/><circle cx="7" cy="12.6" r="1.5" fill="#C4536A" opacity=".6"/></svg>',
+ anas:'<svg viewBox="0 0 24 24"><path d="M12 1.8c1 2 .6 3.6-.2 4.8M12 6.6c-2-1.4-4-1.4-5.4-.6 1.4 1.2 2.6 1.8 4 1.8M12 6.6c2-1.4 4-1.4 5.4-.6-1.4 1.2-2.6 1.8-4 1.8" stroke="#3E7A3E" stroke-width="1.5" fill="none" stroke-linecap="round"/><ellipse cx="12" cy="15.4" rx="5.6" ry="7.2" fill="#D99B2B"/><g stroke="#A8721A" stroke-width=".9" opacity=".85"><path d="M7 11.4 17 17.6M7 15.4 17 21.2M7 19.2 13.6 23M10.4 8.6 17 12.4"/><path d="M17 11.4 7 17.6M17 15.4 7 21.2M17 19.2 10.4 23M13.6 8.6 7 12.4"/></g></svg>',
+ johan:'<svg viewBox="0 0 24 24"><path d="M12 3.5v4M12 6.5 8 10M12 6.5 16 10" stroke="#4A6B2A" stroke-width="1.2" fill="none"/><circle cx="7.6" cy="14.4" r="4.4" fill="#3A2148"/><circle cx="16.2" cy="14.8" r="4" fill="#2A1636"/><circle cx="11.8" cy="19" r="3.6" fill="#472A58"/><circle cx="6.2" cy="12.8" r="1.2" fill="#8E6EA0" opacity=".7"/></svg>',
+ mango:'<svg viewBox="0 0 24 24"><path d="M18.4 6.4c2.4 2.8 1.4 8.2-2.6 11.2s-9 2.4-10.6-.8c-1.6-3.2 1.2-8.2 5.2-10.4 3.2-1.8 6.2-2 8 0z" fill="#E8912B"/><path d="M9.4 7.2c-3 2.2-5 5.8-4.4 8.4 1.6-3.6 4-6.4 7-8z" fill="#D4552B" opacity=".7"/><path d="M15.6 5.6c1.6-1.4 3.4-1.8 4.6-1.2-.6 1.4-2 2.4-3.6 2.6z" fill="#3E7A3E"/></svg>',
+ mara:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#5A2A4E"/><circle cx="12" cy="12" r="6.6" fill="#E8B93B"/><g fill="#8E6B14"><circle cx="10" cy="10.4" r="1.1"/><circle cx="13.6" cy="10" r="1.1"/><circle cx="11.2" cy="13.6" r="1.1"/><circle cx="14.4" cy="13.4" r="1.1"/><circle cx="9.2" cy="13.2" r=".9"/></g></svg>'};
+function flasche(c){return '<svg viewBox="0 0 20 30"><path d="M7.5 4h5v3.4c0 1.7 2.6 2.6 2.6 6V26a2 2 0 0 1-2 2H6.9a2 2 0 0 1-2-2V13.4c0-3.4 2.6-4.3 2.6-6z" fill="'+c+'"/></svg>';}
+function gIcon(id){
+  if(GETR.pic[id])return '<img src="'+GETR.pic[id]+'" alt="">';
+  if(FRUCHT[id])return FRUCHT[id];
+  return flasche(GETR.spec[id]||GETR.col[id]||"#1C1C1E");
+}
+const GSOLL=(()=>{const s={};GETR.laden.forEach(L=>{
+  (L.grid||[]).forEach(c=>c.forEach(id=>s[id]=(s[id]||0)+1));
+  (L.spec||[]).forEach(g2=>g2.forEach(([id,n])=>s[id]=(s[id]||0)+n));
+  (L.cols||[]).forEach(([id,n])=>s[id]=(s[id]||0)+n);
+  if(L.rack)s[L.rack[0]]=(s[L.rack[0]]||0)+L.rack[1];});return s;})();
+const GIDS=Object.keys(GSOLL);
+function gIst(id){const d=D();return (d.getr&&d.getr[id]!=null)?d.getr[id]:GSOLL[id];}
+function gSet(id,n){const d=D();d.getr=d.getr||{};d.getr[id]=Math.max(0,Math.min(GSOLL[id],n));save();}
+function gFehlt(){const r=[];GIDS.forEach(id=>{const f=GSOLL[id]-gIst(id);if(f>0)r.push({id,n:f});});return r;}
+function gFehltSum(){return gFehlt().reduce((a,x)=>a+x.n,0);}
+function gLadeFehlt(L){let f=0;const ids=new Set();
+  (L.grid||[]).forEach(c=>c.forEach(id=>ids.add(id)));
+  (L.spec||[]).forEach(g2=>g2.forEach(([id])=>ids.add(id)));
+  (L.cols||[]).forEach(([id])=>ids.add(id));
+  if(L.rack)ids.add(L.rack[0]);
+  ids.forEach(id=>f+=GSOLL[id]-gIst(id));return f;}
+
+function gStack(id,n,w,H){
+  const st=document.createElement("div");st.className="gstk";st.style.height=H+"px";
+  const gap=3;let d=Math.min(24,Math.max(5,(H-(n-1)*gap)/n));
+  const ist=gIst(id);
+  for(let k=0;k<n;k++){const p=document.createElement("div");p.className="gpt"+(k<ist?"":" off");
+    p.style.width=d+"px";p.style.height=d+"px";p.style.marginTop=(k===n-1?0:gap)+"px";
+    p.style.background=k<ist?(GETR.col[id]||"#1C1C1E"):"none";
+    p.dataset.k=k;st.appendChild(p);}
+  st.addEventListener("pointerdown",e=>{const p=e.target.closest(".gpt");if(!p)return;
+    const k=+p.dataset.k;gSet(id,gIst(id)===k+1?k:k+1);render();});
+  return st;}
+function gCell(id,i,w,h,cls){
+  const c=document.createElement("div");c.className="gcell"+(i<gIst(id)?"":" gx")+(cls?" "+cls:"");
+  c.style.width=w+"px";c.style.height=h+"px";
+  c.innerHTML='<span class="gsh"></span>'+(FRUCHT[id]||flasche(GETR.spec[id]||GETR.col[id]||"#8A7E62"));
+  c.title=GN(id);
+  c.onclick=()=>{gSet(id,gIst(id)===i+1?i:i+1);render();};
+  return c;}
+
+function rGetr(m){
+  GETR.laden.forEach(L=>{
+    const box=document.createElement("div");box.className="drw";
+    const fehlt=gLadeFehlt(L);
+    box.innerHTML='<div class="drwf"><b>'+esc(L.t)+'</b><span class="drwh"></span>'+
+      '<i class="'+(fehlt?"low":"")+'">'+(fehlt?fehlt+" fehlen":"voll")+'</i></div>';
+    if(L.kind==="grid"){
+      const inner=document.createElement("div");inner.className="drwi";
+      const seen={};
+      const g2=document.createElement("div");g2.style.display="flex";g2.style.gap="5px";
+      L.grid.forEach(col=>{const cv=document.createElement("div");cv.className="gsq";
+        col.forEach(id=>{seen[id]=(seen[id]||0);cv.appendChild(gCell(id,seen[id]++,L.cell,L.cell*1.24));});
+        g2.appendChild(cv);});
+      inner.appendChild(g2);
+      const HT=7*(L.cell*1.24)+6*5, SH=Math.round((HT-6*9-5*2)/6), SW=Math.round(L.cell*1.06);
+      L.spec.forEach(grp=>{const sp=document.createElement("div");sp.className="gspec";
+        grp.forEach(([id,n])=>{for(let k=0;k<n;k++){
+          const row=document.createElement("div");row.className="gsp"+(k<gIst(id)?"":" gx");
+          const c=gCell(id,k,SW,SH);const t=document.createElement("span");t.textContent=GK(id);
+          row.append(c,t);sp.appendChild(row);}});
+        inner.appendChild(sp);});
+      box.appendChild(inner);
+    } else if(L.kind==="col"){
+      const inner=document.createElement("div");inner.className="drwi";
+      inner.style.gap=L.photo?"1px":"4px";
+      L.cols.forEach(([id,n])=>{
+        const cv=document.createElement("div");cv.className="gcol";cv.style.width=L.w+"px";
+        const num=document.createElement("div");
+        num.className="gnum"+(gIst(id)<n?" low":"");num.innerHTML=gIst(id)+'<s>/'+n+'</s>';
+        cv.append(num,gStack(id,n,L.w,126));
+        const b=document.createElement("div");b.className="gbase";cv.appendChild(b);
+        if(L.photo&&GETR.pic[id]){const s=document.createElement("div");s.className="gshot";
+          s.innerHTML='<img src="'+GETR.pic[id]+'" alt="" title="'+esc(GN(id))+'">';cv.appendChild(s);}
+        else{const s=document.createElement("div");s.className="gcap";s.textContent=GK(id);cv.appendChild(s);}
+        inner.appendChild(cv);});
+      box.appendChild(inner);
+    } else {
+      const s1=document.createElement("div");s1.className="rsec";
+      L.cols.forEach(([id,n])=>{const cv=document.createElement("div");cv.className="gcol";
+        cv.style.width=L.w+"px";
+        const num=document.createElement("div");
+        num.className="gnum"+(gIst(id)<n?" low":"");num.innerHTML=gIst(id)+'<s>/'+n+'</s>';
+        cv.append(num,gStack(id,n,L.w,58));
+        const c=document.createElement("div");c.className="gcap";c.textContent=GK(id);cv.appendChild(c);
+        s1.appendChild(cv);});
+      const dv=document.createElement("div");dv.className="rdiv";
+      const s2=document.createElement("div");s2.className="rsec2";
+      const [rid,rn,rc]=L.rack;const rist=gIst(rid);
+      s2.innerHTML='<div class="rhd"><b>'+esc(GN(rid))+'</b><i class="'+(rist<rn?"low":"")+'">'+
+        rist+'<s>/'+rn+'</s></i></div>';
+      const rows=document.createElement("div");rows.className="rrows";
+      rows.style.gridTemplateColumns="repeat("+rc+",1fr)";
+      for(let k=0;k<rn;k++){const p=document.createElement("div");
+        p.className="gpt"+(k<rist?"":" off");p.dataset.k=k;
+        p.style.background=k<rist?GETR.col[rid]:"none";rows.appendChild(p);}
+      let run=false;
+      const setF=e=>{const el=document.elementFromPoint(e.clientX,e.clientY);
+        const p=el&&el.closest(".rrows .gpt");if(!p)return;const k=+p.dataset.k;
+        const cur=gIst(rid);const nv=(!run&&cur===k+1)?k:k+1;
+        if(nv!==cur){gSet(rid,nv);
+          [...rows.children].forEach((c,i)=>{c.classList.toggle("off",i>=nv);
+            c.style.background=i<nv?GETR.col[rid]:"none";});
+          const ii=s2.querySelector(".rhd i");ii.innerHTML=nv+'<s>/'+rn+'</s>';
+          ii.className=nv<rn?"low":"";}};
+      rows.addEventListener("pointerdown",e=>{rows.setPointerCapture(e.pointerId);run=false;setF(e);run=true;});
+      rows.addEventListener("pointermove",e=>{if(rows.hasPointerCapture(e.pointerId))setF(e);});
+      rows.addEventListener("pointerup",()=>{run=false;render();});
+      s2.appendChild(rows);box.append(s1,dv,s2);
+    }
+    const d=D();d.gdone=d.gdone||{};
+    const fb=document.createElement("div");fb.className="drwb";
+    const done=!!d.gdone[L.id];
+    const bt=document.createElement("button");bt.className=done?"ok":"";
+    bt.textContent=done?"\u2713 geprüft":"Lade geprüft";
+    bt.onclick=()=>{if(d.gdone[L.id])delete d.gdone[L.id];else d.gdone[L.id]=1;save();render();};
+    fb.appendChild(bt);box.appendChild(fb);
+    m.appendChild(box);});
+  const off=GETR.laden.filter(L=>!(D().gdone||{})[L.id]).length;
+  if(off)add(m,"box","<b>"+off+" von "+GETR.laden.length+" Laden noch nicht bestätigt.</b>");
+}
+function gHolBlock(m){
+  const f=gFehlt();if(!f.length)return;
+  const blk=document.createElement("div");blk.className="gblk";
+  blk.innerHTML='<div class="gblkh"><span>Getränke · Kistenlager</span><i>'+
+    f.reduce((a,x)=>a+x.n,0)+' Flaschen</i></div>';
+  f.forEach(x=>{const d=D();d.gholt=d.gholt||{};const on=!!d.gholt[x.id];
+    const r=document.createElement("button");r.className="grow2";
+    r.style.cssText="width:100%;border:0;background:none;text-align:left;cursor:pointer;font:inherit";
+    r.innerHTML='<span class="gic" style="opacity:'+(on?".35":"1")+'">'+gIcon(x.id)+'</span>'+
+      '<span class="gt" style="'+(on?"text-decoration:line-through;color:#9C9CA2":"")+'">'+esc(GN(x.id))+
+      '</span><span class="gq">'+x.n+'</span>';
+    r.onclick=()=>{if(on)delete d.gholt[x.id];else d.gholt[x.id]=1;save();render();};
+    blk.appendChild(r);});
+  m.appendChild(blk);
+}
+function gDocSec(){
+  const f=gFehlt();if(!f.length)return "";
+  return '<div class="sec"><h3>Getränke nachfüllen</h3><table>'+
+    f.map(x=>'<tr><td>'+esc(GN(x.id))+'</td><td class="n">'+x.n+'</td></tr>').join("")+
+    '</table></div>';
+}
+function gSegment(m){
+  const s=document.createElement("div");s.className="gseg";
+  const n=gFehltSum();
+  s.innerHTML='<button data-t="wein"'+(gtab==="wein"?' class="on"':'')+'>Wein</button>'+
+    '<button data-t="getr"'+(gtab==="getr"?' class="on"':'')+'>Getränke'+
+    (n?' <span class="gb">'+n+'</span>':'')+'</button>';
+  s.querySelectorAll("button").forEach(b=>b.onclick=()=>{gtab=b.dataset.t;render();window.scrollTo(0,0);});
+  m.appendChild(s);
+}
+let gtab="wein", branch=null;
+const GICO={
+ wein:'<svg viewBox="0 0 24 24" fill="none" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l-1 6a3 3 0 0 1-6 0z"/><path d="M12 15v6M9 21h6"/></svg>',
+ getr:'<svg viewBox="0 0 24 24" fill="none" stroke="#6A6A70" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4l2 3v11H7V10l2-3z"/><path d="M7 14h10"/></svg>'};
+function rGate(m){
+  m.innerHTML="";
+  const w=document.createElement("div");w.className="gate";
+  w.innerHTML='<h2>Was wird erfasst?</h2><p class="gs">'+esc(MODES[mode].t)+'</p>'+
+    '<button class="gbtn wein" data-b="wein"><span class="gi">'+GICO.wein+'</span>'+
+    '<span><b>Wein</b><span class="s">'+WINES.length+' Positionen im Laufweg</span></span>'+
+    '<span class="go2">\u203a</span></button>'+
+    '<button class="gbtn getr" data-b="getr"><span class="gi">'+GICO.getr+'</span>'+
+    '<span><b>Getränke</b><span class="s">'+GETR.laden.length+' Laden an der Bar</span></span>'+
+    '<span class="go2">\u203a</span></button>';
+  w.querySelectorAll(".gbtn").forEach(b=>b.onclick=()=>{branch=b.dataset.b;render();window.scrollTo(0,0);});
+  m.appendChild(w);
+}
+function rGetrMenge(m){
+  add(m,"hd1w",'<div class="hd1">Getränke</div><div class="hd1sub">Menge antippen, Minus nimmt weg</div>');
+  const d=D();d.gent=d.gent||{};
+  GETR.laden.forEach(L=>{
+    const ids=[];
+    (L.grid||[]).forEach(c=>c.forEach(id=>{if(!ids.includes(id))ids.push(id);}));
+    (L.spec||[]).forEach(g2=>g2.forEach(([id])=>{if(!ids.includes(id))ids.push(id);}));
+    (L.cols||[]).forEach(([id])=>{if(!ids.includes(id))ids.push(id);});
+    if(L.rack&&!ids.includes(L.rack[0]))ids.push(L.rack[0]);
+    add(m,"reb",L.t);
+    ids.forEach(id=>{const n=+(d.gent[id]||0);
+      const r=document.createElement("div");r.className="grow2";
+      r.innerHTML='<span class="gic">'+gIcon(id)+'</span><span class="gt">'+esc(GN(id))+'</span>';
+      const minus=document.createElement("button");minus.textContent="\u2212";
+      minus.style.cssText="width:34px;height:34px;border:1.5px solid #D8D5CD;background:#fff;border-radius:8px;font:inherit;font-size:17px;cursor:pointer";
+      minus.onclick=()=>{if(n>0){d.gent[id]=n-1;if(!d.gent[id])delete d.gent[id];save();render();}};
+      const plus=document.createElement("button");plus.textContent="+";
+      plus.style.cssText="width:34px;height:34px;border:1.5px solid #1C1C1E;background:#1C1C1E;color:#fff;border-radius:8px;font:inherit;font-size:17px;cursor:pointer";
+      plus.onclick=()=>{d.gent[id]=n+1;save();render();};
+      const q=document.createElement("span");q.className="gq";q.textContent=n||"";
+      r.append(q,minus,plus);m.appendChild(r);});});
+}
+
 /* ── Abschluss ── */
 function protoTag(){const d=D();
   return WINES.map(w=>({w,k:g(d.konsum,w.id),r:g(d.rest,w.id)})).filter(x=>x.k||x.r).map(x=>({...x,diff:x.r-x.k}));}
@@ -917,7 +1217,7 @@ function summaryBig(){
   if(mode==="keller")return [WINES.reduce((a,w)=>a+g(d.reihen,w.id)*6+g(d.einzel,w.id),0),"Flaschen gezählt"];
   if(mode==="nach")return [sum(d.ent),"Flaschen geholt"];
   const pos=d.pos.filter(p=>p.id&&p.kisten>0);
-  return [pos.reduce((a,p)=>a+p.kisten*(PLAN.kiste[p.id]||6),0),"Flaschen geliefert"];
+  return [pos.reduce((a,p)=>a+p.kisten*(PLAN.kiste[p.id]||12),0),"Flaschen geliefert"];
 }
 function rDoc(m){
   const d=D();
@@ -938,6 +1238,7 @@ function rDoc(m){
   }
   const box=document.createElement("div");box.className="doc";
   box.innerHTML=(mode==="tag"?docTag():mode==="keller"?docKeller():mode==="nach"?docNach():docWare());
+  if(mode==="tag"||(mode==="keller"&&branch==="getr"))box.insertAdjacentHTML("beforeend",gDocSec());
   // Rubriken einklappbar (Standard: zu), Kennzahlen/Hinweise bleiben offen
   box.querySelectorAll(".sec").forEach((sec,i)=>{
     const h3=sec.querySelector("h3");if(!h3)return;
