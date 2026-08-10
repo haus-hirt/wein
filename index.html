@@ -367,23 +367,24 @@ body.off .offline{display:block}
 .drwf i{font-style:normal;font-size:11px;color:#6A6A70;font-variant-numeric:tabular-nums;white-space:nowrap}
 .drwf i.low{color:#B4471F;font-weight:700}
 .drwh{width:28px;height:4px;border-radius:3px;background:#C4C0B4;flex-shrink:0}
-.drwi{padding:12px 10px 10px;border-top:1px solid #FCFAF5;display:flex;gap:10px;
- justify-content:flex-start;align-items:flex-end;touch-action:none;
- overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
-.drwi.fit{justify-content:center}
+.drwi{padding:12px 11px 10px;border-top:1px solid #FCFAF5;display:flex;gap:8px;
+ justify-content:center;align-items:flex-end;touch-action:auto;overflow:hidden}
 .gcol{display:flex;flex-direction:column;align-items:center;position:relative;flex-shrink:0}
 .gnum{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.3;
  letter-spacing:-.02em;margin-bottom:3px}
 .gnum.low{color:#B4471F}
 .gnum s{font-size:11px;font-weight:600;color:#7A7A80;text-decoration:none}
 .gstk{display:flex;flex-direction:column-reverse;align-items:center;justify-content:flex-start;gap:5px}
-.gpt{border-radius:50%;flex-shrink:0;width:var(--gd);height:var(--gd)}
+.gpt{border-radius:50%;flex-shrink:0;width:var(--gd);height:var(--gd);align-self:center}
 .gpt.off{background:none!important;border:1.5px solid #C6C2B8}
 .gbase{width:80%;height:2px;background:#CBC7BC;margin:6px 0 0}
 .gshot{height:52px;width:100%;display:flex;align-items:flex-end;justify-content:center;margin-top:3px}
-.gshot img{display:block;opacity:.92}
-.gcap{font-size:11px;line-height:1.2;text-align:center;color:#5F5D57;margin-top:5px;
- min-height:26px;padding:0 1px;overflow-wrap:break-word;hyphens:auto}
+.gshot img{display:block;opacity:.92;max-width:100%;max-height:100%;width:auto;height:auto;
+ object-fit:contain}
+/* Eine Zeile, abgeschnitten. Das Bild sagt ohnehin, was in der Flasche ist. */
+.gcap{font-size:11px;line-height:1.35;text-align:center;color:#5F5D57;margin-top:5px;
+ height:15px;padding:0 1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+ width:100%;max-width:100%}
 .drwi.top{align-items:flex-start}
 .gcell{position:relative;cursor:pointer;display:grid;place-items:center;flex-shrink:0;
  width:var(--gcell);height:calc(var(--gcell) * 1.24)}
@@ -392,35 +393,34 @@ body.off .offline{display:block}
 .gcell.gx svg{opacity:.16;filter:grayscale(1)}
 .gcell.gx .gsh{background:none;border-style:dashed;border-color:#C6C2B8}
 .gsq{display:flex;flex-direction:column;gap:6px}
-.gitem{display:flex;flex-direction:column;align-items:center}
+.gitem{display:flex;flex-direction:column;align-items:center;width:var(--gcell)}
 .gitem .gcap{margin-top:3px;min-height:0}
 .gitem.gx .gcap{color:#B4471F}
-.gspec{display:flex;flex-direction:column;gap:4px;padding-left:4px;border-left:1px solid #E2DED4}
-.rsec{padding:12px 10px 10px;display:flex;gap:10px;justify-content:flex-start;
- align-items:flex-end;touch-action:none;overflow-x:auto}
+.gspec{display:flex;gap:6px;padding-left:9px;margin-left:3px;border-left:1px solid #E2DED4;
+ align-self:stretch}
+.gspec .gsq{flex-shrink:0}
+.rsec{padding:12px 10px 10px;display:flex;gap:10px;justify-content:center;
+ align-items:flex-end;touch-action:auto}
 .rdiv{height:1px;background:#D2CEC4;margin:0 10px}
-.rsec2{padding:12px 10px 14px;touch-action:none}
+.rsec2{padding:12px 10px 14px}
+.rrows{touch-action:none}
 .rhd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
 .rhd b{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#3F3E38}
 .rhd i{font-style:normal;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
 .rhd i.low{color:#B4471F}
 .rhd i s{font-size:11px;font-weight:600;color:#7A7A80;text-decoration:none}
-.rrows{display:grid;grid-template-columns:repeat(6,1fr);column-gap:6px;row-gap:12px;
- justify-items:center;cursor:pointer}
-.rrows .gpt{width:100%;max-width:var(--grack);height:auto;aspect-ratio:1;margin:0!important}
+/* Enge Spalten, weite Zeilen: jede Reihe liest sich als ein Träger zu sechst. */
+.rrows{display:grid;grid-template-columns:repeat(6,max-content);column-gap:3px;row-gap:20px;
+ justify-content:center;cursor:pointer}
+.rrows .gpt{width:var(--grack);height:var(--grack);margin:0!important}
 .drwb{padding:0 9px 10px;display:flex;gap:8px}
 .drwb button{flex:1;padding:11px 8px;border:1px solid #D8D5CD;background:#fff;border-radius:8px;
  font:inherit;font-size:13px;font-weight:600;color:#5F5D57;cursor:pointer;min-height:44px}
 .drwb button.ok{background:#EFF5EE;border-color:#3E7A3E;color:#2F5E2F}
 .drwb button.reset{flex:0 0 auto;color:#7A7A80;font-weight:500}
 .ghint{font-size:12px;color:#7A7A80;padding:0 11px 9px;margin-top:-4px}
-.gsprow{display:flex;align-items:center;gap:9px;min-height:44px;cursor:pointer}
-.gsprow .lb{font-size:11px;color:#5F5D57;flex:1;min-width:60px;line-height:1.15}
-.gsprow .ic{display:flex;gap:5px;flex-shrink:0}
-.gsprow .gcell{width:26px;height:34px}
-.gsprow .gcell .gsh{display:none}
-.gsprow .gcell svg{width:100%;height:100%}
-.gsprow.gx .lb{color:#B4471F}
+.gspal{width:var(--gcell)}
+.gitem .gcap{margin-top:4px}
 @media(min-width:768px){.gladen{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;align-items:start}
  .gladen .drw.wide{grid-column:1 / -1}}
 .grow2{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #E6E4DE}
@@ -539,7 +539,8 @@ function yest(){const d=new Date();d.setDate(d.getDate()-1);return d.toISOString
 function today(){return new Date().toISOString().slice(0,10);}
 function blank(m){
   const b={mode:m,tag:m==="tag"?yest():today(),name:"",notiz:"",finished:false,ver:10};
-  if(m==="tag")Object.assign(b,{konsum:{},rest:{},barrot:{},bar:{},backup:{},seen:{},holt:{},getr:{},gdone:{},gholt:{}});
+  if(m==="tag")Object.assign(b,{konsum:{},rest:{},barrot:{},bar:{},backup:{},seen:{},holt:{},
+    gent:{},getr:{},gdone:{},gholt:{}});
   if(m==="keller")Object.assign(b,{reihen:{},einzel:{},zdone:{},getr:{},gdone:{}});
   if(m==="nach")Object.assign(b,{ent:{},gent:{}});
   if(m==="ware")Object.assign(b,{pos:[],jok:{},jneu:{},ein:{},gent:{}});
@@ -566,6 +567,14 @@ function deTag(iso){const d=new Date(iso+"T12:00");
   return d.toLocaleDateString("de-AT",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"});}
 function kurzTag(iso){const d=new Date(iso+"T12:00");
   return d.toLocaleDateString("de-AT",{day:"2-digit",month:"2-digit"});}
+const WIDX={};WINES.forEach((w,i)=>WIDX[w.id]=i);
+/* Innerhalb einer Kellerzone gilt die Reihenfolge der Karte:
+   Zweigelt (Goldberg, Rubin, Kollwentz, Dornenvogel) vor Blaufränkisch usw. */
+function wegCmp(a,b){
+  return (PLAN.zone[a.id]-PLAN.zone[b.id])
+    ||((PLAN.restorder[a.id]==null?999:PLAN.restorder[a.id])-(PLAN.restorder[b.id]==null?999:PLAN.restorder[b.id]))
+    ||(WIDX[a.id]-WIDX[b.id]);
+}
 const g=(o,id)=>+((o||{})[id]||0);
 const sum=o=>Object.values(o||{}).reduce((a,b)=>a+(+b||0),0);
 function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
@@ -728,7 +737,7 @@ function renderAdmin(){
 }
 function hasData(k,d){
   if(k==="tag")return sum(d.konsum)||sum(d.rest)||sum(d.barrot)||sum(d.bar)||sum(d.backup)
-    ||Object.keys(d.seen||{}).length||Object.keys(d.getr||{}).length;
+    ||Object.keys(d.seen||{}).length||Object.keys(d.getr||{}).length||sum(d.gent);
   if(k==="keller")return Object.keys(d.zdone||{}).length||Object.keys(d.getr||{}).length;
   if(k==="nach")return sum(d.ent)||sum(d.gent);
   if(k==="ware")return (d.pos||[]).length||sum(d.gent);
@@ -817,11 +826,21 @@ function render(){
   const R={tag:[rKonsum,rBar,rRest,rHol,rDoc],keller:[rZaehl,rDoc],
            nach:[rNach,rDoc],ware:[rKisten,rJahr,rEin,rDoc]};
   const fn=(mode!=="tag"&&branch==="getr")?RG[mode][step]:R[mode][step];
-  $("#tools").style.display=((fn===rKonsum||fn===rRest||fn===rNach)&&!(mode==="tag"&&gtab==="getr"))?"block":"none";
+  const suche=(fn===rKonsum||fn===rRest||fn===rNach||fn===rGetrMenge)&&!(mode==="tag"&&gtab==="getr");
+  $("#tools").style.display=suche?"block":"none";
+  $("#q").placeholder=(fn===rGetrMenge)?"Getränk suchen \u2026":"Wein suchen \u2026";
   /* 4.4 · Wein/Getränke-Umschalter in jedem Modus, sobald ein Zweig gewählt ist */
-  if(mode==="tag"&&step!==lastStep())gSegment(m);
+  /* Getränke gibt es in der Fassung und an der Bar. Im Restaurant nur Wein. */
+  const getrSchritt=(mode==="tag")&&(step===0||step===1);
+  if(!getrSchritt&&gtab==="getr")gtab="wein";
+  if(getrSchritt)gSegment(m);
   else if(mode!=="tag"&&branch&&step!==lastStep())gBranchSeg(m);
-  if(mode==="tag"&&gtab==="getr"&&step!==lastStep()){rGetrTag(m);buildRail(false);renderFoot();measure();return;}
+  if(getrSchritt&&gtab==="getr"){
+    /* Konsum als Liste wie beim Wein, nur die Bar-Fassung als Bild. */
+    if(step===0){$("#tools").style.display="block";$("#q").placeholder="Getränk suchen \u2026";
+      rGetrMenge(m);}
+    else rGetr(m);
+    buildRail(false);renderFoot();measure();return;}
   fn(m);
   buildRail(fn===rKonsum||fn===rRest||fn===rZaehl);
   renderFoot();measure();
@@ -981,7 +1000,7 @@ function holList(){
   const up=(o,tag)=>Object.keys(o||{}).forEach(id=>{
     if(!acc[id])acc[id]={w:byId(id),n:0,q:[]};acc[id].n+=o[id];acc[id].q.push(`${o[id]} ${tag}`);});
   up(d.barrot,"Bar");up(d.bar,"Bar");up(d.backup,"Backup");up(d.rest,"Restaurant");
-  return Object.values(acc).filter(x=>x.w).sort((a,b)=>PLAN.zone[a.w.id]-PLAN.zone[b.w.id]||a.w.winzer.localeCompare(b.w.winzer));
+  return Object.values(acc).filter(x=>x.w).sort((a,b)=>wegCmp(a.w,b.w));
 }
 function zielTags(it){
   const d=D(),r=g(d.rest,it.w.id),bb=g(d.barrot,it.w.id)+g(d.bar,it.w.id),bk=g(d.backup,it.w.id);
@@ -1066,7 +1085,7 @@ function rZaehl(m){
   const d=D();railGroups=[];
   const zones=[...new Set(WINES.map(w=>PLAN.zone[w.id]))].sort((a,b)=>a-b);
   zones.forEach(z=>{
-    const list=WINES.filter(w=>PLAN.zone[w.id]===z);
+    const list=WINES.filter(w=>PLAN.zone[w.id]===z).sort(wegCmp);
     const done=list.filter(w=>d.zdone[w.id]).length,pct=Math.round(done/list.length*100);
     railGroups.push({id:"z_"+z,kurz:PLAN.zonen[z].t.slice(0,4)});
     const wrap=add(m,"hd1w grpanchor","");wrap.id="anchor_z_"+z;
@@ -1205,7 +1224,7 @@ function rJahr(m){
 function rEin(m){
   const d=D(),items=(d.pos||[]).filter(p=>p.id&&p.id!=="__neu"&&p.kisten>0);
   if(!items.length)return m.innerHTML='<p class="empty">Keine Kisten zum Einräumen.</p>';
-  const srt=items.slice().sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id]);
+  const srt=items.slice().sort((a,b)=>wegCmp(byId(a.id)||a,byId(b.id)||b));
   let lz=null;
   srt.forEach(p=>{const w=byId(p.id);if(!w)return;const z=PLAN.zone[p.id];
     if(z!==lz){lz=z;const h=add(m,"hd1w","");h.innerHTML=`<div class="hd1">${PLAN.zonen[z].t}</div><div class="hd1sub">${PLAN.zonen[z].s}</div>`;}
@@ -1275,9 +1294,30 @@ function gPaint(id){
 function gPaintLade(L){
   const box=document.getElementById("drw_"+L.id);if(!box)return;
   const f=gLadeFehlt(L),i=box.querySelector(".drwf i");
-  if(i){i.textContent=f?f+" fehlen":"voll";i.className=f?"low":"";}
+  if(i){i.textContent=f?(f===1?"1 fehlt":f+" fehlen"):"voll";i.className=f?"low":"";}
 }
-/* Tippen und Ziehen auf denselben Flächen */
+/* Tippen — und zwar erst beim Loslassen und nur, wenn der Finger stehen
+   geblieben ist. Sonst löst jeder Scrollversuch über einer Lade etwas aus. */
+function gBindTap(el,L){
+  let sx=0,sy=0,ziel=null;
+  el.addEventListener("pointerdown",e=>{
+    sx=e.clientX;sy=e.clientY;
+    const t=e.target.closest("[data-gid]");
+    ziel=(t&&el.contains(t))?t:null;});
+  el.addEventListener("pointermove",e=>{
+    if(!ziel)return;
+    if(Math.abs(e.clientX-sx)>9||Math.abs(e.clientY-sy)>9)ziel=null;});
+  el.addEventListener("pointercancel",()=>{ziel=null;});
+  el.addEventListener("pointerup",e=>{
+    if(!ziel)return;
+    const t=e.target.closest("[data-gid]");
+    if(t!==ziel){ziel=null;return;}
+    const id=ziel.dataset.gid,k=+ziel.dataset.k,cur=gIst(id);
+    gSet(id,cur===k+1?k:k+1);gPaint(id);gPaintLade(L);renderFoot();
+    ziel=null;});
+}
+/* Nur das Gasteiner-Regal bleibt beim Ziehen: drei kurze Reihen, dort ist
+   das durchgehende Auffüllen der schnellere Weg. */
 function gBindPaint(el,L){
   let run=false;
   const fire=e=>{
@@ -1298,11 +1338,40 @@ function gBindPaint(el,L){
   el.addEventListener("pointercancel",end);
 }
 
-function gStack(id,n){
+/* Der Durchmesser richtet sich nach der Länge der Reihe: die längste Spalte
+   bekommt das Mindestmaß, kürzere werden dicker. So enden alle Stapel auf einer
+   Höhe — und keine Kugel wird kleiner als 26px. */
+const GGAP=5;      /* zwischen den Kugeln */
+const GCOL=8;      /* zwischen den Spalten */
+/* Die Lade ist ein Kasten, der Inhalt sitzt darin — nichts wird geschoben oder
+   abgeschnitten. Die Stapelhöhe wird so gewählt, dass alle Spalten zusammen
+   genau in die verfügbare Breite passen und trotzdem gleich hoch enden. */
+function gBreite(){
+  const m=$("#main");
+  const w=(m&&m.clientWidth?m.clientWidth:Math.min(window.innerWidth,760))-32;
+  return Math.max(180,w-22);
+}
+function gMasse(cols,breite){
+  const n=cols.map(c=>c[1]),k=n.length;
+  const frei=(breite==null?gBreite():breite)-(k-1)*GCOL;
+  const rez=n.reduce((a,x)=>a+1/x,0);
+  let H=(frei+k*GGAP)/rez-GGAP;
+  /* Die dünnste Kugel steckt in der längsten Reihe, die dickste in der kürzesten. */
+  if((H+GGAP)/Math.max.apply(null,n)-GGAP<26)H=(26+GGAP)*Math.max.apply(null,n)-GGAP;
+  if((H+GGAP)/Math.min.apply(null,n)-GGAP>52)H=(52+GGAP)*Math.min.apply(null,n)-GGAP;
+  return {H:Math.round(H)};
+}
+/* Nur die Anzeige wird gekürzt, die Daten bleiben unberührt. */
+const GKZ={johan:"Cassis",grape:"Grapefruit",spritzer:"Spritzer",holunder:"Holunder"};
+function GKk(id){return GKZ[id]||GK(id);}
+function gStack(id,n,H){
   const st=document.createElement("div");st.className="gstk";
   const ist=gIst(id),col=GETR.col[id]||"#1C1C1E";
+  const d=Math.max(18,Math.min(52,Math.floor((H-(n-1)*GGAP)/n)));
+  st.style.height=Math.round(H)+"px";
   for(let k=0;k<n;k++){const pt=document.createElement("div");
     pt.className="gpt"+(k<ist?"":" off");
+    pt.style.width=pt.style.height=d+"px";
     pt.style.background=k<ist?col:"none";
     pt.dataset.gid=id;pt.dataset.k=k;
     pt.setAttribute("aria-label",GN(id)+": noch "+(k+1)+" von "+n);
@@ -1318,7 +1387,7 @@ function gCell(id,i,cls){
 function drwHead(L,box){
   const f=gLadeFehlt(L);
   box.innerHTML='<div class="drwf"><b>'+esc(L.t)+'</b><span class="drwh"></span>'+
-    '<i class="'+(f?"low":"")+'">'+(f?f+" fehlen":"voll")+'</i></div>';
+    '<i class="'+(f?"low":"")+'">'+(f?(f===1?"1 fehlt":f+" fehlen"):"voll")+'</i></div>';
 }
 function drwFoot(L,box){
   const d=D();d.gdone=d.gdone||{};
@@ -1340,6 +1409,31 @@ function gLadeIds(L){const ids=[];
   if(L.rack&&!ids.includes(L.rack[0]))ids.push(L.rack[0]);
   return ids;}
 
+function innenBreite(el,k){
+  const cs=getComputedStyle(el);
+  return Math.max(120,el.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)-(k-1)*GCOL);
+}
+function gFit(box,L){
+  if(!box)return;
+  if(L.kind==="grid"){
+    const inner=box.querySelector(".drwi");if(!inner)return;
+    const nsp=inner.querySelectorAll(":scope > .gsq, :scope > .gspec > .gsq").length;
+    const frei=innenBreite(inner,nsp)-14;
+    inner.style.setProperty("--gcell",Math.max(26,Math.min(64,Math.floor(frei/nsp)))+"px");
+    return;
+  }
+  const inner=box.querySelector(L.kind==="col"?".drwi":".rsec");if(!inner)return;
+  const cols=L.cols,k=cols.length;
+  const M=gMasse(cols,innenBreite(inner,k));
+  cols.forEach(([id,n])=>{
+    const st=box.querySelector('.gstk [data-gid="'+id+'"]');
+    const stk=st&&st.parentNode;if(!stk)return;
+    const d=Math.max(18,Math.min(52,Math.floor((M.H-(n-1)*GGAP)/n)));
+    stk.style.height=M.H+"px";
+    stk.querySelectorAll(".gpt").forEach(pt=>{pt.style.width=pt.style.height=d+"px";});
+    const cv=stk.closest(".gcol");
+    if(cv)cv.style.width=Math.max(d,L.kind==="rack"?44:0)+"px";});
+}
 function rGetr(m){
   const wrap=document.createElement("div");wrap.className="gladen";
   GETR.laden.forEach(L=>{
@@ -1349,6 +1443,10 @@ function rGetr(m){
 
     if(L.kind==="grid"){
       const inner=document.createElement("div");inner.className="drwi top";
+      const nspec=(L.spec||[]).reduce((a,g2)=>a+g2.length,0);
+      const nsp=L.grid.length+nspec;
+      const zell=Math.max(26,Math.min(64,Math.floor((gBreite()-(nsp-1)*GCOL-12)/nsp)));
+      inner.style.setProperty("--gcell",zell+"px");
       const seen={};
       L.grid.forEach(col=>{
         const cv=document.createElement("div");cv.className="gsq";
@@ -1360,58 +1458,79 @@ function rGetr(m){
           /* Nur am Ende einer Folge gleicher Packungen beschriften — sonst steht
              viermal „Mango" untereinander. Die Höhe bleibt, das Raster stimmt. */
           const letzte=col[ci+1]!==id;
-          cap.textContent=letzte?GK(id):"";
+          cap.textContent=letzte?GKk(id):"";
           it.append(c,cap);it.classList.toggle("gx",!(k<gIst(id)));
           cv.appendChild(it);});
         inner.appendChild(cv);});
-      const sp=document.createElement("div");sp.className="gspec";
-      (L.spec||[]).forEach(grp=>grp.forEach(([id,n])=>{
-        const row=document.createElement("div");row.className="gsprow"+(gIst(id)<n?" gx":"");
-        const lb=document.createElement("span");lb.className="lb";
-        lb.textContent=GK(id)+(n>1?" · "+n:"");
-        const ic=document.createElement("span");ic.className="ic";
-        for(let k=0;k<n;k++)ic.appendChild(gCell(id,k));
-        row.append(lb,ic);sp.appendChild(row);}));
-      inner.appendChild(sp);
-      gBindPaint(inner,L);box.appendChild(inner);
+      /* Sonderflaschen stehen neben den Tetrapaks — eine Spalte je Sorte,
+         gleiche Zellenhöhe, damit die Reihen durchlaufen. */
+      /* Die Flaschen stehen neben den Tetrapaks, gleiche Zellen, gleiche Zeilen.
+         Sie werden aber auf drei Spalten verteilt statt auf sechs — sonst wird
+         jede Spalte so schmal, dass keine Beschriftung mehr hineinpasst. Die
+         Höhe der Lade ist ohnehin von den sieben Tetrapak-Reihen vorgegeben. */
+      const spec=[];(L.spec||[]).forEach(grp=>grp.forEach(x=>spec.push(x)));
+      if(spec.length){
+        const hoch=Math.max.apply(null,L.grid.map(c=>c.length));
+        const ges=spec.reduce((a,x)=>a+x[1],0);
+        const nsp=Math.max(1,Math.min(3,Math.ceil(ges/hoch)+1));
+        const ziel=Math.ceil(ges/nsp);
+        const sp=document.createElement("div");sp.className="gspec";
+        let cv=null,fuell=0;
+        spec.forEach(([id,n])=>{
+          if(!cv||(fuell&&fuell+n>ziel&&sp.children.length<nsp)){
+            cv=document.createElement("div");cv.className="gsq gspal";sp.appendChild(cv);fuell=0;}
+          for(let k=n-1;k>=0;k--){
+            const it=document.createElement("div");it.className="gitem";
+            const c=gCell(id,k);
+            const cap=document.createElement("div");cap.className="gcap";
+            cap.textContent=(k===0)?GKk(id):"";cap.title=GN(id);
+            it.append(c,cap);it.classList.toggle("gx",!(k<gIst(id)));
+            cv.appendChild(it);}
+          fuell+=n;});
+        inner.appendChild(sp);}
+      gBindTap(inner,L);box.appendChild(inner);
 
     } else if(L.kind==="col"){
       const inner=document.createElement("div");inner.className="drwi";
+      const M=gMasse(L.cols);
       L.cols.forEach(([id,n])=>{
         const cv=document.createElement("div");cv.className="gcol";
-        cv.style.width="max("+L.w+"px, var(--gd), 54px)";
+        const dd=Math.max(18,Math.min(52,Math.floor((M.H-(n-1)*GGAP)/n)));
+        cv.style.width=dd+"px";
         const num=document.createElement("div");
         num.className="gnum"+(gIst(id)<n?" low":"");num.dataset.gnum=id;
         num.innerHTML=gIst(id)+'<s>/'+n+'</s>';
-        cv.append(num,gStack(id,n));
+        cv.append(num,gStack(id,n,M.H));
         const b=document.createElement("div");b.className="gbase";cv.appendChild(b);
         if(L.photo&&GETR.pic[id]){const s=document.createElement("div");s.className="gshot";
-          s.innerHTML='<img src="'+GETR.pic[id]+'" alt="" title="'+esc(GN(id))+'">';cv.appendChild(s);}
-        const cap=document.createElement("div");cap.className="gcap";cap.textContent=GK(id);
-        cv.appendChild(cap);
+          s.innerHTML='<img src="'+GETR.pic[id]+'" alt="'+esc(GN(id))+'" title="'+esc(GN(id))+'">';
+          cv.appendChild(s);}
+        else{const cap=document.createElement("div");cap.className="gcap";
+          cap.textContent=GK(id);cap.title=GN(id);cv.appendChild(cap);}
         inner.appendChild(cv);});
-      gBindPaint(inner,L);box.appendChild(inner);
+      gBindTap(inner,L);box.appendChild(inner);
 
     } else {
       const s1=document.createElement("div");s1.className="rsec";
+      const M2=gMasse(L.cols,Math.min(gBreite(),160));
       L.cols.forEach(([id,n])=>{
         const cv=document.createElement("div");cv.className="gcol";
-        cv.style.width="max("+L.w+"px, var(--gd))";
+        cv.style.width=Math.max(44,L.w)+"px";
         const num=document.createElement("div");
         num.className="gnum"+(gIst(id)<n?" low":"");num.dataset.gnum=id;
         num.innerHTML=gIst(id)+'<s>/'+n+'</s>';
-        cv.append(num,gStack(id,n));
+        cv.append(num,gStack(id,n,M2.H));
         const cap=document.createElement("div");cap.className="gcap";cap.textContent=GK(id);
         cv.appendChild(cap);
         s1.appendChild(cv);});
-      gBindPaint(s1,L);
+      gBindTap(s1,L);
       const dv=document.createElement("div");dv.className="rdiv";
       const s2=document.createElement("div");s2.className="rsec2";
       const rid=L.rack[0],rn=L.rack[1],rc=L.rack[2],rist=gIst(rid);
       s2.innerHTML='<div class="rhd"><b>'+esc(GN(rid))+'</b><i data-gtot="'+rid+'" class="'+
         (rist<rn?"low":"")+'">'+rist+'<s>/'+rn+'</s></i></div>';
       const rows=document.createElement("div");rows.className="rrows";
-      rows.style.gridTemplateColumns="repeat("+rc+",1fr)";
+      rows.style.gridTemplateColumns="repeat("+rc+",max-content)";
       const col=GETR.col[rid];
       for(let k=0;k<rn;k++){const pt=document.createElement("div");
         pt.className="gpt"+(k<rist?"":" off");pt.dataset.gid=rid;pt.dataset.k=k;
@@ -1422,10 +1541,24 @@ function rGetr(m){
     drwFoot(L,box);
     wrap.appendChild(box);});
   m.appendChild(wrap);
+  /* Jetzt hängen die Laden im Dokument — erst hier steht die wahre Breite fest.
+     Damit werden Zellen und Kugeln so gesetzt, dass der Inhalt genau in den
+     Kasten passt: kein Scrollen, kein Überstand, nichts verschiebt sich. */
+  GETR.laden.forEach(L=>gFit(document.getElementById("drw_"+L.id),L));
   const off=GETR.laden.filter(L=>!(D().gdone||{})[L.id]).length;
   if(off)add(m,"box","<b>"+off+" von "+GETR.laden.length+" Laden noch nicht best\u00e4tigt.</b><br>Ohne best\u00e4tigte Laden l\u00e4sst sich kein Protokoll erstellen.");
 }
 function rGetrTag(m){return rGetr(m);}
+function gSegmentKonsum(m){
+  const d=D(),n=sum(d.gent||{});
+  const s=document.createElement("div");s.className="gseg";
+  s.innerHTML='<button data-b="wein"'+(gtab==="wein"?' class="on"':'')+'>Wein</button>'+
+    '<button data-b="getr"'+(gtab==="getr"?' class="on"':'')+'>Getränke'+
+    (n?' <span class="gb">'+n+'</span>':'')+'</button>';
+  s.querySelectorAll("button").forEach(b=>b.onclick=()=>{
+    if(gtab===b.dataset.b)return;gtab=b.dataset.b;render();window.scrollTo(0,0);});
+  m.appendChild(s);
+}
 function gHolBlock(m){
   const f=gFehlt();if(!f.length)return;
   const blk=document.createElement("div");blk.className="gblk";
@@ -1464,6 +1597,7 @@ function docGetrMenge(gent){
       '<tr class="tot"><td>Summe</td><td class="r">'+tot+'</td></tr>')+'</div>';
 }
 function gSegment(m){
+  if(step===0)return gSegmentKonsum(m);
   const s=document.createElement("div");s.className="gseg";
   const n=gFehltSum();
   s.innerHTML='<button data-t="wein"'+(gtab==="wein"?' class="on"':'')+'>Wein</button>'+
@@ -1503,29 +1637,61 @@ function rGate(m){
   w.querySelectorAll(".gbtn").forEach(b=>b.onclick=()=>{branch=b.dataset.b;render();window.scrollTo(0,0);});
   m.appendChild(w);
 }
-function rGetrMenge(m){
-  add(m,"hd1w",'<div class="hd1">Getränke</div><div class="hd1sub">Menge antippen, Minus nimmt weg</div>');
+/* Verbrauch/Lieferung bei Getränken: wie beim Wein — Suche und Filter,
+   erst dann die Liste. Nicht alle 34 Positionen auf einmal. */
+let getrFilter=null;
+function getrRow(id){
   const d=D();d.gent=d.gent||{};
-  GETR.laden.forEach(L=>{
-    const ids=[];
-    (L.grid||[]).forEach(c=>c.forEach(id=>{if(!ids.includes(id))ids.push(id);}));
-    (L.spec||[]).forEach(g2=>g2.forEach(([id])=>{if(!ids.includes(id))ids.push(id);}));
-    (L.cols||[]).forEach(([id])=>{if(!ids.includes(id))ids.push(id);});
-    if(L.rack&&!ids.includes(L.rack[0]))ids.push(L.rack[0]);
-    add(m,"reb",L.t);
-    ids.forEach(id=>{const n=+(d.gent[id]||0);
-      const r=document.createElement("div");r.className="grow2";
-      r.innerHTML='<span class="gic">'+gIcon(id)+'</span><span class="gt">'+esc(GN(id))+'</span>';
-      const minus=document.createElement("button");minus.textContent="\u2212";
-      minus.style.cssText="width:34px;height:34px;border:1.5px solid #D8D5CD;background:#fff;border-radius:8px;font:inherit;font-size:17px;cursor:pointer";
-      minus.onclick=()=>{if(n>0){d.gent[id]=n-1;if(!d.gent[id])delete d.gent[id];save();render();}};
-      const plus=document.createElement("button");plus.textContent="+";
-      plus.style.cssText="width:34px;height:34px;border:1.5px solid #1C1C1E;background:#1C1C1E;color:#fff;border-radius:8px;font:inherit;font-size:17px;cursor:pointer";
-      plus.onclick=()=>{d.gent[id]=n+1;save();render();};
-      const q=document.createElement("span");q.className="gq";q.textContent=n||"";
-      r.append(q,minus,plus);m.appendChild(r);});});
+  const r=document.createElement("div");r.className="w";
+  r.innerHTML='<span class="gic" style="width:26px;height:32px;display:flex;align-items:flex-end;'+
+    'justify-content:center;flex-shrink:0">'+gIcon(id)+'</span>'+
+    '<span class="tx"><span class="nm">'+esc(GN(id))+'</span></span>';
+  const kn=document.createElement("div");kn.className="knum";
+  const minus=document.createElement("button");minus.className="kminus";minus.textContent="\u2212";
+  minus.setAttribute("aria-label","Ein "+GN(id)+" weniger");
+  const num=document.createElement("button");num.className="cnt";
+  num.setAttribute("aria-label",GN(id)+", antippen für eines mehr");
+  const upd=()=>{const v=+(D().gent[id]||0);
+    minus.classList.toggle("hide",!v);num.textContent=v||"0";num.classList.toggle("on",!!v);
+    renderFoot();};
+  const set=n=>{const d2=D();if(n>0)d2.gent[id]=n;else delete d2.gent[id];save();upd();};
+  minus.onclick=e=>{e.stopPropagation();set(+(D().gent[id]||0)-1);};
+  num.onclick=()=>set(+(D().gent[id]||0)+1);
+  kn.append(minus,num);r.append(kn);upd();return r;
 }
+function ladeKurz(L){const t=L.t.split("\u00b7");return (t[1]||t[0]).trim();}
+function rGetrMenge(m){
+  const d=D();d.gent=d.gent||{};
+  const q=$("#q").value.trim().toLowerCase();
+  const chips=document.createElement("div");chips.className="fchips";
+  GETR.laden.forEach(L=>{
+    const b=document.createElement("button");b.className="fchip"+(getrFilter===L.id?" on":"");
+    b.textContent=ladeKurz(L);
+    b.onclick=()=>{getrFilter=getrFilter===L.id?null:L.id;render();};
+    chips.appendChild(b);});
+  m.appendChild(chips);
 
+  const erf=GIDS.filter(id=>+(d.gent[id]||0)>0);
+  if(erf.length&&!q&&!getrFilter){
+    add(m,"reb","Schon erfasst");
+    erf.forEach(id=>m.appendChild(getrRow(id)));
+  }
+  if(!q&&!getrFilter){
+    const t=document.createElement("p");t.className="empty";
+    if(erf.length)t.style.paddingTop="24px";
+    t.textContent=erf.length?"Weiteres Getränk suchen oder oben eine Lade wählen."
+                            :"Getränk suchen oder oben eine Lade wählen.";
+    m.appendChild(t);return;
+  }
+  GETR.laden.forEach(L=>{
+    if(getrFilter&&getrFilter!==L.id)return;
+    const ids=gLadeIds(L).filter(id=>!q||(GN(id)+" "+GK(id)).toLowerCase().includes(q));
+    if(!ids.length)return;
+    add(m,"reb",L.t);
+    ids.forEach(id=>m.appendChild(getrRow(id)));});
+  if(!m.querySelector(".w"))m.appendChild(Object.assign(document.createElement("p"),
+    {className:"empty",textContent:"Kein Getränk gefunden."}));
+}
 /* ── Abschluss ── */
 function protoTag(){const d=D();
   return WINES.map(w=>({w,k:g(d.konsum,w.id),r:g(d.rest,w.id)})).filter(x=>x.k||x.r).map(x=>({...x,diff:x.r-x.k}));}
@@ -1652,6 +1818,7 @@ function docTag(){
       t2+=`<tr><td><b>${esc(it.w.winzer)}</b> · ${esc(it.w.wein)}</td><td>${it.q.join(" · ")}</td><td class="r"><b>${it.n}</b></td></tr>`;});
     h+=`<div class="sec"><h3>Aus dem Keller geholt</h3>
       ${tbl(`<th>Wein</th><th>Wohin</th><th class="r">Fl.</th>`,t2,`<tr class="tot"><td colspan="2">Summe</td><td class="r">${rest+bar}</td></tr>`)}</div>`;}
+  h+=docGetrMenge(d.gent);
   h+=flag.length?`<div class="box"><b>${flag.length} Abweichung${flag.length>1?"en":""}.</b><br>Konsum und Restaurant-Nachfüllung stimmen dort nicht überein.</div>`
     :`<div class="box good"><b>Alles stimmig.</b></div>`;
   return h;
@@ -1663,7 +1830,7 @@ function docKeller(){
   h+=`<div class="kpi"><div><span>Gezählt</span><b>${gez.length}</b></div>
     <div><span>Offen</span><b>${off.length}</b></div><div><span>Flaschen</span><b>${tot}</b></div></div>`;
   if(gez.length){let tr="",lz=null;
-    gez.sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id]).forEach(w=>{const z=PLAN.zone[w.id];
+    gez.sort(wegCmp).forEach(w=>{const z=PLAN.zone[w.id];
       if(z!==lz){lz=z;tr+=`<tr><td class="grp" colspan="5">${PLAN.zonen[z].t}</td></tr>`;}
       const R=g(d.reihen,w.id),E=g(d.einzel,w.id);
       tr+=`<tr><td><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</td><td>${esc(w.jg)}</td>
@@ -1681,7 +1848,7 @@ function docNach(){
   h+=`<div class="kpi"><div><span>Positionen</span><b>${rows.length}</b></div><div><span>Flaschen</span><b>${sum(d.ent)}</b></div>${
     sum(d.gent)?`<div><span>Getränke</span><b>${sum(d.gent)}</b></div>`:""}</div>`;
   if(rows.length){let tr="",lz=null;
-    rows.sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id]).forEach(w=>{const z=PLAN.zone[w.id];
+    rows.sort(wegCmp).forEach(w=>{const z=PLAN.zone[w.id];
       if(z!==lz){lz=z;tr+=`<tr><td class="grp" colspan="2">${PLAN.zonen[z].t}</td></tr>`;}
       tr+=`<tr><td><b>${esc(w.winzer)}</b> · ${esc(w.wein)}</td><td class="r"><b>${g(d.ent,w.id)}</b></td></tr>`;});
     h+=`<div class="sec"><h3>Aus dem Keller geholt</h3>
@@ -1815,13 +1982,13 @@ function plainTxt(){
     holList().forEach(x=>{const z=PLAN.zone[x.w.id];if(z!==lz){lz=z;o+=`\n— ${PLAN.zonen[z].t} —\n`;}
       o+=`  ${x.n} × ${x.w.winzer} ${x.w.wein} (${x.q.join(", ")})\n`;});
   }else if(mode==="keller"){let lz=null,t=0;
-    WINES.filter(w=>d.zdone[w.id]).sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id]).forEach(w=>{const z=PLAN.zone[w.id];
+    WINES.filter(w=>d.zdone[w.id]).sort(wegCmp).forEach(w=>{const z=PLAN.zone[w.id];
       if(z!==lz){lz=z;o+=`\n— ${PLAN.zonen[z].t} —\n`;}const n=g(d.reihen,w.id)*6+g(d.einzel,w.id);t+=n;
       o+=`  ${String(n).padStart(3)} × ${w.winzer} ${w.wein} ${w.jg}\n`;});
     o+=`\nSumme ${t} Flaschen\n`;const off=WINES.filter(w=>!d.zdone[w.id]);
     if(off.length)o+=`\nNICHT GEZÄHLT (${off.length})\n`+off.map(w=>"  "+w.winzer+" "+w.wein).join("\n")+"\n";
   }else if(mode==="nach"){let lz=null;
-    WINES.filter(w=>g(d.ent,w.id)).sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id]).forEach(w=>{const z=PLAN.zone[w.id];
+    WINES.filter(w=>g(d.ent,w.id)).sort(wegCmp).forEach(w=>{const z=PLAN.zone[w.id];
       if(z!==lz){lz=z;o+=`\n— ${PLAN.zonen[z].t} —\n`;}o+=`  ${g(d.ent,w.id)} × ${w.winzer} ${w.wein}\n`;});
     o+=`\nSumme ${sum(d.ent)} Flaschen\n`;
   }else{o+="LIEFERUNG\n";
@@ -1880,11 +2047,11 @@ function expCsv(){
     holList().forEach(x=>L.push([PLAN.zonen[PLAN.zone[x.w.id]].t,x.w.winzer,x.w.wein,x.n,x.q.join(" / ")].map(e).join(";")));
   }else if(mode==="keller"){
     L.push(["Bereich","Farbe","Winzer","Wein","Jahrgang","Reihen","Einzeln","Flaschen","Status"].map(e).join(";"));
-    WINES.slice().sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id]).forEach(w=>{const R=g(d.reihen,w.id),E=g(d.einzel,w.id);
+    WINES.slice().sort(wegCmp).forEach(w=>{const R=g(d.reihen,w.id),E=g(d.einzel,w.id);
       L.push([PLAN.zonen[PLAN.zone[w.id]].t,w.f,w.winzer,w.wein,w.jg,R,E,R*6+E,d.zdone[w.id]?"gezählt":"NICHT GEZÄHLT"].map(e).join(";"));});
   }else if(mode==="nach"){
     L.push(["Bereich","Winzer","Wein","Flaschen"].map(e).join(";"));
-    WINES.filter(w=>g(d.ent,w.id)).sort((a,b)=>PLAN.zone[a.id]-PLAN.zone[b.id])
+    WINES.filter(w=>g(d.ent,w.id)).sort(wegCmp)
       .forEach(w=>L.push([PLAN.zonen[PLAN.zone[w.id]].t,w.winzer,w.wein,g(d.ent,w.id)].map(e).join(";")));
   }else{
     L.push(["Winzer","Wein","Jg. bisher","Jg. neu","Kisten","Kistengröße","Flaschen","Status"].map(e).join(";"));
@@ -1928,9 +2095,11 @@ function renderFoot(){
     f.classList.remove("open");footOpen=false;$("#fList").innerHTML="";return;
   }
   if(mode==="tag"&&gtab==="getr"){
-    big=gFehltSum();
-    const off=GETR.laden.filter(L=>!(d.gdone||{})[L.id]).length;
-    lb=`<b>Getränke fehlen</b>${GETR.laden.length-off} von ${GETR.laden.length} Laden bestätigt`;
+    if(step===0){big=sum(d.gent);
+      lb=`<b>Getränke erfasst</b>${Object.keys(d.gent||{}).length} Positionen`;}
+    else{big=gFehltSum();
+      const off=GETR.laden.filter(L=>!(d.gdone||{})[L.id]).length;
+      lb=`<b>Getränke fehlen</b>${GETR.laden.length-off} von ${GETR.laden.length} Laden bestätigt`;}
     $("#fBig").textContent=big;$("#fLb").innerHTML=lb;
     f.classList.remove("open");footOpen=false;$("#fList").innerHTML="";return;
   }
@@ -1995,7 +2164,9 @@ if(window.ResizeObserver){
   const ro=new ResizeObserver(()=>measure());
   ["#topwrap","#foot"].forEach(s=>{const el=$(s);if(el)ro.observe(el);});
 }
-window.addEventListener("resize",measure);
+let rsz=null;
+window.addEventListener("resize",()=>{measure();
+  clearTimeout(rsz);rsz=setTimeout(()=>{if(document.querySelector(".drw"))render();},180);});
 
 /* 2.3 · Offline-Hinweis, kein Blocker */
 function netState(){document.body.classList.toggle("off",navigator.onLine===false);}
