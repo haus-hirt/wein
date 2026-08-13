@@ -978,7 +978,9 @@ const REBK={"Grüner Veltliner":"GV","Riesling":"RI","Sauvignon Blanc":"SB",
  "Pinot Noir":"PN","Muskateller":"MU","Grauburgunder":"GB","Roter Veltliner":"RV",
  "Gemischter Satz":"GS","Merlot":"ME"};
 /* Bei Schaumwein sagt die Rebsorte wenig — dort steht die Art. */
-const REBID={serena:"SE",w055:"SR",w056:"CHP"};
+const REBID={serena:"SE",w055:"SR",w056:"CHP",
+ w043:"RO",   /* Fritsch - Rosé, nicht Zweigelt */
+ w053:"NA"};  /* Naked Red - Naturwein */
 function rebK(w){
   if(REBID[w.id])return REBID[w.id];
   const r=w.reb||w.grp||"";
@@ -1000,6 +1002,14 @@ function rKonsum(m){
   if(!l.length&&!treffer.length)return m.appendChild(Object.assign(
     document.createElement("p"),{className:"empty",textContent:"Kein Wein gefunden."}));
   groupedList(m,l,konsumRow,"konsum",true);
+  /* Der Noblier ist entalkoholisierter Schaumwein - er steht ganz unten,
+     hinter den Bubbles, nicht bei den Bieren. */
+  if(!q||("noblier alkoholfrei").includes(q.toLowerCase())){
+    railGroups.push({id:"konsum_afr",kurz:"afr"});
+    const h=add(m,"hd1w grpanchor","");h.id="anchor_konsum_afr";
+    h.innerHTML='<div class="hd1">Alkoholfrei</div>';
+    m.appendChild(getrRow("noblier"));
+  }
 }
 
 /* ── gemeinsame gruppierte Liste (Konsum/Nachschub) ── */
@@ -2055,16 +2065,19 @@ let getrFilter=null;
    Mischgetraenke, alkoholfrei, Wein. */
 const KONSGRP=[
  {t:"Wasser",ids:["gasteiner","gastklein","gastill"]},
- {t:"Bier",ids:["hell","dunkel"]},
+ {t:"Bier",ids:["hell","dunkel","st03","st05","hefe0"]},
  {t:"Softdrinks",ids:["cola","colaz","almd","berry","orange","lemon"]},
  {t:"Mischgetränke",ids:["sanbitter","wildberry","gingerale","bitterlemon",
-                          "tonicth","tonicfent","gingerbeer"]},
- {t:"Alkoholfrei",ids:["st03","st05","hefe0","noblier"]}];
+                          "tonicth","tonicfent","gingerbeer"]}];
+/* Glasweise geht auch der Rotwein, der ungekuehlt an der Bar steht. */
 function konsWein(){
   const ids=[];
   WLADEN.forEach(L=>{if(!L.wein)return;
     wSlots(L).forEach(([id])=>{if(byId(id)&&!ids.includes(id))ids.push(id);});});
-  return ids;}
+  barSlots("barrot").forEach(p2=>{if(byId(p2.id)&&!ids.includes(p2.id))ids.push(p2.id);});
+  /* Sekt und Champagner glasweise kommen selten vor - sie stehen ganz unten. */
+  const bub=id=>byId(id).f==="BUBBLES";
+  return ids.filter(id=>!bub(id)).concat(ids.filter(bub));}
 function rGetrKonsum(m){
   const d=D();d.gent=d.gent||{};
   const q=$("#q").value.trim().toLowerCase();
@@ -2272,7 +2285,7 @@ function docHeadHtml(){const d=D();
 function glasCheck(){
   const d=D(),rows=[];
   konsWein().forEach(id=>{
-    const a8=+(d.gent||{})[id]||0,fl=g(d.bar,id)+g(d.backup,id);
+    const a8=+(d.gent||{})[id]||0,fl=g(d.bar,id)+g(d.backup,id)+g(d.barrot,id);
     if(!a8&&!fl)return;
     const noetig=fl8(a8);
     const diff=fl-noetig.voll;
