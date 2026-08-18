@@ -652,10 +652,10 @@ body.off .offline{display:block}
  border-radius:var(--radius-md);background:var(--surface);color:var(--fg);
  padding:0;flex-shrink:0}
 /* Dominante Ladenanweisung */
-.ghint--stark{font-size:var(--text-sm);font-weight:var(--weight-medium);
+.ghint--stark{font-size:var(--text-md);font-weight:var(--weight-medium);
  color:var(--danger-fg);background:var(--danger-bg);
- border-left:3px solid var(--danger);margin:0;
- padding:var(--space-2) var(--space-3)}
+ border-left:4px solid var(--danger);margin:0;
+ padding:var(--space-3);line-height:var(--leading-tight)}
 /* Hol-Listen: ein Muster für Wein und Getränke */
 .holz{display:flex;align-items:center;gap:var(--space-2);
  border-bottom:1px solid var(--border);padding:var(--space-1) 0}
@@ -680,6 +680,31 @@ body.off .offline{display:block}
  background:var(--surface-3);border-radius:var(--radius-md);
  padding:var(--space-2) var(--space-3)}
 .kisten b{font-weight:var(--weight-bold);color:var(--fg)}
+/* Navigation am Ende des Inhalts statt in einer festen Leiste */
+.foot{display:none!important}
+.navrow{display:flex;gap:var(--space-2);margin:var(--space-6) 0 var(--space-4)}
+.navrow .b{flex:1;min-height:var(--control-h-lg);background:var(--surface);
+ border:1px solid var(--border-strong);color:var(--fg);
+ border-radius:var(--radius-md);font:var(--weight-medium) var(--text-md)/1.2 var(--font);
+ display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.navrow .b:active{background:var(--surface-3)}
+.navrow .b.sm{flex:0 0 auto;padding:0 var(--space-5);color:var(--fg-muted)}
+.navrow .b.go{background:var(--fg);border-color:var(--fg);color:var(--fg-on-dark)}
+.navrow .b.go:active{background:var(--fg-secondary)}
+.navrow .b.go.leise{background:var(--surface);border-color:var(--border-strong);
+ color:var(--fg-muted);font-weight:var(--weight-regular)}
+/* Kontrollierte Spalte: ruhig, aber erkennbar */
+.gcol--geprueft{background:var(--success-bg);border-radius:var(--radius-md);
+ box-shadow:0 0 0 1px var(--success-bg)}
+.gcol--geprueft .gshot::after{content:"\2713";position:absolute;right:0;bottom:0;
+ width:16px;height:16px;border-radius:50%;background:var(--success);
+ color:var(--fg-on-dark);font-size:10px;line-height:16px;text-align:center}
+.gcol--geprueft .gcap{color:var(--success-fg)}
+/* Noch nicht kontrolliert */
+.warnoffen{margin:var(--space-3) 0 0;padding:var(--space-2) var(--space-3);
+ font-size:var(--text-sm);color:#6B4E00;background:#FDF3D0;
+ border-left:3px solid #E0B200;border-radius:0 var(--radius-md) var(--radius-md) 0}
+.statb.offen{border-color:#E0B200;box-shadow:inset 0 0 0 1px #E0B200}
 /* P8 · Startbild */
 .login{padding:var(--space-8) var(--space-4);max-width:420px;margin:0 auto}
 .login h1{font-size:var(--text-lg);margin:0 0 var(--space-1);letter-spacing:-.01em}
@@ -901,8 +926,8 @@ body.off .offline{display:block}
 .drwb button{flex:1;font-size:var(--text-sm)}
 .drwb button.weiter{font-size:var(--text-md)}
 .drwb button.reset{flex:0 0 auto;color:var(--fg-subtle);font-weight:var(--weight-regular)}
-.ghint{font-size:var(--text-xs);color:var(--fg-subtle);padding:0 var(--space-3) var(--space-2);
- margin-top:-4px}
+.ghint{font-size:var(--text-xs);color:var(--fg-subtle);
+ padding:var(--space-2) var(--space-3);margin:0}
 
 @media(min-width:768px){
  .gladen{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--space-4);align-items:start}
@@ -978,12 +1003,16 @@ const kg=p=>+(p&&p.kistengr)||KISTE_STD;
 const MAIL="casimir.ikrath@haus-hirt.com";
 /* P8 · Zwei Codeebenen: Anmeldung (wer fasst) und Verwaltung/Freigabe (2797).
    Klartext in einer HTML-Datei ist keine Sperre, sondern eine Unterschrift. */
-const USER={"1357":"Asad Karakiri","5800":"Casimir","9114":"Ian Lauchbein"};
+const USER={"1357":"Asad Karakiri","5800":"Casimir","9114":"Ian Lauchbein",
+            "1808":"Marinus"};
 const UKEY="hh_user";
 function whoAmI(){try{return sessionStorage.getItem(UKEY)||"";}catch(e){return "";}}
 function setUser(n){try{n?sessionStorage.setItem(UKEY,n):sessionStorage.removeItem(UKEY);}catch(e){}}
 const KEY="hh_keller_v11";
 const $=s=>document.querySelector(s);
+/* Zurück/Weiter wandern bei jedem Aufbau in den Inhalt. Die Knoten
+   bleiben dieselben, damit die Handler nicht verloren gehen. */
+const BBACK=document.getElementById("bBack"),BNEXT=document.getElementById("bNext");
 const byId=id=>WINES.find(w=>w.id===id);
 const FARBEN=["WEISS","ROSÉ","ROT","BUBBLES","NATURAL"];
 const FARBKURZ={WEISS:"Weiss","ROSÉ":"Rosé",ROT:"Rot",BUBBLES:"Bubbles",NATURAL:"Natur"};
@@ -1060,10 +1089,11 @@ function today(){return new Date().toISOString().slice(0,10);}
 function blank(m){
   const b={mode:m,tag:m==="tag"?yest():today(),name:whoAmI(),notiz:"",finished:false,ver:11};
   if(m==="tag")Object.assign(b,{rest:{},barrot:{},bar:{},backup:{},seen:{},holt:{},
-    zusatz:{},gzusatz:{},gent:{},getr:{},gdone:{},gholt:{},gholtN:{},fotos:[]});
+    zusatz:{},gzusatz:{},gent:{},getr:{},gdone:{},gcheck:{},goffen:{},
+    gholt:{},gholtN:{},fotos:[]});
   if(m==="keller")Object.assign(b,{reihen:{},einzel:{},zdone:{},getr:{},gdone:{}});
   if(m==="fuellen")Object.assign(b,{barrot:{},bar:{},backup:{},seen:{},
-    getr:{},gdone:{},gcheck:{},gholt:{},gholtN:{},gzusatz:{}});
+    getr:{},gdone:{},gcheck:{},goffen:{},gholt:{},gholtN:{},gzusatz:{}});
   if(m==="nach")Object.assign(b,{ent:{},gent:{},gzusatz:{}});
   if(m==="ware")Object.assign(b,{pos:[],jok:{},jneu:{},ein:{},gent:{}});
   return b;
@@ -1147,8 +1177,8 @@ function renderMenu(){
     <p class="angemeldet">Angemeldet: <b>${esc(whoAmI())}</b>
       <button class="wechseln" id="bWechseln">wechseln</button></p>
     <div class="mgrp">Service</div>${card("tag")}${card("fuellen")}
+    <div class="mgrp">Notfall</div>${card("nach")}
     <div class="mgrp">Bestand</div>${card("keller")}${card("ware")}
-    <div class="mgrp">Ausnahme</div>${card("nach")}
     <button class="adminlink" id="bAdmin">Verwaltung</button>
     <button class="adminlink" id="bArch" style="margin-top:2px">Letzte Protokolle (${Object.keys(loadArch()).length})</button>`;
   document.querySelectorAll(".mi").forEach(b=>b.onclick=()=>start(b.dataset.m));
@@ -1382,10 +1412,10 @@ function render(){
     b.setAttribute("aria-selected",i===step);b.classList.toggle("done",stepComplete(i));});
   const last=lastStep();
   const station=(mode==="tag"&&(step===0||step===1));
-  $("#bNext").classList.toggle("leise",station);
-  $("#bBack").style.display=step===0?"none":"";
-  $("#bNext").style.display=step===last?"none":"";
-  $("#bNext").textContent=station?"Überspringen":"Weiter";
+  BNEXT.classList.toggle("leise",station);
+  BBACK.style.display=step===0?"none":"";
+  BNEXT.style.display=step===last?"none":"";
+  BNEXT.textContent=station?"Überspringen":"Weiter";
   const RG={keller:[rGetr,rDoc],nach:[rGetrMenge,rDoc],ware:[rGetrMenge,rDoc]};
   const R={tag:[rBar,rRest,rHol,rDoc],fuellen:[rBar,rHol,rDoc],keller:[rZaehl,rDoc],
            nach:[rNach,rDoc],ware:[rKisten,rJahr,rEin,rDoc]};
@@ -1396,6 +1426,12 @@ function render(){
   if(gtab==="getr")gtab="wein";
   if(mode!=="tag"&&mode!=="fuellen"&&branch&&step!==lastStep())gBranchSeg(m);
   fn(m);
+  /* Die feste Leiste unten entfällt: jede Karte trägt ihre Bestätigung
+     selbst, und Zurück/Weiter stehen am Ende des Inhalts. */
+  if(step!==last){
+    const nav=document.createElement("div");nav.className="navrow";
+    nav.append(BBACK,BNEXT);
+    m.appendChild(nav);}
   buildRail(fn===rRest||fn===rZaehl);
   renderFoot();measure();
 }
@@ -1475,8 +1511,20 @@ function barUnits(){
     :[{k:"liste",id:"barrot",t:"Bar · Rotweine",s:"Nicht gekühlt",marke:"R",
        arr:barSlots("barrot"),bucket:"barrot"}];
   ALLE_LADEN().forEach((L,i)=>u.push({k:"lade",id:L.id,t:L.t,L:L,marke:String(i+1)}));
+  const off=(D()||{}).goffen||{};
+  u.forEach(x=>{x.offen=!!off[x.id];});
   return u;
 }
+/* Wer eine Karte verlässt, ohne sie zu bestätigen, findet beim
+   Zurückkommen einen gelben Hinweis \u2014 und sieht ihn schon in der
+   Stationsleiste. */
+function merkeOffen(u){
+  if(!u||barDone(u))return;
+  const d=D();d.goffen=d.goffen||{};d.goffen[u.id]=1;save();}
+function warnOffen(m){
+  const w=document.createElement("div");w.className="warnoffen";
+  w.textContent="Diese Karte ist noch nicht kontrolliert.";
+  m.appendChild(w);}
 function barDone(u){
   const d=D();
   if(u.k==="lade")return !!(d.gdone||{})[u.id];
@@ -1497,9 +1545,11 @@ function rBar(m){
     b.className="statb"+(i===barIdx?" on":"")+(barDone(x)?" done":"");
     b.textContent=x.marke;b.title=x.t;
     b.setAttribute("aria-label",x.t+(barDone(x)?", geprüft":""));
-    b.onclick=()=>{barIdx=i;render();window.scrollTo(0,0);};
+    b.onclick=()=>{merkeOffen(U[barIdx]);barIdx=i;render();window.scrollTo(0,0);};
+    if(x.offen)b.classList.add("offen");
     nav.appendChild(b);});
   m.appendChild(nav);
+  if(u.offen&&!barDone(u))warnOffen(m);
   const h=document.createElement("div");h.className="stath";
   h.innerHTML='<b>'+esc(u.t)+'</b><i>'+(barIdx+1)+' von '+U.length+'</i>';
   m.appendChild(h);
@@ -2178,7 +2228,10 @@ function gBindTap(el,L){
     const k=ziel.dataset.gid,i=+ziel.dataset.k,cur=sIst(k);
     const n=+ziel.dataset.n||sSoll(k);
     const w=zellRang(ziel,i,n);
-    sSet(k,cur===w?w-1:w);gPaint(k);gPaintLade(L);renderFoot();
+    sSet(k,cur===w?w-1:w);gPaint(k);
+    /* Wer eine Menge setzt, hat hingeschaut: die Spalte gilt als kontrolliert. */
+    if(ziel.dataset.col)setGeprueft(ziel.dataset.col,1);
+    gPaintLade(L);renderFoot();
     ziel=null;});
 }
 /* Nur das Gasteiner-Raster bleibt beim Ziehen: kurze Reihen, dort ist das
@@ -2218,6 +2271,12 @@ function gBreite(){
 /* Angeschaut-Haken je Spalte. Reine Kontrolle, keine Mengenwirkung. */
 function colKey(L,teile){return L.id+"|"+teile.map(t=>t[0]).join("+");}
 function colGeprueft(k){const d=D();return !!((d&&d.gcheck)||{})[k];}
+function setGeprueft(k,an){
+  const d=D();d.gcheck=d.gcheck||{};
+  if(an)d.gcheck[k]=1;else delete d.gcheck[k];
+  save();
+  document.querySelectorAll('[data-colwrap="'+k+'"]')
+    .forEach(el=>el.classList.toggle("gcol--geprueft",!!an));}
 /* Eine Spalte kann zwei Sorten übereinander tragen (Raschhofer). */
 function colTeile(c){return c.stapel?c.stapel:[[c[0],c[1]]];}
 function colSum(c){return colTeile(c).reduce((a,x)=>a+x[1],0);}
@@ -2516,6 +2575,7 @@ function drwBox(L){
     L.cols.forEach(c=>{
       const teile=colTeile(c),ges=colSum(c);
       const cv=document.createElement("div");cv.className="gcol";
+      const ckey=colKey(L,teile);cv.dataset.colwrap=ckey;
       const dd=M.fix||Math.max(18,Math.min(52,Math.floor((M.H-(ges-1)*GGAP)/ges)));
       if(!L.gleich)cv.style.width=dd+"px";
       teile.forEach(([id,n])=>{
@@ -2525,7 +2585,9 @@ function drwBox(L){
         num.innerHTML=sIst(k)+'<s>/'+n+'</s>';
         const hoehe=M.fix?n*(M.fix+GGAP)-GGAP
                          :Math.round(M.H*n/ges)-(teile.length>1?GGAP:0);
-        cv.append(num,gStack(k,n,hoehe,L.leerOben));});
+        const stk=gStack(k,n,hoehe,L.leerOben);
+        stk.querySelectorAll(".gpt").forEach(pt=>pt.dataset.col=ckey);
+        cv.append(num,stk);});
       const b=document.createElement("div");b.className="gbase";cv.appendChild(b);
       if(L.photo){
         const s=document.createElement("div");s.className="gshot";
@@ -2536,14 +2598,11 @@ function drwBox(L){
         /* Tippen auf das Foto markiert die Spalte als angeschaut \u2014 eine
            Kontrolle f\u00fcr einen selbst, ohne die Mengen zu ver\u00e4ndern. */
         if(s.innerHTML){
-          const ck=colKey(L,teile);
+          const ck=ckey;
           s.classList.add("gshot--tap");
           s.title="Antippen: Spalte als geprüft markieren";
           if(colGeprueft(ck))cv.classList.add("gcol--geprueft");
-          s.onclick=()=>{
-            const dd=D();dd.gcheck=dd.gcheck||{};
-            if(dd.gcheck[ck])delete dd.gcheck[ck];else dd.gcheck[ck]=1;
-            save();cv.classList.toggle("gcol--geprueft",!!dd.gcheck[ck]);};
+          s.onclick=()=>setGeprueft(ck,!colGeprueft(ck));
           cv.appendChild(s);}
         else cv.appendChild(s);}
       const cap=document.createElement("div");cap.className="gcap";
@@ -2621,13 +2680,14 @@ function gHolBlock(m){
   const kopf=lagerKopf(m,"Getränkelager","Kistenlager \u2014 getrennt vom Weinkeller",
     f.filter(x=>!d0.gholt[x.id]).length,f.length);
   if(f.length){
-    const kist=kistenBedarf(f.filter(x=>!d0.gholt[x.id]));
-    if(kist.length){
-      const kz=document.createElement("div");kz.className="kisten";
-      kz.innerHTML="<b>"+kist.reduce((a,x)=>a+x.k,0)+" Kiste"+
-        (kist.reduce((a,x)=>a+x.k,0)===1?"":"n")+"</b> \u00b7 "+
-        kist.map(x=>x.k+"\u00d7 "+esc(GKk(x.id))).join(" \u00b7 ");
-      kopf.appendChild(kz);}}
+    /* Dasselbe Dashboard wie im Weinkeller: Menge und Traglast. */
+    const offen=f.filter(x=>!d0.gholt[x.id]);
+    const fl=offen.reduce((a,x)=>a+((d0.gholtN||{})[x.id]!=null?d0.gholtN[x.id]:x.n),0);
+    const ki=kistenBedarf(offen).reduce((a,x)=>a+x.k,0);
+    const info=document.createElement("div");info.className="kisteninfo";
+    info.innerHTML=`<div><b>${fl}</b> Flaschen holen</div>
+      <div><b>${ki}</b> Tragekiste${ki!==1?"n":""}</div>`;
+    kopf.parentNode.insertBefore(info,kopf.nextSibling);}
   if(!f.length){add(m,"box good","<b>Nichts zu holen.</b><br>Alle Laden sind voll.");}
   else{
     /* Wie beim Wein: erledigte Zeilen wandern nach unten. */
@@ -3416,7 +3476,8 @@ $("#ovNo").onclick=()=>$("#ov").classList.remove("on");
 /* ── Fußleiste ── */
 function renderFoot(){
   const d=D(),f=$("#foot");let big=0,lb="",items=[],closed=true;const last=lastStep();
-  if(step===last){f.style.display="none";return;}f.style.display="";
+  f.style.display="none";
+  if(step===last)return;
   if(mode!=="tag"&&branch==="getr"){
     if(mode==="keller"){const off=GETR.laden.filter(L=>!(d.gdone||{})[L.id]).length;
       big=gFehltSum();lb=`<b>Getränke fehlen</b>${GETR.laden.length-off} von ${GETR.laden.length} Laden bestätigt`;}
@@ -3484,7 +3545,7 @@ function renderFoot(){
 
 /* ── Navigation ── */
 $("#bHome").onclick=()=>{ARCHREC=null;mode=null;renderMenu();window.scrollTo(0,0);};
-$("#bBack").onclick=()=>{
+BBACK.onclick=()=>{
   if((mode==="tag"||mode==="fuellen")&&step===0&&barIdx>0){
     barIdx--;render();window.scrollTo(0,0);return;}
   if(mode==="tag"&&step===1&&restIdx>0&&!$("#q").value.trim()){
@@ -3492,7 +3553,7 @@ $("#bBack").onclick=()=>{
   if(mode==="tag"&&step===2&&kellerTab==="getr"){kellerTab="wein";render();window.scrollTo(0,0);return;}
   if(step>0)go(step-1);};
 /* 1B · Im Konsum führt „Weiter" erst von den Getränken zum Wein. */
-$("#bNext").onclick=()=>{
+BNEXT.onclick=()=>{
   if((mode==="tag"||mode==="fuellen")&&step===0){
     const U=barUnits();
     if(barIdx<U.length-1){barIdx++;render();window.scrollTo(0,0);return;}}
